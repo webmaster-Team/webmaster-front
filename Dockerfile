@@ -8,6 +8,8 @@ WORKDIR /app
 
 COPY . .
 
+RUN yarn config set registry https://registry.npmjs.org --global
+
 RUN yarn install
 
 RUN yarn run build
