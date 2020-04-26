@@ -8,7 +8,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install --registry=https://registry.npm.taobao.org
+RUN yarn install
 
 RUN yarn run build
 
