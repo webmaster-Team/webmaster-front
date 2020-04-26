@@ -10,7 +10,7 @@ COPY . .
 
 RUN yarn install --registry=https://registry.npm.taobao.org
 
-RUN npm run build
+RUN yarn run build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
