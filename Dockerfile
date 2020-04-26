@@ -8,11 +8,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn config set registry https://registry.npmjs.org --global
+RUN npm install
 
-RUN yarn install
-
-RUN yarn run build
+RUN npm run build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
