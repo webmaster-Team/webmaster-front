@@ -1,0 +1,93 @@
+{
+  "id": "1785062",
+  "name": "library",
+  "font_family": "library",
+  "css_prefix_text": "library",
+  "description": "HZNU library project",
+  "glyphs": [
+    {
+      "icon_id": "1903287",
+      "name": "头像 女孩",
+      "font_class": "icon-test",
+      "unicode": "e660",
+      "unicode_decimal": 58976
+    },
+    {
+      "icon_id": "1903298",
+      "name": "头像 女孩",
+      "font_class": "icon-test1",
+      "unicode": "e661",
+      "unicode_decimal": 58977
+    },
+    {
+      "icon_id": "1903538",
+      "name": "头像 女孩",
+      "font_class": "icon-test2",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
+      "icon_id": "1903700",
+      "name": "头像 女孩",
+      "font_class": "icon-test3",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "1904042",
+      "name": "头像 男孩",
+      "font_class": "icon-test4",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "1904339",
+      "name": "头像 男孩",
+      "font_class": "icon-test5",
+      "unicode": "e668",
+      "unicode_decimal": 58984
+    },
+    {
+      "icon_id": "1905494",
+      "name": "头像 女孩",
+      "font_class": "icon-test6",
+      "unicode": "e66b",
+      "unicode_decimal": 58987
+    },
+    {
+      "icon_id": "1905518",
+      "name": "头像 女孩",
+      "font_class": "icon-test7",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "1908471",
+      "name": "头像 女孩",
+      "font_class": "icon-test8",
+      "unicode": "e66f",
+      "unicode_decimal": 58991
+    },
+    {
+      "icon_id": "1908929",
+      "name": "头像 男孩",
+      "font_class": "icon-test9",
+      "unicode": "e671",
+      "unicode_decimal": 58993
+    },
+    {
+      "icon_id": "1993426",
+      "name": "头像 女孩",
+      "font_class": "touxiangnvhai",
+      "unicode": "e6df",
+      "unicode_decimal": 59103
+    },
+    {
+      "icon_id": "349004",
+      "name": "user",
+      "font_class": "user",
+      "unicode": "ecc8",
+      "unicode_decimal": 60616
+    }
+  ]
+}
