@@ -1,14 +1,38 @@
 import React, { PureComponent } from 'react'
-import { LButton } from './style'
-// import { Redirect } from 'react-router-dom' //重定向
 import { connect } from 'react-redux'
 import { actionCreators } from './store'
-// import { Link } from 'react-router-dom' //相当于a
+
+import { Card } from 'antd'
+// import {  } from '@ant-design/icons';
+
+import './style.less'
 
 class Login extends PureComponent {
   render() {
     const { login, exchangeLogin } = this.props
-    return <LButton onClick={exchangeLogin}>{login + ''}</LButton>
+    return (
+      <div className="wrapper">
+        <Card
+          title="Default size card"
+          extra={<a href="#">More</a>}
+          style={{ width: 300 }}
+        >
+          <p>Card content</p>
+          <p>Card content</p>
+          <p>Card content</p>
+        </Card>
+        <Card
+          size="small"
+          title="Small size card"
+          extra={<a href="#">More</a>}
+          style={{ width: 300 }}
+        >
+          <p>Card content</p>
+          <p>Card content</p>
+          <p>Card content</p>
+        </Card>
+      </div>
+    )
   }
 }
 
