@@ -3,11 +3,9 @@ import { connect } from 'react-redux'
 import { actionCreators } from './store'
 
 import { Card } from 'antd'
-// import {  } from '@ant-design/icons';
-
 import './style.less'
 
-class Login extends PureComponent {
+class Login extends React.Component {
   render() {
     const { login, exchangeLogin } = this.props
     return (
