@@ -1,24 +1,31 @@
-import axios from 'axios'
 import * as constants from './constants'
+import Axios from '../../../utils/request'
 
-export const exchangeLogin = () => {
-  return {
-    type: constants.CHANGE_LOGIN,
+export const tryLogin = (account, password) => {
+  return (dispatch) => {
+    Axios.post('/api/user/login', { account, password }).then((res) => {
+      if (res.result) {
+        let { id, card, name, cover } = res.data
+        dispatch(loginSuccess(id, card, name, cover))
+      } else {
+        dispatch(loginFailed())
+      }
+    })
   }
 }
 
-//react-thunk扩展了redux的能力，使得redux可以发送axios请求
-// export const login=(account,password)=>{
-// 	return (dispatch)=>{
-// 		axios.get('')
-// 		.then((res)=>{
-// 		    const result =res.data.data;
-// 		    if(result){
-//                dispatch(changeLogin(result,account))
-// 		    }
-// 		    else{
-// 		    	alert('登录失败')
-// 		    }
-// 		})
-// 	}
-// }
+export const loginSuccess = (id, card, name, cover) => {
+  return {
+    type: constants.LOGIN_SUCCESS,
+    id,
+    card,
+    name,
+    cover,
+  }
+}
+
+export const loginFailed = () => {
+  return {
+    type: constants.LOGIN_FAILED,
+  }
+}

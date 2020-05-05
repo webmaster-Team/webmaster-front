@@ -3,17 +3,31 @@ import * as constants from './constants'
 
 const defaultState = fromJS({
   login: false,
+  id: '',
+  name: '',
+  cover: '',
+  card: '',
+  msg: '',
+  tryTimes: 0,
 })
 
 export default (state = defaultState, action) => {
   switch (action.type) {
-    // case constants.CHANGE_LOGIN:
-    //     return state.merge({
-    //     		login:action.login,
-    //     		account:action.account
-    //     	    })
-    case constants.CHANGE_LOGIN:
-      return state.set('login', !state.get('login'))
+    case constants.LOGIN_SUCCESS:
+      return state.merge({
+        login: true,
+        id: action.id,
+        name: action.name,
+        card: action.card,
+        cover: action.cover,
+        tryTimes: state.get('tryTimes') + 1,
+      })
+    case constants.LOGIN_FAILED:
+      return state.merge({
+        login: false,
+        msg: action.msg,
+        tryTimes: state.get('tryTimes') + 1,
+      })
     default:
       return state
   }

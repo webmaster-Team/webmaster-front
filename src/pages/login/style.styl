@@ -1,0 +1,36 @@
+backgroundColor = black
+boxShadowColor = rgba(0,0,0,.3)
+boxShadow =  0px 1px 5px 1px boxShadowColor
+fontColor = #666
+forgetFontColor = #999
+.wrapper
+    width 100vw
+    height 100vh
+    display flex
+    justify-content: center
+    align-items: center
+
+.container
+    width: 370px
+    box-shadow: boxShadow
+    text-align: center
+    padding:0 30px
+    .title
+        font-size: 20px
+        color: fontColor
+        padding: 30px 0
+    
+    .smallBottom
+        margin-bottom: 5px !important;
+    
+    .parallelInput
+        width: 100%
+        display: flex
+        flex-flow: row nowrap
+        justify-content: space-between
+
+    .ant-form-item-explain 
+        text-align: left 
+    
+    .plane
+        color: forgetFontColor
