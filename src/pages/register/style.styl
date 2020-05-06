@@ -4,19 +4,19 @@ boxShadow =  0px 1px 5px 1px boxShadowColor
 fontColor = #666
 forgetFontColor = #999
 
-.login
+.register
     .wrapper
         width 100vw
-        min-height: 100vh
         display: flex
         justify-content: center
+        min-height: fit-content
         align-items: center
+        min-height: 100vh
 
     .container
         box-shadow: boxShadow
         text-align: center
         padding:0px 30px
-
         .title
             font-size: 20px
             color: fontColor
@@ -30,12 +30,8 @@ forgetFontColor = #999
             display: flex
             flex-flow: row nowrap
             justify-content: space-between
-        
-        .ant-form-item-control
-            text-align: left 
 
-        .ant-form-item-explain 
-            text-align: left 
-        
+        .ant-form-item-control-input
+            text-align: left         
         .plane
             color: forgetFontColor

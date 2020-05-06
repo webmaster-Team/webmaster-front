@@ -8,7 +8,7 @@ class Login extends PureComponent {
   constructor(props) {
     super(props)
     this.validateMessages = {
-      required: '请输入您的${label}!',
+      required: '请输入您的${label}',
       pattern: {
         mismatch: '${label}必须为13位数字',
       },
@@ -27,65 +27,67 @@ class Login extends PureComponent {
     const { login } = this.props
     const { tryLogin } = this.props
     if (login) {
-      return <Redirect to="/" />
+      return <Redirect to="/"></Redirect>
     } else
       return (
-        <div className="wrapper">
-          <div className="container">
-            <div className="title">登录</div>
-            <Form
-              size="large"
-              validateMessages={this.validateMessages}
-              onFinish={tryLogin}
-            >
-              <Form.Item
-                label="卡号"
-                name="account"
-                rules={[{ required: true, pattern: /^[0-9]{13}$/ }]}
+        <div className="login">
+          <div className="wrapper">
+            <div className="container">
+              <div className="title">登录</div>
+              <Form
+                size="large"
+                validateMessages={this.validateMessages}
+                onFinish={tryLogin}
               >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="密码"
-                name="password"
-                className="smallBottom"
-                rules={[{ required: true, type: 'string', min: 6, max: 16 }]}
-              >
-                <Input.Password />
-              </Form.Item>
-              <Form.Item
-                name="agreement"
-                className="smallBottom"
-                valuePropName="checked"
-                rules={[
-                  {
-                    validator: (_, value) =>
-                      value
-                        ? Promise.resolve()
-                        : Promise.reject(
-                            '若您要使用本产品，请同意我们的隐私政策'
-                          ),
-                  },
-                ]}
-              >
-                <Checkbox>
-                  我已经同意《图书管理系统》<Link to="/">隐私保护政策</Link>
-                </Checkbox>
-              </Form.Item>
-              <Form.Item className="smallBottom">
-                <Button type="primary" htmlType="submit" block>
-                  立即登录
-                </Button>
-              </Form.Item>
-              <Form.Item>
-                <div className="parallelInput">
-                  <Link to="/" className="plane">
-                    忘记密码？
-                  </Link>
-                  <Link to="/">没有账号？立即注册</Link>
-                </div>
-              </Form.Item>
-            </Form>
+                <Form.Item
+                  label="卡号"
+                  name="account"
+                  rules={[{ required: true, pattern: /^[0-9]{13}$/ }]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item
+                  label="密码"
+                  name="password"
+                  className="smallBottom"
+                  rules={[{ required: true, type: 'string', min: 6, max: 16 }]}
+                >
+                  <Input.Password />
+                </Form.Item>
+                <Form.Item
+                  name="agreement"
+                  className="smallBottom"
+                  valuePropName="checked"
+                  rules={[
+                    {
+                      validator: (_, value) =>
+                        value
+                          ? Promise.resolve()
+                          : Promise.reject(
+                              '若您要使用本产品，请同意我们的隐私政策'
+                            ),
+                    },
+                  ]}
+                >
+                  <Checkbox>
+                    我已经同意《图书管理系统》<Link to="/">隐私保护政策</Link>
+                  </Checkbox>
+                </Form.Item>
+                <Form.Item className="smallBottom">
+                  <Button type="primary" htmlType="submit" block>
+                    立即登录
+                  </Button>
+                </Form.Item>
+                <Form.Item>
+                  <div className="parallelInput">
+                    <Link to="/" className="plane">
+                      忘记密码？
+                    </Link>
+                    <Link to="/register">没有账号？立即注册</Link>
+                  </div>
+                </Form.Item>
+              </Form>
+            </div>
           </div>
         </div>
       )
