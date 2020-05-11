@@ -56,6 +56,7 @@ class Register extends PureComponent {
     const { tryRegister } = this.props
     if (this.props.register) {
       this.props.history.replace('/login')
+      
       return <div></div>
     } else
       return (

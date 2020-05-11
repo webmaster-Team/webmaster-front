@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { actionCreators } from './store'
+import { actionCreators as registerActionCreators } from '../register/store'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import './style.styl'
 class Login extends PureComponent {
@@ -21,6 +22,10 @@ class Login extends PureComponent {
   componentDidUpdate() {
     if (this.props.login) message.success('登陆成功')
     else message.error(`登陆失败，检查账号密码后重试(${this.props.tryTimes})！`)
+  }
+
+  componentDidMount() {
+    this.props.resetRegister()
   }
 
   render() {
@@ -99,12 +104,16 @@ const mapState = (state) => {
     login: state.getIn(['login', 'login']),
     showAlert: state.getIn(['login', 'login']),
     tryTimes: state.getIn(['login', 'tryTimes']),
+    register: state.getIn(['register', 'register']),
   }
 }
 
 const mapDispatch = (dispatch) => ({
   tryLogin({ account, password }) {
     dispatch(actionCreators.tryLogin(account, password))
+  },
+  resetRegister() {
+    dispatch(registerActionCreators.register(false))
   },
 })
 

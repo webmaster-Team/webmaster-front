@@ -1,9 +1,9 @@
 import * as constants from './constants'
 import Axios from '../../../utils/request'
 
-export const tryLogin = (account, password) => {
+export const tryLogin = (card, password) => {
   return (dispatch) => {
-    Axios.post('/api/user/login', { account, password }).then((res) => {
+    Axios.post('/api/user/login', { card, password }).then((res) => {
       if (res.result) {
         let { id, card, name, cover } = res.data
         dispatch(loginSuccess(id, card, name, cover))
