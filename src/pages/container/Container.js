@@ -1,29 +1,33 @@
-import React, {Component} from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
-import { UserOutlined, LaptopOutlined, NotificationOutlined } from '@ant-design/icons';
-import SelfHeader from '../../components/header/SelfHeader';
-
+import React, { PureComponent } from 'react'
+import { Layout, Menu, Breadcrumb } from 'antd'
+import { Route } from 'react-router'
+import {
+  UserOutlined,
+  LaptopOutlined,
+  NotificationOutlined,
+} from '@ant-design/icons'
+import SelfHeader from '../../components/header/SelfHeader'
+import Borrow from '../borrow'
 import './style.less'
 
-const { SubMenu } = Menu;
-const { Content, Sider } = Layout;
+const { SubMenu } = Menu
+const { Content, Sider } = Layout
 
-class Container extends Component {
-
+class Container extends PureComponent {
   state = {
     collapsed: false,
-  };
+  }
 
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
-    });
-  };
+    })
+  }
 
   render() {
     return (
-      <Layout style={{minHeight:'100%'}}>
-        <SelfHeader/>
+      <Layout style={{ minHeight: '100%' }}>
+        <SelfHeader />
         <Layout>
           <Sider width={200} className="site-layout-background">
             <Menu
@@ -44,7 +48,11 @@ class Container extends Component {
                 <Menu.Item key="7">option7</Menu.Item>
                 <Menu.Item key="8">option8</Menu.Item>
               </SubMenu>
-              <SubMenu key="sub3" icon={<NotificationOutlined />} title="subnav 3">
+              <SubMenu
+                key="sub3"
+                icon={<NotificationOutlined />}
+                title="subnav 3"
+              >
                 <Menu.Item key="9">option9</Menu.Item>
                 <Menu.Item key="10">option10</Menu.Item>
                 <Menu.Item key="11">option11</Menu.Item>
@@ -53,7 +61,8 @@ class Container extends Component {
             </Menu>
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
+            <Route path="/index/borrow" component={Borrow} />
+            {/* <Breadcrumb style={{ margin: '16px 0' }}>
               <Breadcrumb.Item>Home</Breadcrumb.Item>
               <Breadcrumb.Item>List</Breadcrumb.Item>
               <Breadcrumb.Item>App</Breadcrumb.Item>
@@ -67,12 +76,12 @@ class Container extends Component {
               }}
             >
               Content
-            </Content>
+            </Content> */}
           </Layout>
         </Layout>
       </Layout>
-    );
+    )
   }
 }
 
-export default Container;
+export default Container

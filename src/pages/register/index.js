@@ -3,11 +3,18 @@ import { connect } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import { actionCreators } from './store'
 import { Form, Input, Button, Checkbox, message, Radio, Upload } from 'antd'
-import { InboxOutlined } from '@ant-design/icons'
+import Axios from '../../utils/request'
+import { PlusOutlined } from '@ant-design/icons'
 import './style.styl'
+import Config from '../../config'
 class Register extends PureComponent {
   constructor(props) {
     super(props)
+    let _self = this
+    this.state = {
+      avatarUrl: '',
+      fileList: [],
+    }
     this.validateMessages = {
       required: '请输入您的${label}',
       pattern: {
@@ -20,27 +27,50 @@ class Register extends PureComponent {
         range: '${label}必须为${min}~${max}位的字符',
       },
     }
+    //upload的配置
     this.uploadConfig = {
+      name: 'portrait',
       multiple: false,
-
-      onRemove: (file) => {
-        this.props.removeFile(file)
-      },
+      listType: 'picture-card',
+      method: 'post',
+      action: `${Config.fileUploadBaseUrl}api/user/upload`,
       beforeUpload: (file) => {
-        console.log(this.props.fileList)
-        const isJpgOrPng =
-          file.type === 'image/jpeg' || file.type === 'image/png'
-        if (!isJpgOrPng) {
-          message.error('貌似不是JPG/PNG的文件格式，请重传!')
+        return new Promise((resolve, reject) => {
+          console.log(file)
+          const isJpgOrPng =
+            file.type === 'image/jpeg' || file.type === 'image/png'
+          if (!isJpgOrPng) {
+            message.error('你只能上传JPG/PNG文件!')
+          }
+          const isLt2M = file.size / 1024 < 100
+          if (!isLt2M) {
+            message.error('图片必须小于100KB!')
+          }
+          if (isJpgOrPng && isLt2M) return resolve(true)
+          else return resolve(false)
+        })
+      },
+      onRemove: (file) => {
+        _self.setState({ fileList: [], avatarUrl: '' })
+      },
+      onChange(info) {
+        console.log(info)
+        const { status, response } = info.file
+        if (status !== 'uploading') {
+          // console.log(info.file, info.fileList)
         }
-        const isLt2M = file.size / 1024 / 1024 < 2
-        if (!isLt2M) {
-          message.error('图片必须为2MB以下!')
+        if (status === 'done') {
+          //如果当前的上传状态是完成，我们去取服务器的返回数据
+          if (response.result === 1) {
+            message.success('头像上传成功')
+            _self.setState({
+              avatarUrl: response.data.url,
+              fileList: info.fileList,
+            })
+          }
+        } else if (status === 'error') {
+          message.error(`${info.file.name}文件上传失败.`)
         }
-        if (isJpgOrPng && isLt2M) {
-          this.props.addFile(file)
-        }
-        return false
       },
     }
   }
@@ -52,11 +82,10 @@ class Register extends PureComponent {
   }
 
   render() {
-    const { uploading, fileList } = this.props
+    const { uploading } = this.props
     const { tryRegister } = this.props
     if (this.props.register) {
       this.props.history.replace('/login')
-      
       return <div></div>
     } else
       return (
@@ -67,7 +96,7 @@ class Register extends PureComponent {
               <Form
                 size="large"
                 validateMessages={this.validateMessages}
-                onFinish={tryRegister}
+                onFinish={(data) => tryRegister(data, this.state.avatarUrl)}
               >
                 <Form.Item
                   label="卡号"
@@ -123,21 +152,14 @@ class Register extends PureComponent {
                 </Form.Item>
                 <Form.Item label="头像">
                   <Form.Item name="dragger" noStyle>
-                    <Upload.Dragger
-                      name="files"
-                      {...this.uploadConfig}
-                      fileList={this.props.fileList}
-                      // disabled={this.props.fileList.length >= 1 ? true : false}
-                    >
-                      <p className="ant-upload-drag-icon">
-                        <InboxOutlined />
-                      </p>
-                      <p className="ant-upload-text">
-                        {fileList.length === 1
-                          ? '拖拽或点击重新上传(JPG/PNG)'
-                          : '拖拽或点击上传头像(JPG/PNG)'}
-                      </p>
-                    </Upload.Dragger>
+                    <Upload {...this.uploadConfig}>
+                      {this.state.fileList.length >= 1 ? null : (
+                        <div>
+                          <PlusOutlined />
+                          <div className="ant-upload-text">Upload</div>
+                        </div>
+                      )}
+                    </Upload>
                   </Form.Item>
                 </Form.Item>
                 <Form.Item
@@ -194,8 +216,15 @@ const mapState = (state) => ({
 })
 
 const mapDispatch = (dispatch) => ({
-  tryRegister(data) {
-    console.log(data)
+  tryRegister(data, avatarUrl) {
+    console.log(data, avatarUrl)
+    if (
+      avatarUrl !== '' &&
+      typeof avatarUrl !== 'undefined' &&
+      avatarUrl !== null
+    )
+      data.avatarUrl = avatarUrl
+    Reflect.deleteProperty(data, 'dragger')
     dispatch(actionCreators.tryRegister(data))
   },
   removeFile(file) {

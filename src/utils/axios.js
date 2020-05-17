@@ -73,7 +73,7 @@ class HttpRequest {
   }
 
   //暴露
-  post(url, data) {
+  post(url, data, config) {
     return this.request({
       method: 'post',
       url,

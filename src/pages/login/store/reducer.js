@@ -8,6 +8,7 @@ const defaultState = fromJS({
   cover: '',
   card: '',
   msg: '',
+  borrow: 0,
   tryTimes: 0,
 })
 
@@ -20,6 +21,7 @@ export default (state = defaultState, action) => {
         name: action.name,
         card: action.card,
         cover: action.cover,
+        borrow: parseInt(action.borrow),
         tryTimes: state.get('tryTimes') + 1,
       })
     case constants.LOGIN_FAILED:

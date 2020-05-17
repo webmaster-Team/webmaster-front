@@ -15,12 +15,12 @@ export const tryRegister = (data) => {
   return (dispatch) => {
     const reqData = {
       card: data.card,
-      file: data.dragger.file,
       email: data.email,
       name: data.name,
       password: data.password,
       phone: data.phone,
-      sex: data.sex,
+      sex: parseInt(data.sex),
+      cover: data.avatarUrl,
     }
     Axios.post('/api/user/register', reqData).then((res) => {
       console.log(res)

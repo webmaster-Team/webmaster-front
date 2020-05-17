@@ -32,7 +32,7 @@ class Login extends PureComponent {
     const { login } = this.props
     const { tryLogin } = this.props
     if (login) {
-      return <Redirect to="/"></Redirect>
+      return <Redirect to="/index/borrow/readrfid"></Redirect>
     } else
       return (
         <div className="login">
