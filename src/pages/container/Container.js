@@ -11,7 +11,8 @@ import SelfHeader from '../../components/header/SelfHeader'
 import Borrow from '../borrow'
 import './style.less'
 import Token from '../../utils/token'
-import {actionCreators} from './store'
+import {actionCreators} from './store';
+import Search from '../search-book';
 const { SubMenu } = Menu
 const { Content, Sider } = Layout
 
@@ -33,16 +34,17 @@ class Container extends PureComponent {
   }
 
   render () {
-    let { select } = this.props
-    let _select = select=== "" ? "search" : select
-    if (!Token.validate()) return <Redirect to="/login" />
+    let {select} = this.props;
+    console.log(select);
+    let _select = select === '' ? 'search' : select;
+    // if (!Token.validate()) return <Redirect to="/login" />
     return (
-      <Layout style={{ minHeight: '100%' }}>
-        <SelfHeader />
+      <Layout style={{minHeight: '100%'}}>
+        <SelfHeader/>
         <Layout>
           <Sider width={200} className="site-layout-background">
             <Menu
-              onClick={({ item, key })=>this.props.changeSelect(key)}
+              onClick={({item, key}) => this.props.changeSelect(key)}
               mode="inline"
               defaultSelectedKeys={[_select]}
               selectedKeys={[_select]}
@@ -62,9 +64,10 @@ class Container extends PureComponent {
               </Menu.ItemGroup>
             </Menu>
           </Sider>
-          <Layout style={{ padding: '0 24px 24px' }}>
-            <Redirect from="/index" to="/index/borrow"/>
-            <Route path="/index/borrow" component={Borrow} />
+          <Layout style={{padding: '0 24px 24px'}}>
+            <Redirect from="/index" to="/index/search"/>
+            <Route path='/index/search' component={Search}/>
+            <Route path="/index/borrow" component={Borrow}/>
           </Layout>
         </Layout>
       </Layout>

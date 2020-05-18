@@ -29,16 +29,16 @@ class HttpRequest {
     // 请求拦截器
     instance.interceptors.request.use(
       (config) => {
-        config.headers.common['token'] = Token.get('token')
+        config.headers.common['token'] = Token.get('token');
         // Do something before request is sent
-        console.log('config ', config)
-        return config
+        console.log('config ', config);
+        return config;
       },
       (err) => {
-        errorHandle(err)
-        return Promise.reject(err)
+        errorHandle(err);
+        return Promise.reject(err);
       }
-    )
+    );
     // 响应请求的拦截器
     instance.interceptors.response.use(
       (res) => {

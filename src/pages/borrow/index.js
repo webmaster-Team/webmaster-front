@@ -17,21 +17,21 @@ class Borrow extends PureComponent {
 }
 
   render() {
-    const { Step } = Steps
+    const {Step} = Steps;
     const gridStyle = {
       width: '100%',
-      textAlign: 'left',
-    }
-    const { cover, card, borrow, name } = this.props
+      textAlign: 'left'
+    };
+    const {cover, card, borrow, name} = this.props;
     return (
       <div className="borrowWrapper">
         <Row gutter={[16, 16]}>
           <Col md={7} xs={24}>
             <div>
               <Steps direction="vertical" current={this.props.step}>
-                <Step title="读取图书" description="读取待借阅的图书信息" />
-                <Step title="确认图书" description="确认您要借阅的图书列表" />
-                <Step title="提交请求" description="处理您的借阅请求" />
+                <Step title="读取图书" description="读取待借阅的图书信息"/>
+                <Step title="确认图书" description="确认您要借阅的图书列表"/>
+                <Step title="提交请求" description="处理您的借阅请求"/>
               </Steps>
               <div>
                 <Card
