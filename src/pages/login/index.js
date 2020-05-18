@@ -5,6 +5,7 @@ import { actionCreators } from './store'
 import { actionCreators as registerActionCreators } from '../register/store'
 import { Form, Input, Button, Checkbox, message } from 'antd'
 import './style.styl'
+import Token from '../../utils/token'
 class Login extends PureComponent {
   constructor(props) {
     super(props)
@@ -19,8 +20,13 @@ class Login extends PureComponent {
     }
   }
 
-  componentDidUpdate() {
-    if (this.props.login) message.success('登陆成功')
+  componentDidUpdate () {
+    console.log(Token.get())
+    if (Token.validate()) {
+      // console.log(this.props)
+      // this.props.history.push('/borrow/readrfid')
+      message.success(`登陆成功`)
+    }
     else message.error(`登陆失败，检查账号密码后重试(${this.props.tryTimes})！`)
   }
 
@@ -29,11 +35,9 @@ class Login extends PureComponent {
   }
 
   render() {
-    const { login } = this.props
-    const { tryLogin } = this.props
-    if (login) {
-      return <Redirect to="/index/borrow/readrfid"></Redirect>
-    } else
+    const { tryLogin,tryTimes } = this.props
+    if (tryTimes && Token.validate())
+      return <Redirect to="/index"/>
       return (
         <div className="login">
           <div className="wrapper">
@@ -101,8 +105,6 @@ class Login extends PureComponent {
 
 const mapState = (state) => {
   return {
-    login: state.getIn(['login', 'login']),
-    showAlert: state.getIn(['login', 'login']),
     tryTimes: state.getIn(['login', 'tryTimes']),
     register: state.getIn(['register', 'register']),
   }

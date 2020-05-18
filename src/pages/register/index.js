@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { actionCreators } from './store'
 import { Form, Input, Button, Checkbox, message, Radio, Upload } from 'antd'
 import Axios from '../../utils/request'

@@ -24,7 +24,7 @@ export const tryRegister = (data) => {
     }
     Axios.post('/api/user/register', reqData).then((res) => {
       console.log(res)
-      if (res.result == 1) {
+      if (res.result === 1) {
         dispatch(register(true))
       } else {
         dispatch(register(false))

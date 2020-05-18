@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import Axios from '../../utils/request'
 import { actionCreators } from '../../pages/borrow/store'
 import './style.styl'
-import { Redirect } from 'react-router'
+import { Redirect } from 'react-router-dom'
 
 class ReadRFID extends PureComponent {
   constructor(props) {
@@ -21,6 +21,12 @@ class ReadRFID extends PureComponent {
     this.cancelBorrow = this.cancelBorrow.bind(this)
     this.scan = this.scan.bind(this)
     this.commitBook = this.commitBook.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.props.bookData.length > 0)
+      this.setState({ listData: this.props.bookData })
+    this.props.changeStep()
   }
 
   swapScanning() {
@@ -95,17 +101,14 @@ class ReadRFID extends PureComponent {
   }
 
   cancelBorrow(index) {
-    console.log(index)
     this.state.listData.splice(index, 1)
     let newListData = this.state.listData.concat()
-    console.log(newListData)
     this.setState({ listData: newListData })
   }
 
   render() {
     const { borrow } = this.props
-    if (this.state.commit)
-      return <Redirect to="/index/borrow/checkBook/borrow" />
+    if (this.state.commit) return <Redirect to="/index/borrow/checkBook/borrow" />
     return (
       <div className="readrfidWrapper">
         <Card title="温馨提示" bordered={false} size="small">
@@ -156,7 +159,7 @@ class ReadRFID extends PureComponent {
                     不借阅这本书
                   </Button>,
                 ]}
-                extra={<img width={272} alt="logo" src={item.cover} />}
+                extra={<img width={272} alt="图书的图片" src={item.cover} />}
               >
                 <List.Item.Meta
                   title={<div>{item.name}</div>}
@@ -185,11 +188,15 @@ class ReadRFID extends PureComponent {
 
 const mapState = (state) => ({
   borrow: state.getIn(['login', 'borrow']),
+  bookData: state.getIn(['borrow', 'bookData']),
 })
 
 const mapDispatch = (dispatch) => ({
   commitBorrowBook(listData) {
     dispatch(actionCreators.commitBorrowedBooks(listData))
+  },
+  changeStep() {
+    dispatch(actionCreators.changeStep(0))
   },
 })
 export default connect(mapState, mapDispatch)(ReadRFID)
