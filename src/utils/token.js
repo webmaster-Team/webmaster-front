@@ -3,7 +3,7 @@ import moment from 'moment'
 //设置token存储到本地
 const set = (value)=>{
     localStorage.setItem("token", value)
-    localStorage.setItem("expires",moment().add(1,'days'))
+    localStorage.setItem("expires",moment().add(1,'days').format('x'))
 }
 
 //验证token是否过期

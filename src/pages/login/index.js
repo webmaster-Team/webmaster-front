@@ -1,122 +1,379 @@
-import React, { PureComponent } from 'react'
-import { connect } from 'react-redux'
-import { Link, Redirect } from 'react-router-dom'
-import { actionCreators } from './store'
-import { actionCreators as registerActionCreators } from '../register/store'
-import { Form, Input, Button, Checkbox, message } from 'antd'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import './style.styl'
+// import {Link} from 'react-router-dom'
+import { makeStyles } from '@material-ui/core/styles'
+import Circle from '../../components/common/circle'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import Input from '@material-ui/core/Input'
+import PersonIcon from '@material-ui/icons/Person'
+import LockOpenIcon from '@material-ui/icons/LockOpen'
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton'
+import Visibility from '@material-ui/icons/Visibility'
+import VisibilityOff from '@material-ui/icons/VisibilityOff'
+import VpnKeyIcon from '@material-ui/icons/VpnKey'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import Axios from '../../utils/request'
+import { TextField, CheckboxWithLabel } from 'formik-material-ui'
+import Config from '../../config'
+import { Formik, Form, Field } from 'formik'
+import { useFormik } from 'formik'
+import FormControl from '@material-ui/core/FormControl'
+import * as Yup from 'yup'
+import Password from 'antd/lib/input/Password'
 import Token from '../../utils/token'
-class Login extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.validateMessages = {
-      required: '请输入您的${label}',
-      pattern: {
-        mismatch: '${label}必须为13位数字',
-      },
-      string: {
-        range: '${label}必须为${min}~${max}位的字符',
-      },
-    }
-  }
+import Snackbar from '@material-ui/core/Snackbar'
+import { useHistory } from 'react-router-dom'
+let formInputColor = '#0182ff'
 
-  componentDidUpdate () {
-    console.log(Token.get())
-    if (Token.validate()) {
-      // console.log(this.props)
-      // this.props.history.push('/borrow/readrfid')
-      message.success(`登陆成功`)
-    }
-    else message.error(`登陆失败，检查账号密码后重试(${this.props.tryTimes})！`)
-  }
+const SignupSchema = Yup.object().shape({
+  account: Yup.string()
+    .required('请输入学号')
+    .matches(/^[0-9]+$/, '学号只包含数字')
+    .length(13, '学号位数应该是13位的'),
+  password: Yup.string()
+    .required('请输入密码')
+    .matches(
+      /^[a-zA-Z0-9_]{5,}$/,
+      '密码是只由数字、大小写字母、下划线组成的至少5位的字符串'
+    ),
+  captcha: Yup.string().required('请输入验证码').length(4, '验证码有4位'),
+  policy: Yup.boolean().test({
+    name: 'policy',
+    message: '您必须同意我们的隐私政策',
+    test: (value) => {
+      console.log('this is ' + value)
+      return value
+    },
+  }),
+})
 
-  componentDidMount() {
-    this.props.resetRegister()
-  }
-
-  render() {
-    const { tryLogin,tryTimes } = this.props
-    if (tryTimes && Token.validate())
-      return <Redirect to="/index"/>
-      return (
-        <div className="login">
-          <div className="wrapper">
-            <div className="container">
-              <div className="title">登录</div>
-              <Form
-                size="large"
-                validateMessages={this.validateMessages}
-                onFinish={tryLogin}
-              >
-                <Form.Item
-                  label="卡号"
-                  name="account"
-                  rules={[{ required: true, pattern: /^[0-9]{13}$/ }]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item
-                  label="密码"
-                  name="password"
-                  className="smallBottom"
-                  rules={[{ required: true, type: 'string', min: 6, max: 16 }]}
-                >
-                  <Input.Password />
-                </Form.Item>
-                <Form.Item
-                  name="agreement"
-                  className="smallBottom"
-                  valuePropName="checked"
-                  rules={[
-                    {
-                      validator: (_, value) =>
-                        value
-                          ? Promise.resolve()
-                          : Promise.reject(
-                              '若您要使用本产品，请同意我们的隐私政策'
-                            ),
-                    },
-                  ]}
-                >
-                  <Checkbox>
-                    我已经同意《图书管理系统》<Link to="/">隐私保护政策</Link>
-                  </Checkbox>
-                </Form.Item>
-                <Form.Item className="smallBottom">
-                  <Button type="primary" htmlType="submit" block>
-                    立即登录
-                  </Button>
-                </Form.Item>
-                <Form.Item>
-                  <div className="parallelInput">
-                    <Link to="/" className="plane">
-                      忘记密码？
-                    </Link>
-                    <Link to="/register">没有账号？立即注册</Link>
-                  </div>
-                </Form.Item>
-              </Form>
-            </div>
-          </div>
-        </div>
-      )
-  }
-}
-
-const mapState = (state) => {
-  return {
-    tryTimes: state.getIn(['login', 'tryTimes']),
-    register: state.getIn(['register', 'register']),
-  }
-}
-
-const mapDispatch = (dispatch) => ({
-  tryLogin({ account, password }) {
-    dispatch(actionCreators.tryLogin(account, password))
+const useStyles = makeStyles({
+  input: {
+    marginLeft: '10px',
   },
-  resetRegister() {
-    dispatch(registerActionCreators.register(false))
+  fieldRoot: {
+    width: '100%',
+  },
+  root: {
+    marginLeft: '10px',
+    // color: formInputColor,
+    // borderBottomColor: formInputColor,
+    // borderBottomWidth:"0.01px",
+    // borderBottomStyle:"solid"
+  },
+  focused: {
+    color: formInputColor,
+  },
+  button: {
+    backgroundColor: '#0182ff',
   },
 })
 
-export default connect(mapState, mapDispatch)(Login)
+//引入swiper
+let Swiper = window.Swiper
+const Login = () => {
+  //引入路由历史
+  let history = useHistory()
+  //设置消息条的类型
+  const [type, setType] = React.useState('success') //或者error
+  //设置消息条的显示
+  const [open, setOpen] = React.useState(false)
+  //设置错误消息
+  const [message, setMessage] = React.useState('')
+  //设置密码可见性
+  const [passwordVisibility, setPasswordVisibility] = useState(false)
+  //设置swiper的元素引用
+  const captcha = useRef(null)
+  let swiper = null
+  //ads的数据源
+  const classes = useStyles()
+  let data = [
+    {
+      title: '借书可以更快',
+      text: [
+        '现在全新的图书管理系统',
+        '提供更加强劲的后台支持，为你的书海航行保驾护航',
+      ],
+      picture:
+        'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1504462560,2042218994&fm=26&gp=0.jpg',
+    },
+    {
+      title: '图书馆、塑造全新阅读',
+      text: ['愈发重要的阅读过程，', '使得你在流畅的门户网站中肆意浏览'],
+      picture:
+        'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3854731791,3253266235&fm=26&gp=0.jpg',
+    },
+  ]
+  useEffect(() => {
+    if (swiper) {
+      swiper.slideTo(0, 0)
+      swiper.destroy()
+      swiper = null
+    }
+    swiper = new Swiper('.swiper-container', {
+      loop: true,
+      autoplay: true,
+      pagination: {
+        el: '.swiper-pagination',
+      },
+    })
+  }, [])
+
+  const handleClickShowPassword = () => {
+    setPasswordVisibility(!passwordVisibility)
+  }
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault()
+  }
+
+  const changeCaptcha = (e) => {
+    console.log(e)
+    captcha.current.src =
+      `${Config.captchaBaseUrl}/api/user/drawImage` + '?t=' + Math.random()
+  }
+
+  return (
+    <div className="loginPage">
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        open={open}
+        onClose={() => setOpen(false)}
+        autoHideDuration={2000}
+        // message={message}
+      >
+        <div
+          className={
+            'alert-wrapper ' + (type === 'success' ? 'success' : 'error')
+          }
+        >
+          {message}
+        </div>
+      </Snackbar>
+      <div className="title">LOGIN</div>
+      <div className="wrapper">
+        <div className="back">
+          <span className="iconfont back-icon">&#xe755;</span>
+          <span className="back-text">回到图书馆门户</span>
+        </div>
+        <div className="bigCircle">
+          <Circle color="#0082fe" innerColor="#ffffff" />
+        </div>
+        <div className="smallCircle">
+          <Circle color="#8cc63e" innerColor="#ffffff" />
+        </div>
+        <div className="card">
+          <div className="swiper-container">
+            <div className="swiper-wrapper">
+              {data.map((item, index) => {
+                return (
+                  <div className="swiper-slide" key={index}>
+                    <div className="swiper-title">{item.title}</div>
+                    {item.text.map((item, index) => {
+                      return (
+                        <div key={index} className="swiper-text">
+                          {item}
+                        </div>
+                      )
+                    })}
+                    <img className="swiper-picture" src={item.picture} />
+                  </div>
+                )
+              })}
+            </div>
+            <div className="swiper-pagination"></div>
+          </div>
+        </div>
+
+        <div className="form">
+          <div className="form-title">用户登录</div>
+          <Formik
+            initialValues={{
+              account: '',
+              password: '',
+              captcha: '',
+              policy: false,
+            }}
+            validationSchema={SignupSchema}
+            onSubmit={async (values, { setFieldError }) => {
+              console.log('发送验证码')
+
+              let res = await Axios.post('/api/user/checkVerificationCode', {
+                veriCode: values.captcha,
+              })
+              //验证码验证成功
+              if (res.result === 1) {
+                res = await Axios.post('/api/user/login', {
+                  card: values.account,
+                  password: values.password,
+                })
+                if (res.result === 1) {
+                  Token.set(res.token)
+                  setMessage('登录成功，即将跳转到门户')
+                  setType('success')
+                  setOpen(true)
+                  setInterval(() => {
+                    history.replace('/home')
+                  }, 2000)
+                } else {
+                  setMessage('账号密码不匹配，请检查')
+                  setType('error')
+                  setFieldError('account', '账号可能不正确')
+                  setFieldError('password', '密码无法和账号匹配')
+                  setOpen(true)
+                }
+              } else {
+                setMessage('验证码不正确，请检查')
+                setFieldError('captcha', res.msg)
+                setType('error')
+                setOpen(true)
+              }
+            }}
+          >
+            {({ errors, touched, submitForm, handleSubmit, isSubmitting }) => {
+              return (
+                <form onSubmit={handleSubmit}>
+                  <Field
+                    classes={{
+                      root: classes.fieldRoot,
+                    }}
+                    component={TextField}
+                    name="account"
+                    placeholder="输入您的学号"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div className="form-ador">
+                            <PersonIcon />
+                          </div>
+                        </InputAdornment>
+                      ),
+                      classes: {
+                        input: classes.input,
+                        root: classes.root,
+                        focused: classes.focused,
+                      },
+                      className: 'form-input',
+                    }}
+                  />
+                  <Field
+                    component={TextField}
+                    name="password"
+                    placeholder="请输入密码"
+                    InputProps={{
+                      type: passwordVisibility ? 'text' : 'password',
+                      className: 'form-input',
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div className="form-ador">
+                            <LockOpenIcon />
+                          </div>
+                        </InputAdornment>
+                      ),
+                      classes: {
+                        input: classes.input,
+                        root: classes.root,
+                        focused: classes.focused,
+                      },
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {passwordVisibility ? (
+                              <Visibility />
+                            ) : (
+                              <VisibilityOff />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  <Field
+                    component={TextField}
+                    name="captcha"
+                    InputProps={{
+                      className: 'form-input',
+                      inputProps: { 'aria-label': 'account' },
+                      placeholder: '请输入验证码',
+                      classes: {
+                        input: classes.input,
+                        root: classes.root,
+                        focused: classes.focused,
+                      },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <div className="form-ador">
+                            <VpnKeyIcon />
+                          </div>
+                        </InputAdornment>
+                      ),
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <img
+                            ref={captcha}
+                            onClick={changeCaptcha}
+                            className="captcha"
+                            src={`${Config.captchaBaseUrl}/api/user/drawImage`}
+                          />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                  {/* 忘记密码？ */}
+                  <div className="forget-link-line">
+                    <span className="forget-link">忘记密码?</span>
+                  </div>
+                  <div className="policy-line">
+                    <Field
+                      size="small"
+                      type="checkbox"
+                      component={CheckboxWithLabel}
+                      name="policy"
+                      inputProps={{ 'aria-label': 'checkbox' }}
+                      Label={{
+                        label: (
+                          <span className="policy">
+                            我已经阅读了《杭州师范大学图书管理系统》的
+                            <span className="policy-link">隐私保护政策</span>
+                          </span>
+                        ),
+                      }}
+                    />
+                  </div>
+                  <div className="policy-error">{errors.policy}</div>
+                  <Button
+                    variant="contained"
+                    className="login-button"
+                    type="submit"
+                  >
+                    登录
+                  </Button>
+                  <div className="register-link">没有账号？立即注册</div>
+                  <hr />
+                  <div className="third-login">
+                    <span className="iconfont weibo-icon">&#xe882;</span>
+                    {/* <span className="weibo-text">微博登录</span> */}
+                    <span className="iconfont qq-icon">&#xe6da;</span>
+                    {/* <span className="weibo-text">微博登录</span> */}
+                    <span className="iconfont weixin-icon">&#xe699;</span>
+                    {/* <span className="weibo-text">微博登录</span> */}
+                  </div>
+                </form>
+              )
+            }}
+          </Formik>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Login

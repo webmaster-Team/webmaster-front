@@ -1,41 +1,239 @@
-backgroundColor = black
-boxShadowColor = rgba(0,0,0,.3)
-boxShadow =  0px 1px 5px 1px boxShadowColor
-fontColor = #666
-forgetFontColor = #999
-
-.login
+@import '../../style.styl'
+$title = #0b0b0b
+$text = #c2c2c2
+$formInputColor=#0182ff
+.loginPage
+    width: 100%
+    min-height: 100vh
+    position relative
+    display: flex
+    justify-content: center
+    //左上角的标签样式
+    .title
+        font-weight: lighter
+        position absolute
+        font-size: 30px
+        left 300px
+        top 50px
+    //中间的box的样式
     .wrapper
-        width 100vw
-        min-height: 100vh
+        position relative
+        width 900px
+        height 600px
+        background-color: white
+        margin-top: 120px
+        box-shadow: 0px 0px 30px 10px rgba(0,0,0,.1)
         display: flex
-        justify-content: center
-        align-items: center
-
-    .container
-        box-shadow: boxShadow
-        text-align: center
-        padding:0px 30px
-
-        .title
-            font-size: 20px
-            color: fontColor
-            padding: 30px 0
-        
-        .smallBottom
-            margin-bottom: 5px !important;
-        
-        .parallelInput
-            width: 100%
+        flex-flow: column nowrap
+        overflow: hidden
+        //回退按钮组件
+        .back
+           width: 100%
+           margin: 30px
+           font-size: 14px
+           vertical-align: middle
+           //回退按钮图标
+           .back-icon
+               font-size: 14px
+               color:$blue
+               margin-right: 12px
+           //回退按钮文字
+           .back-text
+               color: $black
+               //调整字距
+               letter-spacing: 1px
+        //大圆
+        .bigCircle
+            transform: scale(3.0)
+            position absolute
+            right -100px
+            top 0
+        //小圆
+        .smallCircle
+            transform: scale(1.5)
+            position absolute
+            left -120px
+            bottom -120px
+            z-index: 100
+        .card
+            margin-left: 10px
+            width: 400px
+            flex 1
             display: flex
-            flex-flow: row nowrap
-            justify-content: space-between
-        
-        .ant-form-item-control
-            text-align: left 
+            justify-content: left 
+            align-items: flex-start 
+            .swiper-container
+                width: 400px
+                height: 400px
+                .swiper-wrapper
+                    .swiper-slide
+                       width: 400px
+                       height: 400px
+                       display flex
+                       flex-flow: column nowrap
+                       justify-content: flex-start
+                       align-items: center
+                       .swiper-title
+                           font-weight: bold
+                           font-size: 16px
+                           display: flex
+                           margin-top: 40px
+                           margin-bottom: 30px
+                           letter-spacing: 2px
+                           color: $title
+                        .swiper-text
+                            letter-spacing: 2px
+                            line-height: 16px
+                            height: 16px
+                            font-weight:medium
+                            color: $text
+                            font-size: 13px
+                            width: 350px
+                            text-align center
+                        .swiper-picture
+                            width: 200px
+                            height: 200px
+                            margin-top: 25px
+        .form
+            z-index: 1001
+            width: 350px
+            // height: 400px
+            position absolute
+            top 20px
+            right 100px 
+            background-color: white
+            box-shadow: 0px 0px 30px 10px rgba(0,0,0,.1)
+            display flex
+            flex-flow: column nowrap
+            padding: 35px
+            .form-title
+                font-weight: 600
+                letter-spacing: 1px
+                color: $title
+                width: 100%
+                text-align: center
+                line-height: 15px
+                height: 15px
+                font-size: 16px
+                margin-bottom: 10px
+            .form-input
+                width 100%
+                vertical-align:middle
+                line-height: 40px
+                height: 40px
+                margin-top: 20px
+                .form-ador
+                    height: 24px
+                    line-height: 24px
+                    display: flex
+                    padding: 5px
+                    flex-flow: column nowrap
+                    justify-content: center
+                    align-items: center
+                    border-right-width: 0.5px
+                    // border-right-color:$formInputColor
+                    border-right-style: solid
+                .captcha
+                   cursor pointer
+            //忘记密码链接的样式
+            .forget-link-line
+                width: 100%
+                text-align: right 
+                line-height: 20px
+                height: 20px
+                vertical-align: middle
+                .forget-link
+                    color $text
+                    color #8490a6
+                    font-size: 10px
+                    &:hover
+                        color: $formInputColor
+                        cursor pointer
+            .policy-line
+                font-size: 12px
+                width: 100%
+                input 
+                   color: $formInputColor
+                .MuiFormControlLabel-root
+                    margin-right: 0px
+                .policy
+                    font-size: 12px
+                .MuiCheckbox-colorSecondary.Mui-checked
+                        color: $formInputColor
+                .policy-link
+                    color: $formInputColor
+            .policy-error
+                color: #f44336
+                font-size: 0.75rem;
+            .login-button
+                width: 100%
+                padding 0px
+                vertical-align: middle               
+                height: 40px
+                background-color: $formInputColor
+                margin-top: 10px
+                box-shadow: 0px 0px 10px 1px $formInputColor
+                line-height: 40px
+                border-radius: 10px
+                color: #fefefd
+            .register-link
+                color #8490a6
+                font-size: 10px
+                text-align: center
+                margin-top: 10px
+                margin-bottom: 10px
+                &:hover
+                        color: $formInputColor
+                        cursor pointer
+            hr
+              color: $formInputColor
+            .third-login
+                vertical-align: middle
+                line-height: 30px
+                height: 30px
+                display: flex
+                flex-flow: row nowrap
+                justify-content: flex-start
+                align-items: center
+                .weibo-icon
+                   margin-left: 10px
+                   font-size: 30px
+                   color #d32124
+                   margin-right: 5px
+                .qq-icon
+                    color #4a9afd
+                    font-size: 25px
+                    margin-right: 5px
+                .weixin-icon
+                   color #18c435
+                   font-size: 25px
+                .weibo-text
+                    font-size: 10px
+                    margin-left: 5px
+   
 
-        .ant-form-item-explain 
-            text-align: left 
-        
-        .plane
-            color: forgetFontColor
+                    
+    .MuiInput-underline
+        &:before
+           border-bottom: 1px solid rgba(0,0,0,.1)
+        &:hover:not(.Mui-disabled):before
+           border-bottom: 1px solid $formInputColor !important
+        &:after
+           border-bottom: 1px solid $formInputColor
+    .alert-wrapper
+        width: 300px
+        height: 50px
+        border: none
+        border-radius:15px
+        color: $text
+        line-height: 50px
+        vertical-align: middle
+        text-align: center
+        background-color: white
+        box-shadow: 0px 0px 10px 1px $formInputColor
+        &.success
+            box-shadow: 0px 0px 1px 1px #4caf50
+            color: #4caf50
+        &.error
+            box-shadow: 0px 0px 1px 1px #f44336
+            color #f44336

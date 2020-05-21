@@ -1,25 +1,20 @@
-import React, { PureComponent } from 'react'
-import { Provider } from 'react-redux'
-import { Route, BrowserRouter,Redirect } from 'react-router-dom'
-import { Switch } from 'react-router'
+import React from 'react'
+import { Route, BrowserRouter } from 'react-router-dom'
 import store from './store'
 import Login from './pages/login'
-import Container from './pages/container/Container'
 import Register from './pages/register'
-
-class App extends PureComponent {
-  render() {
-    return (
-      <BrowserRouter>
-        <Provider store={store}>
-          {/* <Redirect from='/' to="/index/borrow/readrfid"/> */}
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/index" component={Container} />
-        </Provider>
-      </BrowserRouter>
-    )
-  }
+import { StoreContext } from 'redux-react-hook'
+const App = () => {
+  return (
+    <BrowserRouter>
+      <StoreContext.Provider value={store}>
+        {/* 登陆页面 */}
+        <Route path="/login" component={Login} />
+        {/* 注册界面 */}
+        <Route path = "/register" component = {Register}/>
+      </StoreContext.Provider>
+    </BrowserRouter>
+  )
 }
 
 export default App
