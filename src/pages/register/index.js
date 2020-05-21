@@ -136,79 +136,7 @@ const Register = (props) => {
   //设置文件的返回头像的state
   const [avatarUrl, setAvatarUrl] = useState('')
   //文件上传配置
-  // let uploadConfig = {
-  //   name: 'portrait',
-  //   multiple: false,
-  //   listType: 'picture-card',
-  //   method: 'post',
-  //   action: `${Config.fileUploadBaseUrl}/api/user/upload`,
-  //   beforeUpload: (file) => {
-  //     return new Promise((resolve, reject) => {
-  //       console.log(file)
-  //       setFileList([file])
-  //       const isJpgOrPng =
-  //         file.type === 'image/jpeg' || file.type === 'image/png'
-  //       if (!isJpgOrPng) {
-  //         // message.error('你只能上传JPG/PNG文件!
-  //         setMessage('图片只支持jpeg、png')
-  //         setType('error')
-  //         setOpen(true)
-  //         setAvatarUrl('')
-  //         setInterval(() => {
-  //           setOpen(false)
-  //         }, 2000)
-  //       }
-  //       const isLt2M = file.size / 1024 < 800
-  //       if (!isLt2M) {
-  //         // message.error('图片必须小于800KB!')
-  //         setMessage('图片必须小于800KB')
-  //         setType('error')
-  //         setOpen(true)
-  //         setAvatarUrl('')
-  //         setInterval(() => {
-  //           setOpen(false)
-  //         }, 2000)
-  //       }
-  //       if (isJpgOrPng && isLt2M) return resolve(true)
-  //       else return reject(false)
-  //     })
-  //   },
-  //   onRemove: (file) => {
-  //     setFileList([])
-  //     setAvatarUrl('')
-  //   },
-  //   onChange(info) {
-  //     console.log(info)
-  //     const { status, response } = info.file
-  //     if (status !== 'uploading') {
-  //       // console.log(info.file, info.fileList)
-  //     }
-  //     if (status === 'done') {
-  //       //如果当前的上传状态是完成，我们去取服务器的返回数据
-  //       if (response.result === 1) {
-  //         // message.success('头像上传成功')
-  //         setAvatarUrl(response.data.url)
-  //         setFileList(info.fileList)
-  //         setMessage('头像上传成功')
-  //         setType('success')
-  //         setOpen(true)
-  //         setInterval(() => {
-  //           setOpen(false)
-  //         }, 2000)
-  //       }
-  //     } else if (status === 'error') {
-  //       setMessage('头像上传失败')
-  //       setType('error')
-  //       setOpen(true)
-  //       setAvatarUrl('')
-  //       setInterval(() => {
-  //         setOpen(false)
-  //       }, 2000)
-  //     }
-  //   },
-  // }
-
-  const uploadConfig = {
+  let uploadConfig = {
     name: 'portrait',
     multiple: false,
     listType: 'picture-card',
@@ -217,21 +145,37 @@ const Register = (props) => {
     beforeUpload: (file) => {
       return new Promise((resolve, reject) => {
         console.log(file)
+        setFileList([file])
         const isJpgOrPng =
           file.type === 'image/jpeg' || file.type === 'image/png'
         if (!isJpgOrPng) {
-          // message.error('你只能上传JPG/PNG文件!')
+          // message.error('你只能上传JPG/PNG文件!
+          setMessage('图片只支持jpeg、png')
+          setType('error')
+          setOpen(true)
+          setAvatarUrl('')
+          setInterval(() => {
+            setOpen(false)
+          }, 2000)
         }
-        const isLt2M = file.size / 1024 < 100
+        const isLt2M = file.size / 1024 < 800
         if (!isLt2M) {
-          // message.error('图片必须小于100KB!')
+          // message.error('图片必须小于800KB!')
+          setMessage('图片必须小于800KB')
+          setType('error')
+          setOpen(true)
+          setAvatarUrl('')
+          setInterval(() => {
+            setOpen(false)
+          }, 2000)
         }
         if (isJpgOrPng && isLt2M) return resolve(true)
-        else return resolve(false)
+        else return reject(false)
       })
     },
     onRemove: (file) => {
-      // _self.setState({ fileList: [], avatarUrl: '' })
+      setFileList([])
+      setAvatarUrl('')
     },
     onChange(info) {
       console.log(info)
@@ -243,17 +187,26 @@ const Register = (props) => {
         //如果当前的上传状态是完成，我们去取服务器的返回数据
         if (response.result === 1) {
           // message.success('头像上传成功')
-          // _self.setState({
-          // avatarUrl: response.data.url,
-          // fileList: info.fileList,
-          // })
+          setAvatarUrl(response.data.url)
+          setFileList(info.fileList)
+          setMessage('头像上传成功')
+          setType('success')
+          setOpen(true)
+          setInterval(() => {
+            setOpen(false)
+          }, 2000)
         }
       } else if (status === 'error') {
-        // message.error(`${info.file.name}文件上传失败.`)
+        setMessage('头像上传失败')
+        setType('error')
+        setOpen(true)
+        setAvatarUrl('')
+        setInterval(() => {
+          setOpen(false)
+        }, 2000)
       }
     },
   }
-
   //数据源
   let data = [
     {
