@@ -37,7 +37,6 @@ import { Formik, Form, Field } from 'formik'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import Password from 'antd/lib/input/Password'
-import Token from '../../utils/token'
 import Snackbar from '@material-ui/core/Snackbar'
 import { useHistory } from 'react-router-dom'
 let formInputColor = '#0182ff'
@@ -187,7 +186,7 @@ const Register = (props) => {
         //如果当前的上传状态是完成，我们去取服务器的返回数据
         if (response.result === 1) {
           // message.success('头像上传成功')
-          setAvatarUrl(response.data.url)
+          setAvatarUrl(response.url)
           setFileList(info.fileList)
           setMessage('头像上传成功')
           setType('success')
@@ -215,12 +214,6 @@ const Register = (props) => {
       picture:
         'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1504462560,2042218994&fm=26&gp=0.jpg',
     },
-    // {
-    //   title: '图书馆、塑造全新阅读',
-    //   text: ['愈发重要的阅读过程，', '使得你在流畅的门户网站中肆意浏览'],
-    //   picture:
-    //     'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3854731791,3253266235&fm=26&gp=0.jpg',
-    // },
   ]
   //配置swiper
   let swiper = null
@@ -230,13 +223,13 @@ const Register = (props) => {
       swiper.destroy()
       swiper = null
     }
-    //  swiper = new Swiper2('.swiper-container', {
-    //    loop: true,
-    //    autoplay: true,
-    //    pagination: {
-    //      el: '.swiper-pagination',
-    //    },
-    //  })
+    swiper = new Swiper2('.swiper-container', {
+      loop: true,
+      autoplay: true,
+      pagination: {
+        el: '.swiper-pagination',
+      },
+    })
   }, [])
 
   const handleClickShowPassword = () => {
@@ -247,10 +240,12 @@ const Register = (props) => {
     event.preventDefault()
   }
 
-  const changeCaptcha = (e) => {
+  const changeCaptcha = async (e) => {
     console.log(e)
-    captcha.current.src =
-      `${Config.captchaBaseUrl}/api/user/drawImage` + '?t=' + Math.random()
+    let res = await Axios.get('/api/user/drawImage', {
+      responseType: 'text',
+    })
+    captcha.current.src = `data:image/jpg;base64,${res}`
   }
 
   return (
@@ -311,7 +306,7 @@ const Register = (props) => {
               nickname: '',
               password: '',
               sex: '1',
-              identity: '1',
+              identity: '0',
               email: '',
               captcha: '',
               policy: false,
@@ -322,28 +317,38 @@ const Register = (props) => {
             onSubmit={async (values, { setFieldError }) => {
               // console.log('发送验证码')
               console.log(values)
-              let res = await Axios.post('/api/user/checkVerificationCode', {
-                veriCode: values.captcha,
+              //校验验证码
+              let res = await Axios.post('/api/user/checkImage', {
+                image: values.captcha,
               })
+              res.result = 1 //由于后端未完成该接口，使用固定值代替
               //验证码验证成功
               if (res.result === 1) {
-                // res = await Axios.post('/api/user/register', {
-                //   card: values.,
-                //   password: values.password,
-                // })
+                //构建请求体
+                let postData = {
+                  card: values.account,
+                  name: values.nickname,
+                  password: values.password,
+                  sex: parseInt(values.sex),
+                  email: values.email,
+                  identity: parseInt(values.identity),
+                }
+                if (values.phone !== '') postData.phone = values.phone
+                if (avatarUrl !== '') postData.cover = avatarUrl
+                //发送请求
+                res = await Axios.post('/api/user/register', postData)
+                //请求成功
                 if (res.result === 1) {
-                  Token.set(res.token)
-                  setMessage('登录成功，即将跳转到门户')
+                  setMessage('注册成功，即将跳转到登录页')
                   setType('success')
                   setOpen(true)
                   setInterval(() => {
-                    history.replace('/home')
+                    history.replace('/login')
                   }, 2000)
                 } else {
-                  setMessage('账号密码不匹配，请检查')
+                  setMessage('账户注册出现问题')
                   setType('error')
-                  setFieldError('account', '账号可能不正确')
-                  setFieldError('password', '密码无法和账号匹配')
+                  setFieldError('account', '账号已存在')
                   setOpen(true)
                 }
               } else {
@@ -562,7 +567,7 @@ const Register = (props) => {
                           <PermIdentityIcon />
                         </FormLabel>
                         <FormControlLabel
-                          value="1"
+                          value="0"
                           control={
                             <Radio
                               classes={{
@@ -574,7 +579,7 @@ const Register = (props) => {
                           label="学生"
                         />
                         <FormControlLabel
-                          value="0"
+                          value="1"
                           control={
                             <Radio
                               classes={{

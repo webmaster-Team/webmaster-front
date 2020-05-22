@@ -202,9 +202,11 @@ const Login = () => {
             onSubmit={async (values, { setFieldError }) => {
               console.log('发送验证码')
 
-              let res = await Axios.post('/api/user/checkVerificationCode', {
-                veriCode: values.captcha,
+              let res = await Axios.post('/api/user/checkImage', {
+                image: values.captcha,
               })
+              //后端接口未完成
+              res.result = 1
               //验证码验证成功
               if (res.result === 1) {
                 res = await Axios.post('/api/user/login', {
@@ -217,7 +219,7 @@ const Login = () => {
                   setType('success')
                   setOpen(true)
                   setInterval(() => {
-                    history.replace('/home')
+                    history.replace('/index')
                   }, 2000)
                 } else {
                   setMessage('账号密码不匹配，请检查')
