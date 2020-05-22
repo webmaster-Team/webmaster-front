@@ -24,6 +24,7 @@ import Password from 'antd/lib/input/Password'
 import Token from '../../utils/token'
 import Snackbar from '@material-ui/core/Snackbar'
 import { useHistory } from 'react-router-dom'
+import { modifySelect } from '../container/store/actionCreators'
 let formInputColor = '#0182ff'
 
 const SignupSchema = Yup.object().shape({
@@ -111,13 +112,13 @@ const Login = () => {
       swiper.destroy()
       swiper = null
     }
-    swiper = new Swiper('.swiper-container', {
-      loop: true,
-      autoplay: true,
-      pagination: {
-        el: '.swiper-pagination',
-      },
-    })
+    // swiper = new Swiper('.swiper-container', {
+    //   loop: true,
+    //   autoplay: true,
+    //   pagination: {
+    //     el: '.swiper-pagination',
+    //   },
+    // })
   }, [])
 
   const handleClickShowPassword = () => {
@@ -128,10 +129,14 @@ const Login = () => {
     event.preventDefault()
   }
 
-  const changeCaptcha = (e) => {
-    console.log(e)
-    captcha.current.src =
-      `${Config.captchaBaseUrl}/api/user/drawImage` + '?t=' + Math.random()
+  //页面挂载去获取验证码
+  useEffect(async () => await changeCaptcha(), [])
+
+  const changeCaptcha = async () => {
+    let res = await Axios.get('/api/user/drawImage', {
+      responseType: 'text',
+    })
+    captcha.current.src = `data:image/jpg;base64,${res}`
   }
 
   return (
@@ -206,7 +211,7 @@ const Login = () => {
                 image: values.captcha,
               })
               //后端接口未完成
-              res.result = 1
+              // res.result = 1
               //验证码验证成功
               if (res.result === 1) {
                 res = await Axios.post('/api/user/login', {
@@ -227,12 +232,14 @@ const Login = () => {
                   setFieldError('account', '账号可能不正确')
                   setFieldError('password', '密码无法和账号匹配')
                   setOpen(true)
+                  changeCaptcha()
                 }
               } else {
                 setMessage('验证码不正确，请检查')
                 setFieldError('captcha', res.msg)
                 setType('error')
                 setOpen(true)
+                changeCaptcha()
               }
             }}
           >
