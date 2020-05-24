@@ -241,13 +241,14 @@ const Register = (props) => {
   }
 
   //页面挂载去获取验证码
-  useEffect(async () => await changeCaptcha(), [])
+  useEffect(() => changeCaptcha(), [])
 
-  const changeCaptcha = async () => {
-    let res = await Axios.get('/api/user/drawImage', {
+  const changeCaptcha = () => {
+    Axios.get('/api/user/drawImage', {
       responseType: 'text',
+    }).then((res) => {
+      captcha.current.src = `data:image/jpg;base64,${res}`
     })
-    captcha.current.src = `data:image/jpg;base64,${res}`
   }
 
   return (
@@ -352,9 +353,12 @@ const Register = (props) => {
                     history.replace('/login')
                   }, 2000)
                 } else {
-                  setMessage('账户注册出现问题')
+                  setMessage(res.msg)
                   setType('error')
-                  setFieldError('account', '账号已存在')
+                  if (res.msg === '学号已存在')
+                    setFieldError('account', res.msg)
+                  else if (res.msg === '用户名已被使用')
+                    setFieldError('nickname', res.msg)
                   setOpen(true)
                   changeCaptcha()
                 }

@@ -23,7 +23,7 @@ import * as Yup from 'yup'
 import Password from 'antd/lib/input/Password'
 import Token from '../../utils/token'
 import Snackbar from '@material-ui/core/Snackbar'
-import { useHistory } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import { modifySelect } from '../container/store/actionCreators'
 let formInputColor = '#0182ff'
 
@@ -112,13 +112,13 @@ const Login = () => {
       swiper.destroy()
       swiper = null
     }
-    // swiper = new Swiper('.swiper-container', {
-    //   loop: true,
-    //   autoplay: true,
-    //   pagination: {
-    //     el: '.swiper-pagination',
-    //   },
-    // })
+    swiper = new Swiper('.swiper-container', {
+      loop: true,
+      autoplay: true,
+      pagination: {
+        el: '.swiper-pagination',
+      },
+    })
   }, [])
 
   const handleClickShowPassword = () => {
@@ -130,13 +130,14 @@ const Login = () => {
   }
 
   //页面挂载去获取验证码
-  useEffect(async () => await changeCaptcha(), [])
+  useEffect(() => changeCaptcha(), [])
 
-  const changeCaptcha = async () => {
-    let res = await Axios.get('/api/user/drawImage', {
+  const changeCaptcha = () => {
+    Axios.get('/api/user/drawImage', {
       responseType: 'text',
+    }).then((res) => {
+      captcha.current.src = `data:image/jpg;base64,${res}`
     })
-    captcha.current.src = `data:image/jpg;base64,${res}`
   }
 
   return (
@@ -219,14 +220,16 @@ const Login = () => {
                   password: values.password,
                 })
                 if (res.result === 1) {
+                  //登录成功
                   Token.set(res.token)
                   setMessage('登录成功，即将跳转到门户')
                   setType('success')
                   setOpen(true)
                   setInterval(() => {
-                    history.replace('/index')
+                    history.replace('/index/search')
                   }, 2000)
                 } else {
+                  //登录失败
                   setMessage('账号密码不匹配，请检查')
                   setType('error')
                   setFieldError('account', '账号可能不正确')
@@ -235,6 +238,7 @@ const Login = () => {
                   changeCaptcha()
                 }
               } else {
+                //验证码不正确
                 setMessage('验证码不正确，请检查')
                 setFieldError('captcha', res.msg)
                 setType('error')
@@ -368,9 +372,12 @@ const Login = () => {
                   <div className="register-link">没有账号？立即注册</div>
                   <hr />
                   <div className="third-login">
-                    <span className="iconfont weibo-icon">&#xe882;</span>
-                    {/* <span className="weibo-text">微博登录</span> */}
+                    <a href="https://api.weibo.com/oauth2/authorize?client_id=323275235&response_type=code&redirect_uri=http://123.56.3.135:8080/api/user/weiboThreeLogin">
+                      <span className="iconfont weibo-icon">&#xe882;</span>
+                    </a>
                     <span className="iconfont qq-icon">&#xe6da;</span>
+                    {/* <span className="weibo-text">微博登录</span> */}
+
                     {/* <span className="weibo-text">微博登录</span> */}
                     <span className="iconfont weixin-icon">&#xe699;</span>
                     {/* <span className="weibo-text">微博登录</span> */}

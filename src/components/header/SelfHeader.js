@@ -7,7 +7,6 @@ import {Menu, Dropdown} from 'antd';
 
 const {Header} = Layout;
 
-
 const menu = (
   <Menu>
     <Menu.Item>
