@@ -1,4 +1,6 @@
 $formInputColor=#0182ff
+$title = #0b0b0b
+$text = #c2c2c2
 .searchPage
     width: 100%
     display: flex
@@ -49,6 +51,7 @@ $formInputColor=#0182ff
                 width: 100%
                 display: flex
                 flex-flow: row nowrap
+                position relative
                 .bookname
                     overflow: hidden
                     text-overflow: ellipsis
@@ -63,6 +66,71 @@ $formInputColor=#0182ff
                     text-overflow: ellipsis
                     white-space: nowrap
                     color:rgba(0,0,0,.5)
+                .searchSummary
+                    width: 100%
+                    background-color: white
+                    height: 100%
+                    position: absolute
+                    top 0
+                    left 0
+                    box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)
+                    display flex
+                    flex-flow: row nowrap
+                    justify-content: space-around
+                    align-items: center
+                    padding 20px
+                    .closeButton
+                         position: absolute
+                         color: red
+                         right 10px
+                         top 10px
+                         cursor pointer
+                    .searchMainData
+                        display: flex
+                        flex-flow: column nowrap
+                        justify-content: space-around
+                        align-items: flex-start
+                        height: 100%
+                        box-sizing: border-box
+                        .searchBookName
+                            font-size: 20px
+                            color:$title
+                            margin-bottom: 20px
+                        .searchBookItem
+                            font-size: 14px
+                            .searchBookBefore
+                                color $text
+                    .searchBookSummary
+                        flex 1
+                        height: 100%
+                        box-sizing: border-box
+                        display: flex
+                        justify-content: center
+                        align-items: center
+                        line-height: 30px
+                        color: rgba(0,0,0,.33)
+                        margin-left: 10px
+                    .searchBookMore
+                        display: flex
+                        width: 200px
+                        height: 100%
+                        flex-flow: column nowrap
+                        justify-content: space-around
+                        align-items: center
+                        .searchBookImg
+                           width: 150px
+                           height: 150px
+            .loadMoreButtonLine
+                width: 100%
+                display: flex
+                align-items: center
+                justify-content: center
+                .loadMoreButton
+                    margin-top: 10px
+                    .loadMoreIcon
+                        font-size: 15px
+           
+
     .searchClassify
         width: 320px
         box-sizing: border-box
