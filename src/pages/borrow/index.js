@@ -110,10 +110,9 @@ const Borrow = (props) => {
           <Step title="操作图书" description="操作您要借阅的书籍" />
           <Step title="确认图书" description="确认您要借阅的书籍" />
           <Step
-            title="处理借阅"
-            description="处理您的借阅请求、走入借书流程、图书馆接单、打包"
+            title="提交借书订单"
+            description="提交您的书单"
           />
-          <Step title="提书" description="请在6小时之内到图书馆扫码取书" />
         </Steps>
       </div>
       <Row gutter={[16, 16]}>
@@ -142,7 +141,6 @@ const Borrow = (props) => {
             <Switch>
               <Route path="/index/borrow/check" component={Check} />
               <Route path="/index/borrow/inspect" component={Inspect} />
-              <Route path="/index/borrow/process" component={Process} />
               <Redirect from="/index/borrow" to="/index/borrow/check" />
             </Switch>
           </div>
