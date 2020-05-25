@@ -84,6 +84,11 @@ class HttpRequest {
       data,
     })
   }
+
+  //暴露
+  all(promises) {
+    return axios.all(promises)
+  }
 }
 
 export default HttpRequest

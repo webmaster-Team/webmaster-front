@@ -21,7 +21,10 @@ import CloseIcon from '@material-ui/icons/Close'
 import CardMedia from '@material-ui/core/CardMedia'
 import ArrowDropDownCircleIcon from '@material-ui/icons/ArrowDropDownCircle'
 import Typography from '@material-ui/core/Typography'
+import { actionCreators as frameac } from '../container/store'
+import {actionCreators as borrowac }from '../borrow/store'
 import Axios from '../../utils/request'
+import Token from '../../utils/token'
 import { Tag } from 'antd'
 import './style.styl'
 import { changeConfirmLocale } from 'antd/lib/modal/locale'
@@ -86,6 +89,7 @@ const Search = (props) => {
   const [ISBN, setISBN] = useState('') //ISBN码
   const [ISBNError, setISBNError] = useState(false)
   const [showPannel, setShowPannel] = useState(-1)
+  const [borrowingBooks,setBorrowingBooks] = useState([])
   const [pannelData, setPannelData] = useState({
     author: '',
     cover: '',
@@ -101,6 +105,8 @@ const Search = (props) => {
     title: '',
     version: '', //书本第几版
   })
+  let {login} = props
+
   //获取book的数据，直接返回
   const getBookData = (params) => {
     return Axios.post('/api/book/searchBooks', params).then((res) => {
@@ -115,7 +121,7 @@ const Search = (props) => {
   }
 
   //生成要上传的数据
-  const comeData = () => {
+  const comeData = useCallback(() => {
     let data = {
       perpage,
       pageIndex: pageIndex,
@@ -152,7 +158,7 @@ const Search = (props) => {
     if (layer !== '') data.layer = layer
     if (origin !== '') data.origin = origin
     return data
-  }
+  },[pageIndex])
 
   //第一次加载时获取所有的品类数据，不带上任何搜索，获取所有的类别数据
   useEffect(() => {
@@ -162,6 +168,23 @@ const Search = (props) => {
       }
     })
   }, [])
+
+  //验证是否登录
+  useEffect(() => {
+    //如果内存里登录成功了，那么数据也肯定加载进来了
+    if (login || Token.validate()) {
+      props.modifyLogin(true)
+      //获取用户借书的情况
+      Axios.post('/api/user/getUserIsBorrowingBook', {}).then((res) => {
+        if (res.result === 1) {
+          setBorrowingBooks(res.data)
+        } else {
+          props.modifyShowAlert(true, '获取您的信息失败', 'error')
+        }
+      })
+    }
+  }, [])
+
 
   //使用
   const loadMore = () => {
@@ -244,7 +267,9 @@ const Search = (props) => {
 
   const search = () => {
     hideSummary()
-    getBookData(comeData()).then((res) => {
+    let postData = comeData()
+    postData.pageIndex = 1
+    getBookData(postData).then((res) => {
       let newBookData = res.bookData.concat()
       console.log(newBookData)
       let myBookData = []
@@ -253,6 +278,7 @@ const Search = (props) => {
       }
       setBookData(myBookData)
       setFinishLoad(res.isLast)
+      setPageIndex(1)
     })
   }
 
@@ -275,6 +301,8 @@ const Search = (props) => {
   const searchButtonClick = () => {
     search()
   }
+
+  //借阅列表
 
   return (
     <div className="searchPage">
@@ -357,7 +385,9 @@ const Search = (props) => {
                 })}
                 {showPannel === index ? (
                   <div className="searchSummary">
-                    <div className="closeButton" onClick={()=>hideSummary()}><CloseIcon/></div>
+                    <div className="closeButton" onClick={() => hideSummary()}>
+                      <CloseIcon />
+                    </div>
                     <div className="searchMainData">
                       <div className="searchBookName">{pannelData.name}</div>
                       <div className="searchBookItem">
@@ -386,13 +416,29 @@ const Search = (props) => {
                     </div>
                     <div className="searchBookMore">
                       <img src={pannelData.cover} className="searchBookImg" />
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        href="#outlined-buttons"
-                      >
-                        借书
-                      </Button>
+                      {
+                        (borrowingBooks.filter((item) => item.id === pannelData.id)).length > 0 ||
+                          (bookData.filter(item => {
+                            console.log(item)
+                            return item === pannelData.id
+                          })).length > 0
+                        ? (
+                        <Button
+                          variant="outlined"
+                          disabled
+                          color="primary"
+                        >
+                          已借阅
+                        </Button>
+                      ):(
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          onClick={()=>props.modifyBookData(props.bookData.concat([pannelData.id]))}  
+                        >
+                          借书
+                        </Button>
+                      )}
                     </div>
                   </div>
                 ) : null}
@@ -543,4 +589,21 @@ const Search = (props) => {
   )
 }
 
-export default connect(null, null)(Search)
+const mapState = state => ({
+  login: state.frame.get('login'),
+  bookData:state.borrow.get('bookData')//要借阅的书籍
+})
+
+const mapDispatch = (dispatch) => ({
+  modifyLogin(state) {
+    dispatch(frameac.modifyLogin(state))
+  },
+  modifyShowAlert (show, message, type) {
+    dispatch(frameac.modifyShowAlert(show,message,type))
+  },
+  modifyBookData (newBookData) {
+    dispatch(borrowac.commitBorrowedBooks(newBookData))
+  }
+})
+
+export default connect(mapState, mapDispatch)(Search)

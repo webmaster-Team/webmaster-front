@@ -2,9 +2,11 @@ import { fromJS } from 'immutable'
 import * as constants from './constants'
 
 const defaultState = fromJS({
-  bookData: [],
+  bookData: [],//存储要借阅的书籍序号
   step: 0,
   borrowBook: [],
+  borrowResultList:[],
+  listData:[]//存储要借阅的书籍所有信息
 })
 
 export default (state = defaultState, action) => {
@@ -15,6 +17,10 @@ export default (state = defaultState, action) => {
       return state.set('borrowBook', action.borrowBook)
     case constants.CHANGE_STEP:
       return state.set('step', action.step)
+    case constants.MODIFY_LIST_DATA:
+      return state.set('listData', action.listData)
+    case constants.MODIFY_BORROW_RESULT_DATA:
+      return state.set('borrowResultList', action.borrowResultData)
     default:
       return state
   }

@@ -1,200 +1,104 @@
-import React, { PureComponent } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { connect } from 'react-redux'
 import Axios from '../../../utils/request'
 import { Card, Table, Avatar, Button, message, Tag } from 'antd'
 import { actionCreators } from '../store'
-import { actionCreators as invertActionCreators} from '../../invert/store'
+import { actionCreators as frameac } from '../../container/store'
 import { withTheme } from 'styled-components'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import moment from 'moment'
+import axios from 'axios'
+import {useHistory} from 'react-router-dom'
 import './style.styl'
-class Process extends PureComponent {
-  constructor(props) {
-    super(props)
-    this.dealBookData = this.dealBookData.bind(this)
-    this.borrow = this.borrow.bind(this)
-    this.goHome = this.goHome.bind(this)
-    this.state = {
-      type: props.match.params.type,
-      text: props.match.params.type === 'borrow' ? '借阅' : '归还',
-      bookData: [],
-      card: props.card,
-    }
-  }
+const Process = (props) => {
+  const [completed, setCompleted] = React.useState(0) //记录完成的进度
+  const [QCodeList,setQCodeList] = useState([])
+  let history = useHistory() 
+
+  useEffect(() => {
+    if (completed === 100)
+       history.push('/index/borrow/end')
+  },[completed])
   
-  goHome () {
-    if (this.state.type === 'invert') {
-      this.props.history.push('/index/borrow/readrfid')
-      this.props.resetBookData()}
-    else if (this.state.type === ' borrow') {
-     this.props.history.push('/index/invert/readrfid')
-      this.props.resetInvertBookData() 
-    }
-  }
-
-  // processStateToString(state) {
-  //   switch (state) {
-  //     case 0:
-  //       return '未处理'
-  //     case 1:
-  //       return '正在处理'
-  //     case 2:
-  //       return `成功`
-  //     case -1:
-  //       return '借阅失败'
-  //   }
-  // }
-
-  componentDidMount () {
-    if (this.state.type === 'invert') {
-      this.props.changeInvertStep()
-    } else {
-      this.props.changeStep()
-    }
-    let _self = this
-    this.setState({ bookData: _self.dealBookData(this.state.type ==='invert'?_self.props.invertBookData : _self.props.bookData ) })
-  }
-
-  async borrow () {
-    let _self = this
-    this.state.bookData.map(async (item, index) => {
-      //   // 设置当前处于正在处理的状态
-      let dataList = _self.state.bookData.concat()
-      dataList[index].status = 1
-      _self.setState({ bookData: dataList })
-        //正式处理
-      let url =""
-      if (_self.state.type === 'borrow') {
-        url = '/api/book/borrow'
-      } else if (_self.state.type === 'invert') {
-        url = '/api/book/returnbook'
-      }
-      let res = await Axios.post(url, {
-        bookid: parseInt(item.id),
-        userid: parseInt(_self.props.id),
-      })
-      if (res.result === 1) {
-          //处理成功状态
-        dataList = _self.state.bookData.concat()
-        dataList[index].status = 2
-        if (_self.state.type === 'borrow') {
-          dataList[index].revertDate = moment("" + res.data.borrowtime).add(res.data.duration, 'd').format('YYYY-MM-DD')
-        } else if (_self.state.type === 'invert') {
-          dataList[index].revertDate = moment("" + res.data.returntime).format('YYYY-MM-DD')
-        }
-          _self.setState({ bookData: dataList })
-      } else {
-        dataList = _self.state.bookData.concat()
-        dataList[index].status = -1
-        _self.setState({ bookData: dataList })
-      }
+  //发送借书请求
+  useEffect(() => {
+    props.changeStep()
+    setCompleted(0)
+    let axioses = []
+    props.bookData.map((item, index) => {
+       axioses.push(
+         Axios.post('/api/book/borrow', { bookId: parseInt(item), userId: parseInt(props.id)})
+       )     
     })
-  }
-
-  async componentDidUpdate(prevProps, prevState) {
-    let _self = this
-    if (this.state.bookData.length !== prevProps.bookData.length) {
-      this.setState(
-        { bookData: _self.dealBookData(_self.props.bookData) },
-        async () =>await this.borrow()
-      )
-    }
-  }
-
-  //0代表未处理，1正在处理，2代表借阅成功，-1处理失败
-  dealBookData(bookData) {
-    // console.log(bookData)
-    let _self = this
-    let newBookData = []
-    bookData.map((item, index) => {
-      newBookData.push({
-        key: item.key,
-        id: item.id,
-        name: item.name,
-        status: 0,
-        revertDate:''
-      })
-    })
-    console.log(newBookData)
-    return newBookData
-  }
-
-  render () {
-    let _self = this
-    const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-        key: 'id',
-      },
-      {
-        title: '书名',
-        dataIndex: 'name',
-        key: 'name',
-      },
-      {
-        title: '归还日期',
-        dataIndex: 'revertDate',
-        key: 'revertDate',
-      },
-      {
-        title: '状态',
-        dataIndex: 'status',
-        key: 'status',
-        render: (text, record, index) => {
-          switch (text) {
-            case 0:
-              return <Tag color="#2db7f5">未处理</Tag>
-            case 1:
-              return <Tag color="#108ee9">正在处理</Tag>
-            case 2:
-              return <Tag color="#87d068">{_self.state.text}成功</Tag>
-            case -1:
-              return <Tag color="#f50">{_self.state.text}失败</Tag>
+    setCompleted(33)
+    //后端异常
+    Axios.all(axioses).then(
+      axios.spread((...res) => {
+        let resListData = []
+        console.log(res.length)
+        let newBorrowResultList = []
+        res.forEach((value) => {
+          console.log(value)
+          if (value.result === 1) {
+            newBorrowResultList.push(value.data)
+          } else {
+            props.modifyShowAlert(true, '有书籍借阅失败', 'error')
           }
-        }
-      },
-    ]
-    return (
-      <div className="processWrapper">
-        <Card title="温馨提示" bordered={false} size="small">
-          <p>可能由于网络问题会出现卡慢的现象， 请耐心等待.</p>
-        </Card>
-        <Table
-          pagination={false}
-          rowKey="table"
-          className="table"
-          dataSource={this.state.bookData}
-          columns={columns}
-        />
-        <div className="oprationbuttons">
-          <Button onClick={this.goHome}>回到首页</Button>
-        </div>
+        })
+        props.modifyBorrowResultList(newBorrowResultList)
+        setCompleted(100)
+      }
+      ))
+    history.push('/index/borrow/end')
+  }, [])
+
+
+  return (
+    <div className="processWrapper">
+      <LinearProgress variant="determinate" value={completed} />
+      <Card title="温馨提示" bordered={false} size="small">
+        <p>
+          当前图书馆正在处理您的书单，您可以直接退出该页面进行其他操作，一般借书需要1-2工作日.
+        </p>
+      </Card>
+      <div>
+        {completed >= 30 ? (
+          <div classsName="infoLine">等待图书馆接收借书---完成</div>
+        ) : (
+          <div classsName="infoLine">等待图书馆接收借书...</div>
+        )}
+        {completed >= 60 ? (
+          <div classsName="infoLine">图书馆正在处理您的借书---完成</div>
+        ) : (
+          <div classsName="infoLine">图书馆正在处理您的借书...</div>
+        )}
+        {completed >= 90? <div classsName="infoLine"> 图书馆打包---完毕</div>: <div classsName="infoLine">图书馆打包...</div>}
       </div>
-    )
-  }
+      <div className="oprationbuttons">
+        <Button>回到借书步骤一</Button>
+      </div>
+    </div>
+  )
 }
 
 const mapState = (state) => ({
-  bookData: state.getIn(['borrow', 'borrowBook']),
-  invertBookData: state.getIn(['invert', 'borrowBook']),
-  id: state.getIn(['login', 'id']),
-  step: state.getIn(['borrow', 'step']),
+  bookData: state.borrow.get('bookData'), //存储bookID
+  id: state.frame.get('id'),
+  showAlert: state.frame.get('showAlert'),
+  message: state.frame.get('message'),
+  messageType: state.frame.get('messageType'),
+  borrowResultList: state.frame.get('borrowResultList'),
 })
 const mapDispatch = (dispatch) => ({
-  resetBookData () {
-    dispatch(actionCreators.commitTrueBorrowedBook([]))
-    dispatch(actionCreators.commitBorrowedBooks([]))
-  },
-  resetInvertBookData () {
-    dispatch(invertActionCreators.commitTrueBorrowedBook([]))
-    dispatch(invertActionCreators.commitBorrowedBooks([]))
-  },
-  changeStep () {
+  changeStep() {
     dispatch(actionCreators.changeStep(2))
   },
-  changeInvertStep () {
-    dispatch(invertActionCreators.changeStep(2))
+  modifyShowAlert(show, message, type) {
+    dispatch(frameac.modifyShowAlert(show, message, type))
   },
+  modifyBorrowResultList (borrowResultList) {
+    dispatch(actionCreators.modifyBorrowResultData(borrowResultList))
+  }
 })
 
 export default connect(mapState, mapDispatch)(Process)

@@ -15,3 +15,13 @@ export const commitTrueBorrowedBook = (borrowBook) => ({
   type: constants.COMMIT_TRUE_BORROWED_BOOK_DATA,
   borrowBook,
 })
+
+export const modifyListData = listData => ({
+  type: constants.MODIFY_LIST_DATA,
+  listData
+})
+
+export const modifyBorrowResultData = borrowResultData => ({
+  type: constants.MODIFY_BORROW_RESULT_DATA,
+  borrowResultData
+})

@@ -11,10 +11,12 @@ const defaultState = fromJS({
   name: "",
   cover: "",
   identity: "学生",
-  borrow: 0,
   showAlert: false,
   message: '',
-  messageType: 'success'
+  messageType: 'success',
+  isBorrowing: 0,
+  hasBorrowed: 0,
+  borrowingBooks:[]
 })
 
 export default (state = defaultState, action) => {
@@ -30,7 +32,8 @@ export default (state = defaultState, action) => {
         "name": typeof action.info.name === "undefined" ? state.name : action.info.name,
         "cover": typeof action.info.cover === "undefined" ? state.cover : action.info.cover,
         "identity": typeof action.info.identity === "undefined" ? state.id : action.info.identity,
-        "borrow": typeof action.info.borrow === "undefined" ? state.borrow : action.info.borrow,
+        "isBorrowing": typeof action.info.isBorrowing === "undefined" ? state.isBorrowing : action.info.isBorrowing,
+        "hasBorrowed": typeof action.info.hasBorrowed === "undefined" ? state.hasBorrowed : action.info.hasBorrowed,
       })
     case constants.MODIFY_SHOW_ALERT:
       return state.merge({
@@ -38,6 +41,8 @@ export default (state = defaultState, action) => {
         'message': action.message,
         'messageType': action.messageType
       })
+    case constants.MODIFY_BORROWING_BOOKS:
+      return state.set('borrowingBooks', action.borrowingBooks)
     default:
       return state
   }

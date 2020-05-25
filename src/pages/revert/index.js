@@ -60,11 +60,11 @@ class Borrow extends PureComponent {
 }
 
 const mapState = (state) => ({
-  borrow: state.getIn(['login', 'borrow']),
-  card: state.getIn(['login', 'card']),
-  name: state.getIn(['login', 'name']),
-  cover: state.getIn(['login', 'cover']),
-  step: state.getIn(['borrow', 'step']),
+  borrow: state.frame.get('borrow'),
+  card: state.frame.get('card'),
+  name: state.frame.get('name'),
+  cover: state.frame.get('cover'),
+  step: state.borrow.get('step']),
 })
 
 const mapDispatch = (dispatch) => ({

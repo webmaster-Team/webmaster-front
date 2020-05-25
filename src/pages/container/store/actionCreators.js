@@ -22,3 +22,8 @@ export const modifyShowAlert = (show, message, messageType) => ({
   message,
   messageType
 })
+
+export const modifyBorrowingBooks = (borrowingBooks) => ({
+  type: constants.MODIFY_BORROWING_BOOKS,
+  borrowingBooks
+})
