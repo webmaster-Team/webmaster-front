@@ -5,11 +5,6 @@ import { Provider } from 'react-redux'
 import Login from './pages/login'
 import Register from './pages/register'
 import Container from './pages/container'
-import axios from 'axios'
-
-//生产环境中出现头部丢失的情况，强制全局设置头部的url
-axios.defaults.baseURL = 'http://123.56.3.135:8080'
-
 const App = () => {
   return (
     <HashRouter>

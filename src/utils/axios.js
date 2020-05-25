@@ -18,9 +18,6 @@ class HttpRequest {
       timeout: 10000,
       withCredentials: true, //是否跨域请求带上凭证
     }
-    // if (localStorage.getItem('token') !== null) {
-    //   config.headers.Authorization = localStorage.getItem('token')
-    // }
     return config
   }
 
@@ -30,7 +27,6 @@ class HttpRequest {
     instance.interceptors.request.use(
       (config) => {
         config.headers.common['token'] = Token.get('token')
-        // Do something before request is sent
         console.log('config ', config)
         return config
       },
@@ -59,7 +55,7 @@ class HttpRequest {
   //创建实例(不暴露)
   request (options) {
     const instance = axios.create()
-    const newOptions = Object.assign(this.getInsideConfig(), options)
+    const newOptions = Object.assign(this.getInsideConfig, options)
     this.interceptors(instance) //添加拦截器
     return instance(newOptions)
   }

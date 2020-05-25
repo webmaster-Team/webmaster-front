@@ -99,7 +99,7 @@
     "yup": "^0.29.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development node scripts/start.js",
+    "start": "node scripts/start.js",
     "build": "cross-env NODE_ENV=production node scripts/build.js",
     "test": "node scripts/test.js"
   },
