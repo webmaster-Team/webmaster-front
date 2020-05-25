@@ -59,7 +59,7 @@ class HttpRequest {
   //创建实例(不暴露)
   request (options) {
     const instance = axios.create()
-    const newOptions = Object.assign(this.getInsideConfig, options)
+    const newOptions = Object.assign(this.getInsideConfig(), options)
     this.interceptors(instance) //添加拦截器
     return instance(newOptions)
   }
