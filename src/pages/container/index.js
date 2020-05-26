@@ -13,14 +13,7 @@ import Token from '../../utils/token'
 import Snackbar from '@material-ui/core/Snackbar'
 import Borrow from '../borrow'
 import './style.styl'
-import { isValid } from 'date-fns/esm'
-import { useHistory } from 'react-router-dom'
-import resolve from 'resolve'
 import Search from '../search'
-import Axios from '../../utils/request'
-// import Token from '../../utils/token'
-const { SubMenu } = Menu
-const { Content, Sider } = Layout
 
 const Container = (props) => {
   // 获取store中的数据

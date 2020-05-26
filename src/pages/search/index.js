@@ -158,7 +158,7 @@ const Search = (props) => {
     if (layer !== '') data.layer = layer
     if (origin !== '') data.origin = origin
     return data
-  },[pageIndex])
+  },[pageIndex,publisher,key,timeSort,AlphaSort,date,author,ISBN,bookState,bookType,library,layer,origin])
 
   //第一次加载时获取所有的品类数据，不带上任何搜索，获取所有的类别数据
   useEffect(() => {
