@@ -64,7 +64,7 @@ const Borrow = (props) => {
             Token.set(token_array[1])
           } else {
             //说明没有token，重定向到login页面进行登录
-            history.replace('/login')
+            history.replace('/login') 
           }
         } else {
           history.replace('/login')
