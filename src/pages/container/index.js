@@ -52,6 +52,7 @@ const Container = (props) => {
         <div>
           {/* <Redirect path="/index" exact to="/index/search" /> */}
           <Switch>
+            <Redirect exact from="/index"  to="/index/search"/>
             <Route path="/index/search" component={Search} />
             <Route path="/index/borrow" component={Borrow} />
           </Switch>

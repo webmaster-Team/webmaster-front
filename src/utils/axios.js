@@ -3,6 +3,7 @@
 import axios from 'axios'
 import errorHandle from './errorHandle'
 import Token from './token'
+
 class HttpRequest {
   constructor(baseUrl) {
     this.baseUrl = baseUrl
@@ -65,7 +66,7 @@ class HttpRequest {
     const options = Object.assign(
       {
         method: 'get',
-        url: this.baseUrl+url,
+        url:  this.baseUrl+url,
       },
       config
     )

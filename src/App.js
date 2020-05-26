@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, BrowserRouter, HashRouter ,Switch} from 'react-router-dom'
+import { Route, BrowserRouter, HashRouter ,Switch,Redirect} from 'react-router-dom'
 import store from './store'
 import { Provider } from 'react-redux'
 import Login from './pages/login'
@@ -10,6 +10,8 @@ const App = () => {
     <HashRouter>
       <Provider store={store}>
          <Switch>
+         {/* 默认路由 */}
+         <Redirect exact from="/" to="/index"/>
         {/* 登陆页面 */}
         <Route path="/login" component={Login} />
         {/* 注册界面 */}
