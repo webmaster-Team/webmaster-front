@@ -67,7 +67,7 @@ class HttpRequest {
     const options = Object.assign(
       {
         method: 'get',
-        url:  this.baseUrl+url,
+        url
         // url
       },
       config
@@ -79,7 +79,7 @@ class HttpRequest {
   post(url, data, config) {
     return this.request({
       method: 'post',
-      url: this.baseUrl+url,
+      url
       // url,
       data,
     })
