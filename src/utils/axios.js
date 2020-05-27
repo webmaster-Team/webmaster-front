@@ -28,6 +28,7 @@ class HttpRequest {
     // 请求拦截器
     instance.interceptors.request.use(
       (config) => {
+        config.headers.common['token'] = Token.get('token') || ""
         console.log('config ', config)
         return config
       },
@@ -67,7 +68,8 @@ class HttpRequest {
     const options = Object.assign(
       {
         method: 'get',
-        url
+        url,
+        // url
       },
       config
     )
