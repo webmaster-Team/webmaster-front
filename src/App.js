@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import Login from './pages/login'
 import Register from './pages/register'
 import Container from './pages/container'
+import Axios from 'axios'
+
 const App = () => {
   return (
     <HashRouter>

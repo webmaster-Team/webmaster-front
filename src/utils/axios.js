@@ -27,7 +27,6 @@ class HttpRequest {
     // 请求拦截器
     instance.interceptors.request.use(
       (config) => {
-        config.headers.common['token'] = Token.get('token')
         console.log('config ', config)
         return config
       },
@@ -55,18 +54,16 @@ class HttpRequest {
 
   //创建实例(不暴露)
   request (options) {
-    const instance = axios.create(   
-    {
-      baseURL: this.baseUrl,
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-      },
-      timeout: 10000,
-      withCredentials: true
-    })
-    const newOptions = Object.assign(this.getInsideConfig, options)
+    // debugger
+    const instance = axios.create()
+    instance.defaults.baseURL = this.baseUrl
+    instance.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8'
+    instance.defaults.timeout = 10000
+    instance.defaults.withCredentials = true
+    instance.defaults.headers.common['token'] = Token.get('token')
+    // const newOptions = Object.assign(this.getInsideConfig(), options)
     this.interceptors(instance) //添加拦截器
-    return instance(newOptions)
+    return instance(options)
   }
 
   //暴露
