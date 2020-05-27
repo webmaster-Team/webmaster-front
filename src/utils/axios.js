@@ -55,7 +55,7 @@ class HttpRequest {
 
   //创建实例(不暴露)
   request (options) {
-    const instance = axios.create()
+    const instance = axios.create(this.getInsideConfig)
     const newOptions = Object.assign(this.getInsideConfig, options)
     this.interceptors(instance) //添加拦截器
     return instance(newOptions)
@@ -66,7 +66,8 @@ class HttpRequest {
     const options = Object.assign(
       {
         method: 'get',
-        url:  this.baseUrl+url,
+        // url:  this.baseUrl+url,
+        url
       },
       config
     )
@@ -77,7 +78,8 @@ class HttpRequest {
   post(url, data, config) {
     return this.request({
       method: 'post',
-      url: this.baseUrl+url,
+      // url: this.baseUrl+url,
+      url,
       data,
     })
   }
