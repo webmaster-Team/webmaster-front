@@ -68,7 +68,6 @@ class HttpRequest {
       {
         method: 'get',
         url
-        // url
       },
       config
     )
@@ -79,8 +78,7 @@ class HttpRequest {
   post(url, data, config) {
     return this.request({
       method: 'post',
-      url
-      // url,
+      url,
       data,
     })
   }
