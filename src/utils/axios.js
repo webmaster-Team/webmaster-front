@@ -15,6 +15,7 @@ class HttpRequest {
       baseURL: this.baseUrl,
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
+        'token':Token.get('token')
       },
       timeout: 10000,
       withCredentials: true, //是否跨域请求带上凭证
@@ -56,14 +57,9 @@ class HttpRequest {
   request (options) {
     // debugger
     const instance = axios.create()
-    instance.defaults.baseURL = this.baseUrl
-    instance.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8'
-    instance.defaults.timeout = 10000
-    instance.defaults.withCredentials = true
-    instance.defaults.headers.common['token'] = Token.get('token')
-    // const newOptions = Object.assign(this.getInsideConfig(), options)
+    const newOptions = Object.assign(this.getInsideConfig, options)
     this.interceptors(instance) //添加拦截器
-    return instance(options)
+    return instance(newOptions)
   }
 
   //暴露
@@ -71,8 +67,8 @@ class HttpRequest {
     const options = Object.assign(
       {
         method: 'get',
-        // url:  this.baseUrl+url,
-        url
+        url:  this.baseUrl+url,
+        // url
       },
       config
     )
@@ -83,8 +79,8 @@ class HttpRequest {
   post(url, data, config) {
     return this.request({
       method: 'post',
-      // url: this.baseUrl+url,
-      url,
+      url: this.baseUrl+url,
+      // url,
       data,
     })
   }
