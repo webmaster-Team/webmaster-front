@@ -9,7 +9,7 @@ $text = #c2c2c2
     align-items: flex-start
     .searchBody
          padding-top 15px
-         flex: 1
+         width: 1100px
          bottom 0px
          background-color: white
          display: flex
@@ -29,7 +29,7 @@ $text = #c2c2c2
              .setting
                  height: 50px
                  line-height: 50px
-                 width: 180px
+                 width: 20px
                  display: flex
                  align-items: center
              //排序按钮组
@@ -117,9 +117,14 @@ $text = #c2c2c2
                         flex-flow: column nowrap
                         justify-content: space-around
                         align-items: center
+                        color $formInputColor
                         .searchBookImg
                            width: 150px
                            height: 150px
+                        .positiveButton
+                           color $formInputColor
+                           &:hover
+                               border-color: $formInputColor
             .loadMoreButtonLine
                 width: 100%
                 display: flex
@@ -127,8 +132,10 @@ $text = #c2c2c2
                 justify-content: center
                 .loadMoreButton
                     margin-top: 10px
+                    color $formInputColor
                     .loadMoreIcon
                         font-size: 15px
+                        color $formInputColor
            
 
     .searchClassify

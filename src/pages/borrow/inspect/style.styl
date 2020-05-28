@@ -1,10 +1,20 @@
+$borderRadius = 10px//记录边框的圆角
+$boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
+$formInputColor=#0182ff
 .checkbookWrapper
-    width: 100%
+    width: 1000px
+    box-shadow: $boxShadow
+    border-radius: $borderRadius
+    background-color: white
+    .tipsCard
+        border-radius: $borderRadius $borderRadius 0px 0px
+        width: 1000px
     .table
-        margin-top: 20px
-    
+        width 100%
+        border-radius: 0px 0px $borderRadius $borderRadius
     .oprationbuttons
-        margin-top: 10px
+        padding: 10px
         width: 100%
         display: flex
         justify-content: space-between
+        border-radius: 0px 0px $borderRadius $borderRadius

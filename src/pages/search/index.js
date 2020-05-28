@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { connect } from 'react-redux'
+import {useHistory} from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
 import Divider from '@material-ui/core/Divider'
-import { Select, DatePicker, Input } from 'antd'
+import { Select, DatePicker, Input,Affix,Anchor } from 'antd'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -28,6 +29,7 @@ import Token from '../../utils/token'
 import { Tag } from 'antd'
 import './style.styl'
 import { changeConfirmLocale } from 'antd/lib/modal/locale'
+import { ConsoleSqlOutlined } from '@ant-design/icons'
 const { RangePicker } = DatePicker
 const { Option } = Select
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 4,
   },
   cardRoot: {
-    width: 200,
+    width: 180,
     height: 300,
     margin: '10px',
   },
@@ -62,8 +64,9 @@ const useStyles = makeStyles((theme) => ({
 
 const Search = (props) => {
   const classes = useStyles()
-  const [timeSort, setTimeSort] = useState(true) //true表示时间正序排列
-  const [AlphaSort, setAlphaSort] = useState(true) //true表示字母字典序正序排列
+  // const [timeSort, setTimeSort] = useState(0) //0表示不实用，1正序，-1倒序
+  // const [AlphaSort, setAlphaSort] = useState(0) 
+  const [sort,setSort] = useState([null,null])
   const [bookData, setBookData] = useState([[]])
   const [perpage, setPerpage] = useState(18)
   const [pageIndex, setPageIndex] = useState(1)
@@ -76,6 +79,7 @@ const Search = (props) => {
     publishers: [],
     libraries: [],
   }) //筛选
+  const history = useHistory()
   const [bookType, setBookType] = useState('') //设置书本的类型
   const [date, setDate] = useState([]) //设置时间区间
   const [author, setAuthor] = useState('')
@@ -90,7 +94,8 @@ const Search = (props) => {
   const [ISBNError, setISBNError] = useState(false)
   const [showPannel, setShowPannel] = useState(-1)
   const [borrowingBooks,setBorrowingBooks] = useState([])
-  const [pannelData, setPannelData] = useState({
+  const [functionButtonStyle,setFunctionButtonStyle] = useState(0)
+   const [pannelData, setPannelData] = useState({
     author: '',
     cover: '',
     entry_time: '',
@@ -105,7 +110,7 @@ const Search = (props) => {
     title: '',
     version: '', //书本第几版
   })
-  let {login} = props
+  let {login} = props //登陆的标志符
 
   //获取book的数据，直接返回
   const getBookData = (params) => {
@@ -130,10 +135,14 @@ const Search = (props) => {
       data.key = key
     }
     if (publisher !== '') data.publisher = publisher
-    if (timeSort === false) data.timeSort = 0
-    else data.dateSort = 1
-    if (AlphaSort === false) data.nameSort = 0
-    else data.nameSort = 1
+    if (sort[0] !== null){
+      if (sort[0]) data.dateSort = 1
+      else if(!sort[0])  data.dateSort = 0
+    }
+    if (sort[1] !== null){
+      if (sort[1]) data.nameSort = 1
+      else if(!sort[1])  data.nameSort = 0
+    }
     if (date !== []) {
       data.startDate = date[0]
       data.endDate = date[1]
@@ -158,7 +167,7 @@ const Search = (props) => {
     if (layer !== '') data.layer = layer
     if (origin !== '') data.origin = origin
     return data
-  },[pageIndex,publisher,key,timeSort,AlphaSort,date,author,ISBN,bookState,bookType,library,layer,origin])
+  },[pageIndex,publisher,key,sort,date,author,ISBN,bookState,bookType,library,layer,origin])
 
   //第一次加载时获取所有的品类数据，不带上任何搜索，获取所有的类别数据
   useEffect(() => {
@@ -175,6 +184,22 @@ const Search = (props) => {
     if (login || Token.validate()) {
       props.modifyLogin(true)
       //获取用户借书的情况
+      //获取用户数据
+      Axios.post('/api/user/getUserData', {}).then((res) => {
+        if (res.result === 1) {
+          props.modifyUserInfo({
+            id: res.data.id,
+            card: res.data.card,
+            name: res.data.name,
+            cover: res.data.cover,
+            identity: res.data.identity,
+            hasBorrowed: res.data.hasBorrowed,
+            isBorrowing: res.data.isBorrowing,
+          })
+        } else {
+          props.modifyShowAlert(true, '获取您的信息失败', 'error')
+        }
+      })
       Axios.post('/api/user/getUserIsBorrowingBook', {}).then((res) => {
         if (res.result === 1) {
           setBorrowingBooks(res.data)
@@ -250,11 +275,12 @@ const Search = (props) => {
     }).then((res) => {
       if (res.result === 1) {
         setPannelData(res.data)
+        initFunctionButton(res.data,props.bookData,props.identity)
       }
     })
     setShowPannel(index)
   }
-
+  
   //隐藏pannel
   const hideSummary = () => {
     setShowPannel(-1)
@@ -294,15 +320,83 @@ const Search = (props) => {
     layer,
     origin,
     ISBN,
-    timeSort,
-    AlphaSort,
+    sort
   ])
 
   const searchButtonClick = () => {
     search()
   }
 
-  //借阅列表
+  //初始化按钮的功能
+  const initFunctionButton = useCallback((pannelData,bookData,identity)=>{
+    console.log(pannelData)
+    const identityBookLimit = (identity)=>{
+      let limit = 0
+      switch(identity){
+          case '学生':
+            limit = 15
+            break
+          case '教师':
+            limit = 30
+            break
+          default:
+            limit = 0
+      }
+      return limit
+    } 
+    //是否已经借阅了
+    let isBorrowed = false
+    borrowingBooks.map((item,index)=>{
+      if(item.id === pannelData.id)
+          isBorrowed = true
+    })
+    //是否在书单中
+    let isTryBorrowing = false
+    bookData.map((item,index)=>{
+       if(item === pannelData.id)
+          isTryBorrowing = true
+    })
+    if(login || Token.validate()){
+      //这个用户已经借阅了，不能直接取消
+       if(isBorrowed){
+         setFunctionButtonStyle(-2)
+       } 
+      //否则如果该用户已经将这本书放在了预借书单中，我们可以取消
+       else if(isTryBorrowing){
+         setFunctionButtonStyle(0)
+      }
+      //已经达到借书上限了
+      else if((props.isBorrowing + bookData.size) >= identityBookLimit(identity)){
+         setFunctionButtonStyle(-1)
+      }
+      //这本书并没有在预借书单中，该用户可以借阅
+      else{
+        setFunctionButtonStyle(1)
+      }
+    } 
+    //否则用户根本没有登陆，我们要求该用户首先给我登陆
+    else {
+      setFunctionButtonStyle(-3)
+    }
+  },[borrowingBooks])
+   
+  //借书事件
+  const borrowBook = (id) =>{
+    props.modifyBookData(props.bookData.concat([id]))
+    setFunctionButtonStyle(0)
+  }
+
+  //取消借书事件
+  const cancelBorrowBook = id =>{
+    let newBookData = []
+    props.bookData.map((item,index)=>{
+      if(item !== id)
+      newBookData.push(item)
+    })
+    props.modifyBookData(newBookData)
+     setFunctionButtonStyle(1)
+  }
+
 
   return (
     <div className="searchPage">
@@ -328,13 +422,13 @@ const Search = (props) => {
             </IconButton>
           </Paper>
           <div className="sortButtonGroup">
-            <Button onClick={() => setTimeSort(!timeSort)}>
-              按入馆时间排序
-              {timeSort ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            <Button onClick={() => setSort([!sort[0],null])}>
+              { sort[0] !== null ?  '按入馆时间排序': '不按入馆时间排序'}
+              { sort[0] !== null ? ( sort[0]? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />):null}
             </Button>
-            <Button onClick={() => setAlphaSort(!AlphaSort)}>
-              按首字母排序
-              {AlphaSort ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            <Button onClick={() => setSort([null,!sort[1]])}>
+            { sort[1] !== null ?  '按首字母排序': '不按首字母排序'}
+            { sort[1] !== null ? ( sort[1]? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />):null}
             </Button>
           </div>
         </div>
@@ -416,29 +510,62 @@ const Search = (props) => {
                     </div>
                     <div className="searchBookMore">
                       <img src={pannelData.cover} className="searchBookImg" />
-                      {
-                        (borrowingBooks.filter((item) => item.id === pannelData.id)).length > 0 ||
-                          (bookData.filter(item => {
-                            console.log(item)
-                            return item === pannelData.id
-                          })).length > 0
-                        ? (
-                        <Button
-                          variant="outlined"
-                          disabled
-                          color="primary"
-                        >
+                      { 
+                        //0代表取消加入
+                        functionButtonStyle === 0 ? 
+                        (
+                          <Button
+                          color="secondary"
+                          onClick={()=>cancelBorrowBook(pannelData.id)}>
+                          不加入预借书单
+                        </Button>
+                        ):null
+                       }
+                       { 
+                        //-2代表已经加入
+                        functionButtonStyle === -2? 
+                        (
+                          <Button disabled>
                           已借阅
-                        </Button>
-                      ):(
+                         </Button>
+                        ):null
+                       }
+                       {
+                         //-1代表已经达到上限
+                        functionButtonStyle === -1 ? 
+                        (
+                          <Button disabled>
+                            您可以借阅的书籍已达上限
+                          </Button>
+                        ):null
+                       }
+                       {
+                        //-3代表需要登陆
+                       functionButtonStyle === -3 ? 
+                       (
                         <Button
+                          className="positiveButton"
                           variant="outlined"
+                          onClick={()=>history.push('/login')}
                           color="primary"
-                          onClick={()=>props.modifyBookData(props.bookData.concat([pannelData.id]))}  
                         >
-                          借书
+                          先登录方能借阅
                         </Button>
-                      )}
+                       ):null
+                      }
+                      {
+                        //1代表可以借阅
+                        functionButtonStyle === 1?
+                        (
+                          <Button
+                            className="positiveButton"
+                            variant="outlined"
+                            color="primary"
+                            onClick={()=>borrowBook(pannelData.id)}>
+                            加入预借书单
+                         </Button>
+                        ):null
+                      }
                     </div>
                   </div>
                 ) : null}
@@ -457,6 +584,7 @@ const Search = (props) => {
           </div>
         </div>
       </div>
+      <Affix offsetTop={5}>
       <div className="searchClassify">
         <div className="title">筛选</div>
         <div className="select">
@@ -585,18 +713,28 @@ const Search = (props) => {
           <div className="error">{ISBNError ? 'ISBN码格式错误' : ''}</div>
         </div>
       </div>
-    </div>
+      </Affix>
+      </div>
   )
 }
 
 const mapState = state => ({
   login: state.frame.get('login'),
-  bookData:state.borrow.get('bookData')//要借阅的书籍
-})
+  bookData:state.borrow.get('bookData'),//要借阅的书籍
+  name: state.frame.get('name'),
+  card: state.frame.get('card'),
+  cover: state.frame.get('cover'),
+  hasBorrowed: state.frame.get('hasBorrowed'),
+  isBorrowing: state.frame.get('isBorrowing'),
+  step: state.borrow.get('step'),
+  identity: state.frame.get('identity'),})
 
 const mapDispatch = (dispatch) => ({
   modifyLogin(state) {
     dispatch(frameac.modifyLogin(state))
+  },
+  modifyUserInfo(info) {
+    dispatch(frameac.modifyUserInfo(info))
   },
   modifyShowAlert (show, message, type) {
     dispatch(frameac.modifyShowAlert(show,message,type))

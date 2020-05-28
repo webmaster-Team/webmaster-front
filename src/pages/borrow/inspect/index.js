@@ -7,6 +7,8 @@ import './style.styl'
 const Inspect = props => {
   let history = useHistory()
   useEffect(() => {
+    if(props.bookData.size === 0)
+         history.replace('/index/borrow/check')
      props.changeStep(1)
   }, [])
 
@@ -45,7 +47,7 @@ const Inspect = props => {
     ]
     return (
       <div className="checkbookWrapper">
-        <Card title="温馨提示" bordered={false} size="small">
+        <Card title="温馨提示" bordered={false} size="small" className="tipsCard">
           <p>
             请检查您的借阅信息，如果出现错误，请回退到上一步修改您的借阅信息.
           </p>
@@ -59,7 +61,7 @@ const Inspect = props => {
         />
         <div className="oprationbuttons">
           <Button onClick={()=>history.goBack()}>上一步</Button>
-          <Button onClick={()=>history.push('/index/borrow/process')}>开始处理</Button>
+          <Button onClick={()=>history.push('/index/borrow/process')}>提交订单</Button>
         </div>
       </div>
     )

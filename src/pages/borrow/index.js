@@ -5,6 +5,7 @@ import { Steps, Row, Col, Card, Avatar } from 'antd'
 import { connect } from 'react-redux'
 import Check from './check'
 import Inspect from './inspect'
+import Process from './process'
 import { actionCreators as frameac } from '../container/store'
 import { Route, Redirect, useHistory, Switch } from 'react-router-dom'
 import Token from '../../utils/token'
@@ -108,17 +109,13 @@ const Borrow = (props) => {
         <Steps current={step}>
           <Step title="操作图书" description="操作您要借阅的书籍" />
           <Step title="确认图书" description="确认您要借阅的书籍" />
-          <Step
-            title="提交借书订单"
-            description="提交您的书单"
+          <Step  title="提交借书订单" description="提交您的书单"
           />
         </Steps>
       </div>
-      <Row gutter={[16, 16]}>
-        <Col md={4} xs={24}>
-          <div>
-            <div>
+      <div className="infoLine">
               <Card
+                className="infoCard"
                 title="用户信息"
                 extra={<Avatar size="small" src={cover} />}
               >
@@ -132,19 +129,15 @@ const Borrow = (props) => {
                   正在借阅 | {isBorrowing} 本
                 </Card.Grid>
               </Card>
-            </div>
-          </div>
-        </Col>
-        <Col md={20} xs={24}>
           <div>
             <Switch>
               <Route path="/index/borrow/check" component={Check} />
               <Route path="/index/borrow/inspect" component={Inspect} />
-              <Redirect from="/index/borrow" to="/index/borrow/check" />
+              <Route path="/index/borrow/process" component={Process}/>
+              <Redirect exact from="/index/borrow" to="/index/borrow/check" />
             </Switch>
           </div>
-        </Col>
-      </Row>
+      </div>
     </div>
   )
 }

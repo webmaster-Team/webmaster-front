@@ -1,8 +1,25 @@
+$borderRadius = 10px//记录边框的圆角
+$boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
+$formInputColor=#0182ff
 .readrfidWrapper
-    width: 100%
+    width: 1000px
+    box-shadow: $boxShadow
+    .tipsCard
+       border-radius: $borderRadius $borderRadius 0px 0px
+       box-shadow: $boxShadow
+       .link
+         color: $formInputColor
+         cursor:pointer
+       .strong
+         font-weight: 600
     .list
-      margin-top: 20px
-
+      background-color: white
+      border-radius: 0px 0px $borderRadius $borderRadius
+      .footer
+          width: 100%
+          text-align: right 
+      // .listItem
+      //   height: 100px
     // .listItemLine1
     //    .greySmall
     //        font-size: 12px

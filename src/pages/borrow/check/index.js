@@ -11,6 +11,7 @@ import { Redirect,useHistory } from 'react-router-dom'
 
 const Check = (props) => {
   const history = useHistory()
+  const [next,setNext] = useState(false) //是否可以到下一步
   const [listData, setListData] = useState([]) //列表数据
   let { isBorrowing, bookData } = props //获取redux中的数据
   //进入后首先将select设置为1，获取从搜索产生的待借阅的图书
@@ -30,8 +31,8 @@ const Check = (props) => {
       let resListData = []
       res.forEach(value => resListData.push(value.data))
        setListData(resListData)
+       if(resListData.length > 0) setNext(true)
     }))
-
   }, [])
 
   //按照书的状态生成字符串
@@ -48,24 +49,22 @@ const Check = (props) => {
       return '#87d068'
     else 
       return '#f50'
-    // switch (state) {
-    //   case 1:
-    //     return '#87d068'
-    //   case 2:
-    //     return '#108ee9'
-    //   case -1:
-    //     return '#f50'
-    //   case 0:
-    //     return '#f50'
-    // }
   }
 
   //对某一本书取消借阅
   const cancelBorrow = (index) => {
-    let newListData = listData.concat()
+    console.log(props.bookData)
+    if(listData.length - 1 > 0)
+       setNext(true)
+    else setNext(false)
+    let newListData = listData.concat([])
     newListData.splice(index, 1)
     setListData(newListData)
-    let newBookData = bookData.concat()
+    let newBookData = null
+    if(typeof props.bookData._tail !== 'undefined')
+       newBookData = props.bookData._tail.array.concat([])
+    else 
+       newBookData = props.bookData
     newBookData.splice(index, 1)
     props.commitBorrowBook(newBookData)
   }
@@ -76,14 +75,15 @@ const Check = (props) => {
     history.push('/index/borrow/inspect')
   }
 
+
   return (
-    <div className="readrfidWrapper">
-      <Card title="温馨提示" bordered={false} size="small">
+    <div className="readrfidWrapper">  
+    <Card title="温馨提示" bordered={false} size="small" className="tipsCard">
         <p>
-          请在下方操作您要借阅的图书，如果您希望添加新图书，请前往“搜索”页面来添加新图书。
+          请在下方操作您要借阅的图书，如果您希望添加新图书，请<span className="link" onClick={()=>history.push('/index/search')}>前往“搜索”页面</span>来添加新图书。
         </p>
         <p>
-          您当前还有{isBorrowing}本书在借阅中，建议您先归还图书，再进行借阅。
+          <span className="strong">建议:</span>您当前还有{isBorrowing}本书在借阅中，建议您先归还图书，再进行借阅。
         </p>
       </Card>
       <List
@@ -93,12 +93,13 @@ const Check = (props) => {
         size="large"
         dataSource={listData}
         footer={
-          <div>
-            <Button onClick={() => commitBook()}>下一步</Button>
+          <div className="footer">
+            <Button disabled={!next} onClick={() => commitBook()}>下一步</Button>
           </div>
         }
         renderItem={(item, index) => (
           <List.Item
+            className="listItem"
             key={item.id}
             actions={[
               <Button
@@ -109,7 +110,7 @@ const Check = (props) => {
                 取消借阅
               </Button>,
             ]}
-            extra={<img width={272} alt="图书的图片" src={item.cover} />}
+            extra={<img width={150} alt="图书的图片" src={item.cover} />}
           >
             <List.Item.Meta
               title={<div>{item.name}</div>}
