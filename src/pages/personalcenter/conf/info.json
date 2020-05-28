@@ -1,0 +1,77 @@
+{
+    "list": [
+        {
+            "id": 0,
+            "name": "name",
+            "label": "姓名",
+            "placeholder": "请输入您要修改的姓名",
+            "type": "input"
+        },
+        {
+            "id": 1,
+            "name": "id",
+            "label": "学号",
+            "placeholder": "请输入您要修改的学号",
+            "type": "none"
+        },
+        {
+            "id": 2,
+            "name": "sex",
+            "label": "性别",
+            "placeholder": "",
+            "type": "none",
+            "checklist": [
+                {
+                    "label": "男",
+                    "key": "male"
+                },
+                {
+                    "label": "女",
+                    "key": "female"
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "identifier",
+            "label": "身份",
+            "placeholder": "",
+            "type": "none"
+        },
+        {
+            "id": 4,
+            "name": "email",
+            "label": "邮箱",
+            "placeholder": "请输入您的新邮箱",
+            "type": "none"
+        },
+        {
+            "id": 5,
+            "name": "tel",
+            "label": "电话",
+            "placeholder": "请输入您的新电话",
+            "type": "input"
+        },
+        {
+            "id": 6,
+            "name": "registerTime",
+            "label": "注册时间",
+            "placeholder": "",
+            "type": "none"
+        },
+        {
+            "id": 7,
+            "name": "byNowBorrowCount",
+            "label": "总借阅数",
+            "placeholder": "",
+            "type": "none"
+        },
+        {
+            "id": 8,
+            "name": "onBorrowCount",
+            "label": "在借数量",
+            "placeholder": "",
+            "type": "none"
+        }
+    ]
+}
