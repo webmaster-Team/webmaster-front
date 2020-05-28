@@ -1,6 +1,6 @@
 /*
  * @Author: Daniel
- * @LastEditTime: 2020-05-29 01:08:21
+ * @LastEditTime: 2020-05-29 01:15:39
  * @FilePath: /webmaster-front/src/pages/container/index.js
  */ 
 import React, { useEffect, useCallback, useState } from 'react'
@@ -19,6 +19,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import Borrow from '../borrow'
 import './style.styl'
 import Search from '../search'
+import PersonalCenter from '../personalcenter'
 
 const Container = (props) => {
   // 获取store中的数据
@@ -26,36 +27,47 @@ const Container = (props) => {
 
   return (
     <Layout style={{ minHeight: '100%' }}>
-      {/* 用于全局提供报错与提示的组件 */}
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        open={showAlert}
-        onClose={() => props.modifyShowAlert(false, '', '')}
-        autoHideDuration={2000}
-        message={message}
-      >
-        <div
-          className={
-            'alert-wrapper ' + (messageType === 'success' ? 'success' : 'error')
-          }
-        >
-          {message}
-        </div>
-      </Snackbar>
-      <SelfHeader />
-      <Layout>
-        <div>
-          {/* <Redirect path="/index" exact to="/index/search" /> */}
-          <Switch>
-            <Route path="/index/search" component={Search} />
-            <Route path="/index/borrow" component={Borrow} />
-            <Redirect exact from="/index"  to="/index/search"/>
-          </Switch>
-        </div>
-      </Layout>
+      
+      {/**
+        * @author Daniel
+        * @description 适应个人中心的路由改动
+        */}
+        <Switch>
+          <Route exact path='/index/usercenter' component={PersonalCenter} />
+          <Route path='/index'>
+            {/* 用于全局提供报错与提示的组件 */}
+            <Snackbar
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+              open={showAlert}
+              onClose={() => props.modifyShowAlert(false, '', '')}
+              autoHideDuration={2000}
+              message={message}
+            >
+              <div
+                className={
+                  'alert-wrapper ' + (messageType === 'success' ? 'success' : 'error')
+                }
+              >
+                {message}
+              </div>
+            </Snackbar>
+            <SelfHeader />
+            <Layout>
+              <div>
+                {/* <Redirect path="/index" exact to="/index/search" /> */}
+                <Switch>
+                  <Route path="/index/search" component={Search} />
+                  <Route path="/index/borrow" component={Borrow} />
+                  <Redirect exact from="/index"  to="/index/search"/>
+                </Switch>
+              </div>
+            </Layout>
+          </Route>
+        </Switch>
+      
     </Layout>
   )
 }
