@@ -12,14 +12,14 @@ const App = () => {
     <HashRouter>
       <Provider store={store}>
          <Switch>
-         {/* 默认路由 */}
-         <Redirect exact from="/" to="/index"/>
         {/* 登陆页面 */}
         <Route path="/login" component={Login} />
         {/* 注册界面 */}
         <Route path="/register" component={Register} />
         {/* 首页路由 */}
         <Route path="/index" component={Container} />
+        {/* 默认路由 */}
+        <Redirect exact from="/" to="/index"/>
        </Switch>
       </Provider>
     </HashRouter>

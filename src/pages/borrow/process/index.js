@@ -15,14 +15,15 @@ const Process = props => {
   const [success,setSuccess] = useState(0)
   const [serial,setSerial] =useState("") //保存获得的订单号
   useEffect(() => {
+    if(props.bookData.size === 0 && props.step !== 1)
+        history.replace('/index/borrow/check')
      props.changeStep()
   }, [])
 
   //页面挂载去提交订单
   useEffect(()=>{
     //如果没有数据，就回到search页面
-    if(props.bookData.size === 0)
-          history.replace('/index/borrow/check')
+   
     Axios.post('/api/book/borrow',{
       books:props.bookData.map(Number)
     }).then(res=>{
@@ -31,6 +32,7 @@ const Process = props => {
           setUploading(false)
           setSuccess(1)
           setSerial(res.serial)
+          props.commitBorrowBook([])
       }else{
           setUploading(false)
           setSuccess(-1)
@@ -54,25 +56,22 @@ const Process = props => {
                 success === 1 ? (
                     <div className="spin">
                         <CheckCircleOutlineRoundedIcon className="icon success"/>
-                        <div className="success-text">借书成功</div>
+                        <div className="success-text">借书订单生成成功</div>
                         <div className="success-order">书单号为{serial}</div>
+                        <Button  className="go-back" onClick={()=>history.replace('/index')}>前往个人中心查看</Button>
                     </div>
                 ) :(
                     success === -1?(
                         <div className="spin">
                         <HighlightOffRoundedIcon className="icon failure"/>
                         <div className="success-text">借书失败</div>
-                        <Button className="go-back" onClick={()=>history.replace('/index/borrow')}>尝试回到上一步重新提交</Button>
+                        <Button danger className="go-back" onClick={()=>history.replace('/index/borrow')}>尝试回到上一步重新提交</Button>
                     </div>
-                    ):null
+                    ):<div className="spin"></div>
                 )
             }
             </div>
         </Spin>
-       
-         {/* <div className="oprationbuttons">
-           <Button onClick={()=>history.push('/index/search')}>回到搜索页面</Button>
-         </div> */}
       </div>
     )
 }
@@ -80,8 +79,12 @@ const Process = props => {
 const mapState = (state) => ({
   bookData: state.borrow.get('bookData'),
   listData: state.borrow.get('listData'),
+  step:state.borrow.get('step')
 })
 const mapDispatch = (dispatch) => ({
+  commitBorrowBook(bookData) {
+    dispatch(actionCreators.commitBorrowedBooks(bookData))
+  },
   changeStep() {
     dispatch(actionCreators.changeStep(2))
   },

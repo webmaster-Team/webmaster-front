@@ -1,6 +1,6 @@
 /*
  * @Author: Daniel
- * @LastEditTime: 2020-05-29 11:05:10
+ * @LastEditTime: 2020-05-30 16:39:08
  * @FilePath: /webmaster-front/src/pages/container/index.js
  */ 
 import React, { useEffect, useCallback, useState } from 'react'
@@ -20,6 +20,7 @@ import Borrow from '../borrow'
 import './style.styl'
 import Search from '../search'
 import PersonalCenter from '../personalcenter'
+import Renew from '../renew'
 
 const Container = (props) => {
   // 获取store中的数据
@@ -40,7 +41,7 @@ const Container = (props) => {
       >
         <div
           className={
-            'alert-wrapper ' + (messageType === 'success' ? 'success' : 'error')
+            'alert-wrapper ' + (messageType === 'success' ?  'success' : (messageType === 'error'? 'error':'warning'))
           }
         >
           {message}
@@ -49,12 +50,12 @@ const Container = (props) => {
       <SelfHeader />
       <Layout>
         <div>
-          {/* <Redirect path="/index" exact to="/index/search" /> */}
           <Switch>
             <Route path="/index/search" component={Search} />
             <Route path="/index/borrow" component={Borrow} />
             <Route path='/index/usercenter' component={PersonalCenter} />
-            <Redirect exact from="/index"  to="/index/search"/>
+            <Route path="/index/renew" component={Renew} />
+            <Redirect from="/index" to="/index/search" />
           </Switch>
         </div>
       </Layout>

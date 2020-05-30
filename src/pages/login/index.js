@@ -162,7 +162,7 @@ const Login = () => {
       </Snackbar>
       <div className="title">LOGIN</div>
       <div className="wrapper">
-        <div className="back">
+        <div className="back" onClick={()=>history.push('/index/search')}>
           <span className="iconfont back-icon">&#xe755;</span>
           <span className="back-text">回到图书馆门户</span>
         </div>
@@ -225,7 +225,7 @@ const Login = () => {
                   setMessage('登录成功，即将跳转到门户')
                   setType('success')
                   setOpen(true)
-                  setInterval(() => {
+                  setTimeout(() => {
                     history.replace('/index/search')
                   }, 2000)
                 } else {
@@ -369,7 +369,7 @@ const Login = () => {
                   >
                     登录
                   </Button>
-                  <div className="register-link">没有账号？立即注册</div>
+                  <div className="register-link" onClick={()=>history.push('/register')}>没有账号？立即注册</div>
                   <hr />
                   <div className="third-login">
                     <a href="https://api.weibo.com/oauth2/authorize?client_id=323275235&response_type=code&redirect_uri=http://123.56.3.135:8080/api/user/weiboThreeLogin">
