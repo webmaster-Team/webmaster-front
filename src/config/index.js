@@ -11,7 +11,7 @@ const getBorrowDuration = (identity) =>(identity === '学生'? studentBorrowDura
 export default {
   //axios配置
   baseUrl,
-  fileUploadBaseUrl: baseUrl.dev,
-  captchaBaseUrl: baseUrl.dev,
+  fileUploadBaseUrl: baseUrl.pro,
+  captchaBaseUrl: baseUrl.pro,
   getBorrowDuration
 }
