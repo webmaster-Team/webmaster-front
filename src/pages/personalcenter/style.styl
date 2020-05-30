@@ -1,0 +1,41 @@
+border-radius()
+    -webkit-border-radius: arguments
+    -moz-border-radius: arguments
+    border-radius: arguments
+
+flex()
+    display: -webkit-flex; /* Safari */
+    display: flex;
+
+#crest
+    height: 100%
+    border-radius(50%)
+
+.center-layout
+    height: 100%
+    .center-content
+        height: 90%
+        .center-content-layout
+            flex()
+            flex-direction: row
+            .center-content-layout-books
+                position relative
+                height: 100%
+                width: 75%
+                flex()
+                .book-info-card
+                    p
+                        font-size: 10px
+                        span
+                            font-weight: 700
+
+            .center-content-layout-info
+                position relative
+                height 100%
+                width: 25%
+                flex()
+                .center-layout-div
+                    height: 100%
+                    .info-card
+                        height: 100%
+                        background-color: #ffffff

@@ -1,3 +1,8 @@
+/*
+ * @Author: Daniel
+ * @LastEditTime: 2020-05-30 16:39:08
+ * @FilePath: /webmaster-front/src/pages/container/index.js
+ */ 
 import React, { useEffect, useCallback, useState } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
 import { Route, Redirect, Switch } from 'react-router-dom'
@@ -14,6 +19,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import Borrow from '../borrow'
 import './style.styl'
 import Search from '../search'
+import PersonalCenter from '../personalcenter'
 import Renew from '../renew'
 
 const Container = (props) => {
@@ -47,6 +53,7 @@ const Container = (props) => {
           <Switch>
             <Route path="/index/search" component={Search} />
             <Route path="/index/borrow" component={Borrow} />
+            <Route path='/index/usercenter' component={PersonalCenter} />
             <Route path="/index/renew" component={Renew} />
             <Redirect exact from="/index" to="/index/search" />
           </Switch>
