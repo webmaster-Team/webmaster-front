@@ -198,7 +198,6 @@ const Renew = (props) => {
             return <Button type="primary" onClick={()=>openRenewDialog(record)}>续借</Button>
           }
         }
-         
         }
       },
   ]

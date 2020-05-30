@@ -12,7 +12,6 @@ import Token from '../../utils/token'
 import Axios from '../../utils/request'
 //borrow组件
 const Borrow = (props) => {
-  console.log(props)
   let history = useHistory()
   // 获取store中的数据
   let {
