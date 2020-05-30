@@ -48,7 +48,7 @@ const Container = (props) => {
             <Route path="/index/search" component={Search} />
             <Route path="/index/borrow" component={Borrow} />
             <Route path="/index/renew" component={Renew} />
-            <Redirect from="/index" to="/index/search" />
+            <Redirect exact from="/index" to="/index/search" />
           </Switch>
         </div>
       </Layout>

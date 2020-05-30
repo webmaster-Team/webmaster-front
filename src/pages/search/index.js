@@ -169,6 +169,7 @@ const Search = (props) => {
     return data
   },[pageIndex,publisher,key,sort,date,author,ISBN,bookState,bookType,library,layer,origin])
 
+  
   //第一次加载时获取所有的品类数据，不带上任何搜索，获取所有的类别数据
   useEffect(() => {
     Axios.post('/api/book/getSearchTypes', {}).then((res) => {
@@ -178,35 +179,55 @@ const Search = (props) => {
     })
   }, [])
 
+  //获取用户数据和借书的情况
+  const  getInitUserData = ()=>{
+    Axios.post('/api/user/getUserData', {}).then((res) => {
+      if (res.result === 1) {
+        props.modifyUserInfo({
+          id: res.data.id,
+          card: res.data.card,
+          name: res.data.name,
+          cover: res.data.cover,
+          identity: res.data.identity,
+          hasBorrowed: res.data.hasBorrowed,
+          isBorrowing: res.data.isBorrowing,
+        })
+      } else {
+        props.modifyShowAlert(true, '获取您的信息失败', 'error')
+      }
+    })
+    Axios.post('/api/user/getUserIsBorrowingBook', {}).then((res) => {
+      if (res.result === 1) {
+        setBorrowingBooks(res.data)
+      } else {
+        props.modifyShowAlert(true, '获取您的信息失败', 'error')
+      }
+    })
+  }
+
   //验证是否登录
   useEffect(() => {
-    //如果内存里登录成功了，那么数据也肯定加载进来了
+    //如果内存里登录成功或本地token依然有效，那么数据也肯定加载进来了
     if (login || Token.validate()) {
       props.modifyLogin(true)
-      //获取用户借书的情况
-      //获取用户数据
-      Axios.post('/api/user/getUserData', {}).then((res) => {
-        if (res.result === 1) {
-          props.modifyUserInfo({
-            id: res.data.id,
-            card: res.data.card,
-            name: res.data.name,
-            cover: res.data.cover,
-            identity: res.data.identity,
-            hasBorrowed: res.data.hasBorrowed,
-            isBorrowing: res.data.isBorrowing,
-          })
-        } else {
-          props.modifyShowAlert(true, '获取您的信息失败', 'error')
+      getInitUserData()
+    }else{
+      //没有登陆成功，查看是否是通过第三方登陆进来的
+      if (props.location.search !== '') {
+        //说明是由第三方登录进来的，这个链接只有可能是通过第三方登录进来的
+        let token_array = props.location.search
+          .split('?')[1]
+          .split('&')[0]
+          .split('=')
+        console.log(token_array)
+        //如果有token这个字段，说明第三方登陆
+        if (token_array[0] === 'token') {
+          //本地设置token
+          Token.set(token_array[1])
+          //然后就可以获取数据了
+          getInitUserData()
         }
-      })
-      Axios.post('/api/user/getUserIsBorrowingBook', {}).then((res) => {
-        if (res.result === 1) {
-          setBorrowingBooks(res.data)
-        } else {
-          props.modifyShowAlert(true, '获取您的信息失败', 'error')
-        }
-      })
+      }
     }
   }, [])
 

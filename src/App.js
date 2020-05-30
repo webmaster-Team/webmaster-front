@@ -19,7 +19,7 @@ const App = () => {
         {/* 首页路由 */}
         <Route path="/index" component={Container} />
         {/* 默认路由 */}
-        <Redirect exact from="/" to="/index"/>
+        <Redirect exact from="/" to="/index/search"/>
        </Switch>
       </Provider>
     </HashRouter>
