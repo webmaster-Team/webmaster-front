@@ -3,7 +3,7 @@ import * as constants from './constants'
 
 const defaultState = fromJS({
   bookData: [],//存储要借阅的书籍序号
-  step: 0,
+  step: -1,
   borrowBook: [],
   borrowResultList:[],
   listData:[]//存储要借阅的书籍所有信息

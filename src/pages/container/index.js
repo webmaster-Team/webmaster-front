@@ -14,6 +14,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 import Borrow from '../borrow'
 import './style.styl'
 import Search from '../search'
+import Renew from '../renew'
 
 const Container = (props) => {
   // 获取store中的数据
@@ -34,7 +35,7 @@ const Container = (props) => {
       >
         <div
           className={
-            'alert-wrapper ' + (messageType === 'success' ? 'success' : 'error')
+            'alert-wrapper ' + (messageType === 'success' ?  'success' : (messageType === 'error'? 'error':'warning'))
           }
         >
           {message}
@@ -43,11 +44,11 @@ const Container = (props) => {
       <SelfHeader />
       <Layout>
         <div>
-          {/* <Redirect path="/index" exact to="/index/search" /> */}
           <Switch>
             <Route path="/index/search" component={Search} />
             <Route path="/index/borrow" component={Borrow} />
-            <Redirect exact from="/index"  to="/index/search"/>
+            <Route path="/index/renew" component={Renew} />
+            <Redirect from="/index" to="/index/search" />
           </Switch>
         </div>
       </Layout>

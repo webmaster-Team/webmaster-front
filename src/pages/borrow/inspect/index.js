@@ -7,7 +7,7 @@ import './style.styl'
 const Inspect = props => {
   let history = useHistory()
   useEffect(() => {
-    if(props.bookData.size === 0)
+    if(props.bookData.size === 0 && props.step !== 0)
          history.replace('/index/borrow/check')
      props.changeStep(1)
   }, [])
@@ -70,6 +70,7 @@ const Inspect = props => {
 const mapState = (state) => ({
   bookData: state.borrow.get('bookData'),
   listData: state.borrow.get('listData'),
+  step:state.borrow.get('step')
 })
 const mapDispatch = (dispatch) => ({
   changeStep() {

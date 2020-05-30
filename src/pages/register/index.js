@@ -206,7 +206,7 @@ const Register = (props) => {
       }
     },
   }
-  //数据源
+  //左侧轮播图的数据源
   let data = [
     {
       title: '欢迎注册',
@@ -651,7 +651,7 @@ const Register = (props) => {
                   >
                     注册
                   </Button>
-                  <div className="register-link">已有账号？回去登录</div>
+                  <div className="register-link" onClick={()=>history.push('/login')}>已有账号？回去登录</div>
                 </form>
               )
             }}
