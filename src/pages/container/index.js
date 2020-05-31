@@ -8,9 +8,7 @@ import { Layout, Menu, Breadcrumb } from 'antd'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { actionCreators as ac } from './store'
 import {connect} from 'react-redux';
-
-// import SelfHeader from '../../components/header/SelfHeader';
-
+import SelfHeader from '../../components/header';
 import Snackbar from '@material-ui/core/Snackbar';
 import Borrow from '../borrow';
 import './style.styl';
@@ -27,7 +25,7 @@ const Container = (props) => {
 
 
   return (
-    <Layout style={{minHeight: '100%'}}>
+    <div>
       {/* 用于全局提供报错与提示的组件 */}
       <Snackbar
         anchorOrigin={{
@@ -47,11 +45,8 @@ const Container = (props) => {
           {message}
         </div>
       </Snackbar>
-      {/* <Header style={{padding: 0}}>
-        <SelfHeader/>
-      </Header> */}
-      <Layout>
-        <div>
+       <SelfHeader/>
+       <div className="my-body">
           <Switch>
             <Route path="/index/search" component={Search}/>
             <Route path="/index/borrow" component={Borrow}/>
@@ -60,8 +55,7 @@ const Container = (props) => {
             <Redirect exact from="/index" to="/index/search"/>
           </Switch>
         </div>
-      </Layout>
-    </Layout>
+    </div>
   )
 }
 

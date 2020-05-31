@@ -1,0 +1,60 @@
+$borderRadius = 10px//记录边框的圆角
+$boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
+$formInputColor=#0182ff
+//头部的最外层容器
+.header-wrapper
+    z-index 10000
+    width: 100%
+    position fixed
+    top 0px
+    left 0px
+    background-color: white
+    box-shadow: $boxShadow
+    height: 72px
+    padding: 0px 100px
+    display: flex
+    flex-flow: row nowrap
+    line-height: 72px
+    align-items: center
+    .header-logo
+        display: flex
+        align-items: center
+        .header-logo-text
+            font-size: 20px
+            font-weight: 600
+    .header-router
+       display flex
+       line-height: 100%
+       height: 100%
+       flex-flow: row nowrap
+       list-style none
+       margin-left: 40px
+       li
+         height: 100%
+         line-height: 72px
+         padding: 0px 20px
+         &:hover
+             color:$formInputColor
+             cursor pointer
+    .header-user-info
+        flex 1
+        display flex
+        flex-flow: row-reverse nowrap
+        .header-user-login-register
+            display flex
+            line-height: 100%
+            height: 100%
+            flex-flow: row nowrap
+            list-style none
+            margin-left: 40px
+            li
+                height: 100%
+                line-height: 72px
+                padding: 0px 5px
+                &:hover
+                    color:$formInputColor
+                    cursor pointer
+        .header-avatar
+            cursor pointer
+
+        

@@ -287,7 +287,7 @@ const  PersonalCenter = props=>{
                 {({ errors, touched, submitForm, handleSubmit, isSubmitting }) => {
                return (
                  <form 
-                  onSubmit={handleSubmit}
+                  // onSubmit={handleSubmit}
                   >
                   <Field
                     classes={{
@@ -416,11 +416,10 @@ const  PersonalCenter = props=>{
                         ),
                         }}
                   />
-                  {/* 忘记密码？ */}
                   <div className="forget-link-line">
                     <span className="forget-link">为了保护您的账户安全，请输入您的密码</span>
                   </div>
-                  <MButton variant="contained"   className="modifySubmitButton"  htmlType="submit" color="primary">
+                  <MButton variant="contained" onClick={handleSubmit}  className="modifySubmitButton"  htmlType="submit" color="primary">
                     保存
                   </MButton>
                   <MButton color="primary" className="cancelButton" onClick={closeModifyUserInfoDialog}>
@@ -448,7 +447,6 @@ const  PersonalCenter = props=>{
                     }
                >
                 <Card.Grid style={gridStyle}>卡号 | {card}</Card.Grid>
-                <Card.Grid style={gridStyle}>姓名 | {name}</Card.Grid>
                 <Card.Grid style={gridStyle}>身份 | {identity}</Card.Grid>
                 <Card.Grid style={gridStyle}>邮箱 | {typeof email == 'undefined' || email === ''? "未指定" : email}</Card.Grid>
                 <Card.Grid style={gridStyle}>电话 | {typeof phone == 'undefined' || phone === ''? "未指定" : phone}</Card.Grid>

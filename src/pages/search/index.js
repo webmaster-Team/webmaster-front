@@ -605,7 +605,7 @@ const Search = (props) => {
           </div>
         </div>
       </div>
-      <Affix offsetTop={5}>
+      <Affix offsetTop={72}>
       <div className="searchClassify">
         <div className="title">筛选</div>
         <div className="select">
