@@ -2,37 +2,37 @@
  * @Author: Daniel
  * @LastEditTime: 2020-05-30 16:39:08
  * @FilePath: /webmaster-front/src/pages/container/index.js
- */ 
+ */
 import React, { useEffect, useCallback, useState } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { actionCreators as ac } from './store'
-import { connect } from 'react-redux'
-import {
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-} from '@ant-design/icons'
-import SelfHeader from '../../components/header/SelfHeader'
-import Token from '../../utils/token'
-import Snackbar from '@material-ui/core/Snackbar'
-import Borrow from '../borrow'
-import './style.styl'
-import Search from '../search'
-import PersonalCenter from '../personalcenter'
-import Renew from '../renew'
+import {connect} from 'react-redux';
+
+import SelfHeader from '../../components/header/SelfHeader';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import Borrow from '../borrow';
+import './style.styl';
+import Search from '../search';
+import PersonalCenter from '../personalcenter';
+import Renew from '../renew';
+
+const {Header} = Layout;
+
 
 const Container = (props) => {
   // 获取store中的数据
-  let { select, login, showAlert, message, messageType } = props
+  let {select, login, showAlert, message, messageType} = props;
+
 
   return (
-    <Layout style={{ minHeight: '100%' }}>
+    <Layout style={{minHeight: '100%'}}>
       {/* 用于全局提供报错与提示的组件 */}
       <Snackbar
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'center',
+          horizontal: 'center'
         }}
         open={showAlert}
         onClose={() => props.modifyShowAlert(false, '', '')}
@@ -41,21 +41,23 @@ const Container = (props) => {
       >
         <div
           className={
-            'alert-wrapper ' + (messageType === 'success' ?  'success' : (messageType === 'error'? 'error':'warning'))
+            'alert-wrapper ' + (messageType === 'success' ? 'success' : (messageType === 'error' ? 'error' : 'warning'))
           }
         >
           {message}
         </div>
       </Snackbar>
-      <SelfHeader />
+      <Header style={{padding: 0}}>
+        <SelfHeader/>
+      </Header>
       <Layout>
         <div>
           <Switch>
-            <Route path="/index/search" component={Search} />
-            <Route path="/index/borrow" component={Borrow} />
-            <Route path='/index/usercenter' component={PersonalCenter} />
-            <Route path="/index/renew" component={Renew} />
-            <Redirect exact from="/index" to="/index/search" />
+            <Route path="/index/search" component={Search}/>
+            <Route path="/index/borrow" component={Borrow}/>
+            <Route path='/index/usercenter' component={PersonalCenter}/>
+            <Route path="/index/renew" component={Renew}/>
+            <Redirect exact from="/index" to="/index/search"/>
           </Switch>
         </div>
       </Layout>

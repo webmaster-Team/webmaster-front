@@ -4,9 +4,9 @@ import { StoreContext } from 'redux-react-hook'
 import { Steps, Row, Col, Card, Avatar } from 'antd'
 import { connect } from 'react-redux'
 import Check from './check'
-import Inspect from './inspect'
-import Process from './process'
-import { actionCreators as frameac } from '../container/store'
+import Inspect from './inspect';
+import Process from './process';
+import {actionCreators as frameac} from '../container/store';
 import { Route, Redirect, useHistory, Switch } from 'react-router-dom'
 import Token from '../../utils/token'
 import Axios from '../../utils/request'
@@ -64,7 +64,7 @@ const Borrow = (props) => {
             Token.set(token_array[1])
           } else {
             //说明没有token，重定向到login页面进行登录
-            history.replace('/login') 
+            history.replace('/login');
           }
         } else {
           history.replace('/login')
@@ -152,8 +152,8 @@ const mapState = (state) => ({
   hasBorrowed: state.frame.get('hasBorrowed'),
   isBorrowing: state.frame.get('isBorrowing'),
   step: state.borrow.get('step'),
-  identity: state.frame.get('identity'),
-})
+  identity: state.frame.get('identity')
+});
 
 const mapDispatch = (dispatch) => ({
   //修改用户的数据
