@@ -1,0 +1,57 @@
+@import "../../style.styl"
+$title = #0b0b0b
+$text = #c2c2c2
+$formInputColor=#0182ff
+$borderRadius = 10px//记录边框的圆角
+$boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
+
+.right-card-container
+    width: 100%
+    box-shadow: $boxShadow
+    .order
+      width: 100%
+      display: flex
+      justify-content: space-between
+      align-items: center
+      min-height: fit-content
+      //每一个珊格行的样式
+      .ant-row
+          width: 100%
+      .ant-col
+          display flex
+          justify-content: flex-start
+          align-items: center
+      //为每一个重要的文字片段添加蓝色字体
+      .blue-text
+          color: $formInputColor
+      //为每一个产品经理规定的文字片段添加灰色字体
+      .grey-text
+          color: #999
+      //每一行订单数据的图片组件的样式
+      .order-img
+          height: 40px
+          display: flex
+          align-items: flex-end
+          font-size: 20px
+          img 
+            float left
+      //描述每一行订单数据的number数量描述的样式
+      .order-number-desc
+          overflow hidden
+          white-space: nowrap
+          text-overflow: ellipsis
+      .cancel-order
+          color #CD0000
+    
+    //当前该用户当前所借阅的书籍的折叠列表
+    .is-borrowing-books
+         width: 100%
+         display: flex
+         flex-flow: row wrap
+    //用于表示列表到底的到底啦的提示信息
+    .arrive-end-tag
+        width: 100%
+        text-align: center
+        color $text
+
+      

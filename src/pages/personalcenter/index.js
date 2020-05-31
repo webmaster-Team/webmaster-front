@@ -31,6 +31,7 @@ import WcIcon from '@material-ui/icons/Wc'
 import FaceIcon from '@material-ui/icons/Face'
 import PanoramaIcon from '@material-ui/icons/Panorama'
 import Config from '../../config'
+import RightCard from './components/RightCard'
 import {
     ManOutlined,WomanOutlined
   } from '@ant-design/icons';
@@ -135,7 +136,7 @@ const  PersonalCenter = props=>{
         textAlign: 'left',
     }
 
-    const  getUserData = ()=>{
+    const getUserData = ()=>{
         //如果内存里登录成功了，就可以直接获取数据了
         if (login || Token.validate()) {
             Axios.post('/api/user/getUserData', {}).then((res) => {
@@ -419,10 +420,10 @@ const  PersonalCenter = props=>{
                   <div className="forget-link-line">
                     <span className="forget-link">为了保护您的账户安全，请输入您的密码</span>
                   </div>
-                  <MButton type="primary"  className="modifySubmitButton"  htmlType="submit" color="primary">
+                  <MButton variant="contained"   className="modifySubmitButton"  htmlType="submit" color="primary">
                     保存
                   </MButton>
-                  <MButton color="primary" className="modifySubmitButton" onClick={closeModifyUserInfoDialog}>
+                  <MButton color="primary" className="cancelButton" onClick={closeModifyUserInfoDialog}>
                     取消
                   </MButton>
                 </form>
@@ -440,8 +441,8 @@ const  PersonalCenter = props=>{
                         <span className="name">{props.name}</span>
                         {
                             sex === 1?
-                                <ManOutlined classMame="sexIcon" style={{color:"#0182ff"}}/> :
-                                <WomanOutlined classMame="sexIcon" style={{color:"#FF69B4"}}/>
+                                <ManOutlined className="sexIcon" style={{color:"#0182ff"}}/> :
+                                <WomanOutlined className="sexIcon" style={{color:"#FF69B4"}}/>
                         }
                     </div>
                     }
@@ -462,7 +463,8 @@ const  PersonalCenter = props=>{
                     <Button className="modifyButton" type="link" onClick={()=>setOpenDialog(true)}>编辑我的信息</Button>
                 </Card.Grid>
               </Card>
-             <div>右侧借书信息
+             <div className="right-card-wrapper">
+               <RightCard/>
              </div>
         </div>
     )

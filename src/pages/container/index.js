@@ -9,7 +9,7 @@ import { Route, Redirect, Switch } from 'react-router-dom'
 import { actionCreators as ac } from './store'
 import {connect} from 'react-redux';
 
-import SelfHeader from '../../components/header/SelfHeader';
+// import SelfHeader from '../../components/header/SelfHeader';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import Borrow from '../borrow';
@@ -47,9 +47,9 @@ const Container = (props) => {
           {message}
         </div>
       </Snackbar>
-      <Header style={{padding: 0}}>
+      {/* <Header style={{padding: 0}}>
         <SelfHeader/>
-      </Header>
+      </Header> */}
       <Layout>
         <div>
           <Switch>
