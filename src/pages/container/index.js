@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import SelfHeader from '../../components/header';
 import Snackbar from '@material-ui/core/Snackbar';
 import Borrow from '../borrow';
+import Footer from '../../components/footer'
 import './style.styl';
 import Search from '../search';
 import PersonalCenter from '../personalcenter';
@@ -56,6 +57,7 @@ const Container = (props) => {
             <Redirect exact from="/index" to="/index/search"/>
           </Switch>
         </div>
+        <Footer/>
     </div>
   )
 }

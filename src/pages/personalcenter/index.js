@@ -158,15 +158,24 @@ const  PersonalCenter = props=>{
                 props.modifyShowAlert(true, '获取您的信息失败', 'error')
             }
             })
+            props.modifyLogin(true)
           }else{
             //并没有登陆
             history.replace('/login')
          } 
     }
+
+    //如果login状态发生变化，就要重新查看是否有进入usercenter的权限
+    useEffect(()=>{
+       if(login || Token.validate()){
+         getUserData()
+       }else
+          history.replace('/login')
+    },[login])
     
    useEffect(() => {
       getUserData()
-  }, [])
+   }, [])
 
     //文件上传配置
     let uploadConfig = {

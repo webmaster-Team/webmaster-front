@@ -6,6 +6,11 @@ const set = (value) => {
     localStorage.setItem("expires", moment().add(1, 'days'))
 }
 
+//设置token的expires过期使得token失效
+const fail = ()=>{
+   localStorage.setItem('expires',moment())
+} 
+
 //验证token是否过期
 const validate = () => {
     // console.log(moment().get('millisecond'))
@@ -25,5 +30,6 @@ const get = () => {
 export default {
     get,
     set,
-    validate
+    validate,
+    fail
 }

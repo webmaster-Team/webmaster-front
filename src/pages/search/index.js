@@ -5,11 +5,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
 import Divider from '@material-ui/core/Divider'
-import { Select, DatePicker, Input,Affix,Anchor } from 'antd'
+import { Select, DatePicker, Input,Affix,Anchor,BackTop } from 'antd'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DirectionsIcon from '@material-ui/icons/Directions'
 import SettingsIcon from '@material-ui/icons/Settings'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
@@ -34,6 +35,7 @@ const { RangePicker } = DatePicker
 const { Option } = Select
 const useStyles = makeStyles((theme) => ({
   root: {
+    flex:1,
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
@@ -124,6 +126,14 @@ const Search = (props) => {
       }
     })
   }
+
+  //如果login状态发生变化，就要重新查看是否有进入usercenter的权限
+  useEffect(()=>{
+    if(login || Token.validate()){
+    }else
+      setBorrowingBooks([])
+      setFunctionButtonStyle(-3)
+  },[login])
 
   //生成搜索功能要上传的数据
   const comeData = useCallback(() => {
@@ -227,6 +237,8 @@ const Search = (props) => {
           //然后就可以获取数据了
           getInitUserData()
         }
+      }else{
+        
       }
     }
   }, [])
@@ -424,9 +436,9 @@ const Search = (props) => {
     <div className="searchPage">
       <div className="searchBody">
         <div className="searchbar">
-          <span className="setting">
+          {/* <span className="setting">
             <SettingsIcon />
-          </span>
+          </span> */}
           <Paper component="form" className={classes.root}>
             <InputBase
               className={classes.input}
@@ -484,7 +496,7 @@ const Search = (props) => {
                             component="h6"
                             className="bookauthor"
                           >
-                            {item2.author} | 所作
+                             {item2.author} | 所作
                           </Typography>
                           <Typography
                             gutterBottom
@@ -739,6 +751,9 @@ const Search = (props) => {
         </div>
       </div>
       </Affix>
+      <BackTop>
+         <div className="back-top-button"><ArrowUpwardIcon/></div>
+       </BackTop>
       </div>
   )
 }

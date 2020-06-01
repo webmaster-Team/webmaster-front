@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import {actionCreators as frameac} from '../../pages/container/store'
 import {connect} from 'react-redux'
 import { Avatar,Button } from 'antd';
+import IconButton from '@material-ui/core/IconButton';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import './style.styl'
 import HZNUImg from '../../assets/img/hznu.png'
 import {useHistory} from 'react-router-dom'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import SettingsIcon from '@material-ui/icons/Settings';
+import { useEventCallback } from '@material-ui/core';
+import Token from '../../utils/token'
 const Header = props=>{
   const history = useHistory()
+  //存储是否显示用户信息的下拉菜单
+  const [open,setOpen] = useState(false)
+
+  //退出当前账号的业务逻辑
+  const handleLogout = ()=>{
+    Token.fail()
+    props.modifyLogin(false)
+  }
+
    return (
      <div className="header-wrapper">
-       <div className="header-logo">
+       <div className="header-logo" onClick={()=>history.push('/index/search')}>
          <img src={HZNUImg} width={70} /> 
          <span className="header-logo-text">COMT-LIBRARY</span>
       </div>
@@ -27,14 +42,36 @@ const Header = props=>{
                <li onClick={()=>history.push('/register')}>注册</li>
            </ul>:
            (
-             <div>
-               <div className="header-avatar">
+             <div className="header-avatar-wrapper" 
+                  onMouseEnter={()=>setOpen(true)} 
+                  onMouseLeave={()=>setOpen(false)}>
                   <Avatar src={props.cover} />
-               </div>
+                  <span className="header-avatar-name">{props.name}</span>
+                  <ArrowDropDownIcon className="header-avatar-dropdown-icon"/>
+                  {
+                    open? 
+                    (
+                      <div className="user-info-board"
+                           onMouseEnter={()=>setOpen(true)} 
+                           onMouseLeave={()=>setOpen(false)}>
+                        <ul className="user-info-board-list">
+                           <li onClick={()=>history.push('/index/usercenter')}>
+                             <SettingsIcon className="user-info-board-list-li-icon"/><span>用户中心</span>
+                           </li>
+                           <li onClick={handleLogout}>
+                             <ExitToAppIcon  className="user-info-board-list-li-icon"/>
+                             <span>退出</span>
+                           </li>
+                        </ul>
+                      </div>
+                    ):null
+                  }
             </div>
            )
          }
       </div>
+     
+     
      </div>
    )
 }

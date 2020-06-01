@@ -1,10 +1,11 @@
 import React, { useState, useEffect,useCallback } from 'react'
 import {connect} from 'react-redux'
 import {actionCreators as frameac} from '../../../container/store'
-import { Collapse, Select,List ,Row, Col,Button as AButton} from 'antd';
+import { Collapse, Select,List ,Row,Table, BackTop,Avatar,Col,Button as AButton} from 'antd';
 import Typography from '@material-ui/core/Typography'
 import CardMedia from '@material-ui/core/CardMedia'
 import CardContent from '@material-ui/core/CardContent'
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import { SettingOutlined } from '@ant-design/icons';
 import { makeStyles } from '@material-ui/core/styles'
 import CardActionArea from '@material-ui/core/CardActionArea'
@@ -19,6 +20,7 @@ import {useHistory} from 'react-router-dom'
 import Axios from '../../../../utils/request'
 import './style.styl'
 import { Button } from '@material-ui/core';
+import { isFuture } from 'date-fns';
 const { Panel } = Collapse;
 const { Option } = Select;
 const useStyles = makeStyles((theme) => ({
@@ -69,6 +71,39 @@ const RightCard = props => {
   const [willCancelledOrder,setWillCancelledOrder] = useState({})
   //存储需要显示在警告框中的属于待取消订单的所有书籍
   const [willCancelledOrderBooks,setWillCancelledOrderBooks] = useState([])
+  //存储需要显示详细内容的订单号列表
+  const [serialList,setSerialList] = useState([])
+  //存储需要显示的订单详细内容
+  const [serialDetail,setSerialDetail] = useState({})
+
+  const columns = [
+    {
+      title: '书封',
+      dataIndex: 'cover',
+      key: 'cover',
+      render: (text, record, index) => <Avatar src={text} />,
+    },
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: '书名',
+      dataIndex: 'name',
+      key: 'name',
+    },
+     {
+       title: '作者',
+       dataIndex: 'author',
+       key: 'author',
+    },
+     {
+       title: '出版社',
+       dataIndex: 'publisher',
+       key: 'publisher',
+     }
+  ]
 
   useEffect(()=>{
     getAllOrder()
@@ -171,6 +206,35 @@ const RightCard = props => {
     }
   }
 
+  //当选择了不同的订单面板时所执行的业务逻辑
+  const handleChangePannel = (serial,serialList)  =>{
+     let newSerialList = serialList.concat()
+     if(newSerialList.includes(serial)){
+        newSerialList = newSerialList.filter(item=>item !== serial)
+     }else{
+       newSerialList.push(serial)
+     }
+     setSerialList(newSerialList)
+  }
+
+  //根据serialList的变动，来修改我们需要显示详情的数据
+  useEffect(()=>{
+    let axioses = []
+    for(var i = 0 ; i < serialList.length ; i++){
+      axioses.push(Axios.post('/api/order/getOrderData',{serial:serialList[i]}))
+    }
+    let newSerialDetail = {}
+    Axios.all(axioses).then(res=>{
+      res.map((resItem,index)=>{
+        if(resItem.result === 1){
+           newSerialDetail[serialList[index]]=resItem.data
+        }
+      })
+      console.log(newSerialDetail)
+      setSerialDetail(newSerialDetail)
+    })
+  },[serialList])
+
   return <div className="right-card-container">
      <Dialog
         open={open}
@@ -196,50 +260,96 @@ const RightCard = props => {
     <Collapse
     defaultActiveKey={['1']}
   >
-    <Panel header="已完成书单" key="1">
+    <Panel header="我的书单" key="1">
         <List
         size="large"
         dataSource={order}
-        renderItem={item => <List.Item>
-            <div className="order" key={item.serial}>
-              <Row gutter={6}>
-                <Col span={4}>
-                   <div className="order-img">
-                    {
-                      item.books.map((item1,index1)=>{
-                        if(index1 === 3) return <span>.....</span>
-                        if(index1 > 3) return ""
-                        return <img src={item1.cover} width={40} key={index1}/>
-                      })
+        renderItem={item => <List.Item key={item.serial}>
+              <Collapse
+                className="collapse"
+                bordered={false}
+                onChange={()=>handleChangePannel(item.serial,serialList)}
+               >
+                  <Panel header={
+                     <div className="order" key={item.serial}>
+                    <Row gutter={6}>
+                   <Col span={4}>
+                     <div className="order-img">
+                      {
+                        item.books.map((item1,index1)=>{
+                          if(index1 === 3) return <span>.....</span>
+                          if(index1 > 3) return ""
+                          return <img src={item1.cover} width={40} key={index1}/>
+                        })
+                      }
+                    </div>
+                 </Col>
+                 <Col span={5}>
+                    <div className="order-number-desc">
+                       <span className="">《{ typeof item.books[0] === 'undefined'? "":item.books[0].name}》</span>等<span>{item.books.length}</span>本书
+                    </div>
+                 </Col>
+                 <Col span={8}>
+                    <div className="order-serial-desc">
+                       书单号:<span className="grey-text" >{item.serial}</span>
+                     </div>
+                 </Col>
+                 <Col span={3}>
+                    <div className="order-state-desc">
+                       状态:<span style={{color:reflectStateNumberToArray(item.state)[1]}}>{reflectStateNumberToArray(item.state)[0]}</span>
+                    </div>
+                 </Col>
+                 <Col span={3}>
+                     { 
+                       item.canCancel? 
+                       <Button color="secondary" onClick={()=>handleOpen(item)}>
+                         取消该书单
+                       </Button>
+                       :null
+                     }   
+                  </Col>
+                </Row>
+              </div>
+              } key={item.serial}>
+                {
+                  serialList.map((item2,index)=>{
+                    if(item2 === item.serial){
+                      for(let [key,value] of Object.entries(serialDetail)){
+                        if(key === item2)
+                          return (
+                            <div className="collapse-order-detial">
+                                <Table
+                                  pagination={false}
+                                  rowKey="table"
+                                  className="table"
+                                  dataSource={value.books}
+                                  columns={columns}/>
+                                  {
+                                  (
+                                    value.state === 1 ?
+                                    (
+                                      <div className="collapse-order-detail-right">
+                                      <div className="collapse-order-detail-right-qrcode">
+                                        <img src={value.qrcode} width={150}/>
+                                      </div>
+                                      <div><span className="collpase-order-detail-right-text">创建时间 | </span>{Mount(value.createTime).format('YYYY-MM-DD')}</div>
+                                      <div><span className="collpase-order-detail-right-text">完成时间 | </span>{value.completeTime === "0"? "订单未完成":Mount(value.completeTime).format('YYYY-MM-DD')}</div>    
+                                      </div>     
+                                    ):(
+                                      <div  className="collapse-order-detail-right-no-relative">
+                                       <div><span className="collpase-order-detail-right-text">创建时间 | </span>{Mount(value.createTime).format('YYYY-MM-DD')}</div>
+                                       <div><span className="collpase-order-detail-right-text">完成时间 | </span>{value.completeTime === "0"? "订单未完成":Mount(value.completeTime).format('YYYY-MM-DD')}</div>         
+                                      </div>
+                                    ))
+                                    }
+                            </div>
+                         )
+                      }
                     }
-                  </div>
-               </Col>
-               <Col span={5}>
-                  <div className="order-number-desc">
-                     <span className="">《{item.books[0].name}》</span>等<span>{item.books.length}</span>本书
-                  </div>
-               </Col>
-               <Col span={8}>
-                  <div className="order-serial-desc">
-                     书单号:<span className="grey-text" >{item.serial}</span>
-                   </div>
-               </Col>
-               <Col span={3}>
-                  <div className="order-state-desc">
-                     状态:<span style={{color:reflectStateNumberToArray(item.state)[1]}}>{reflectStateNumberToArray(item.state)[0]}</span>
-                  </div>
-               </Col>
-               <Col span={3}>
-                   { 
-                     item.canCancel? 
-                     <Button color="secondary" onClick={()=>handleOpen(item)}>
-                       取消该书单
-                     </Button>
-                     :null
-                   }   
-                </Col>
-              </Row>
-            </div>
+                  })
+                }
+           </Panel>
+            </Collapse>
           </List.Item>
         }
       />
@@ -366,6 +476,9 @@ const RightCard = props => {
       </div>
    </Panel>
   </Collapse>
+       <BackTop>
+         <div className="back-top-button"><ArrowUpwardIcon/></div>
+       </BackTop>
     </div>
 }
 
