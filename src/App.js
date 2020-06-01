@@ -27,7 +27,7 @@ const App = () => {
         {/* 忘记密码路由 */}
         <Route path="/forgotPassword" component={PasswordConf} />
         {/* 默认路由 */}
-        <Redirect exact from="/" to="/index"/>
+        <Redirect exact from="/" to="/index/search"/>
        </Switch>
       </Provider>
     </HashRouter>

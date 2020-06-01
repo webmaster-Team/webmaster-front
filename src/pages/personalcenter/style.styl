@@ -1,41 +1,148 @@
-border-radius()
-    -webkit-border-radius: arguments
-    -moz-border-radius: arguments
-    border-radius: arguments
+@import "../../style.styl"
+$title = #0b0b0b
+$text = #c2c2c2
+$formInputColor=#0182ff
+$borderRadius = 10px//记录边框的圆角
+$boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
 
-flex()
-    display: -webkit-flex; /* Safari */
-    display: flex;
+.personalCenterWrapper
+    padding-top: 20px
+    width: 100%
+    display: flex
+    flex-flow: row wrap
+    justify-content: center
+  
+    .infoBoard
+        width: 100%
+        max-width: 300px
+        background-color: white
+        border-radius: $borderRadius
+        display: flex
+        flex-flow: column nowrap
+        justify-content: flex-start
+        align-items: center
+        margin-right 10px
+        box-shadow: $boxShadow
+        .modifyButtonLine
+            padding 10px
+            .modifyButton
+                width: 100%
+        .ant-card-head
+            width: 100%
+        //头像行
+        .avatarRow
+            width: 100%
+            .avatar
+                margin-right: 20px
+            .name
+                margin-right 5px
+    .right-card-wrapper
+        width: 100%
+        max-width 1000px
+               
+.dialogBookText
+            z-index: 1001
+            width: 300px
+            right: 30px
+            top: 100px
+            display flex
+            flex-flow: column nowrap
 
-#crest
-    height: 100%
-    border-radius(50%)
+            .form-title
+                font-weight: 100
+                letter-spacing: 1px
+                color: $title
+                width: 100%
+                text-align: center
+                line-height: 15px
+                height: 15px
+                font-size: 16px
+            .form-input
+                width 100%
+                vertical-align:middle
+                line-height: 40px
+                height: 40px
+                margin-top: 20px
+                .form-ador
+                    height: 24px
+                    line-height: 24px
+                    display: flex
+                    padding: 5px
+                    flex-flow: column nowrap
+                    justify-content: center
+                    align-items: center
+                    border-right-width: 0.5px
+                    border-right-style: solid
+            //忘记密码链接的样式
+            .forget-link-line
+                width: 100%
+                text-align: right 
+                line-height: 20px
+                height: 20px
+                vertical-align: middle
+                .forget-link
+                    color $text
+                    color #8490a6
+                    font-size: 10px
+            .MuiFormGroup-root
+                display: flex
+                flex-flow: row nowrap
+                .MuiIconButton-label
+                    width: 12px
+                    height: 12px
+            .register-link
+                color #8490a6
+                font-size: 10px
+                text-align: center
+                margin-top: 10px
+                margin-bottom: 10px
+                cursor pointer
+            .phone
+                width: 100%
+            .sex
+                line-height: 30px
+                height: 30px
+                font-size: 14px
+                color $title
+                margin-left: 15px
+                margin-top: 25px
+                .sex-icon
+                    color: $title
+                    margin-right: 30px
+                    height: 30px
+                    line-height: 30px
+                    display: inline-flex
+                    justify-content: center
+                    align-items: center
+                &.identity
+                    margin-top: 0
+            .img
+                width: 100%
+                line-height: 60px
+                display: flex
+                flex-flow: row nowrap
+                align-items: flex-start 
+                .img-icon
+                    display: flex
+                    flex-flow: row wrap
+                    align-items: center
+                    height: 40px
+                    line-height: 40px
+                    margin-left: 15px
+                .avatarButton
+                    color: $formInputColor
+                .upload
+                    margin-left: 15px
+                    margin-top: 10px
+            .modifySubmitButton
+                color white
+                margin-top: 15px
+                background-color: $formInputColor
+            .cancelButton
+                color $formInputColor
+                margin-top: 15px
 
-.center-layout
-    height: 100%
-    .center-content
-        height: 90%
-        .center-content-layout
-            flex()
-            flex-direction: row
-            .center-content-layout-books
-                position relative
-                height: 100%
-                width: 75%
-                flex()
-                .book-info-card
-                    p
-                        font-size: 10px
-                        span
-                            font-weight: 700
 
-            .center-content-layout-info
-                position relative
-                height 100%
-                width: 25%
-                flex()
-                .center-layout-div
-                    height: 100%
-                    .info-card
-                        height: 100%
-                        background-color: #ffffff
+                
+.MuiRadio-colorSecondary.Mui-checked
+   color: $formInputColor  !important

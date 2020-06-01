@@ -37,6 +37,13 @@ const Renew = (props) => {
     identity,
   } = props
 
+  //如果login状态发生变化，就要重新查看是否有进入usercenter的权限
+  useEffect(()=>{
+    if(login || Token.validate()){
+    }else
+        history.replace('/login')
+  },[login])
+
   //验证是否登录
   useEffect(() => {
     //如果内存里登录成功了，就可以直接获取数据了
@@ -104,6 +111,7 @@ const Renew = (props) => {
   }, [])
   
   useEffect(()=>{
+    // if(login){
      Axios.post('/api/user/getUserIsBorrowingBook',{})
      .then(res=>{
          //获取用户正在借阅书籍成功
@@ -118,6 +126,7 @@ const Renew = (props) => {
              props.modifyShowAlert(true,"获取用户已借书籍失败","error")
          }
      })
+    // }
   },[])
 
   //引入steps步骤条
@@ -198,7 +207,6 @@ const Renew = (props) => {
             return <Button type="primary" onClick={()=>openRenewDialog(record)}>续借</Button>
           }
         }
-         
         }
       },
   ]

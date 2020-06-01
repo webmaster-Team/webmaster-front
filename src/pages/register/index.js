@@ -153,7 +153,7 @@ const Register = (props) => {
           setType('error')
           setOpen(true)
           setAvatarUrl('')
-          setInterval(() => {
+          setTimeout(() => {
             setOpen(false)
           }, 2000)
         }
@@ -164,7 +164,7 @@ const Register = (props) => {
           setType('error')
           setOpen(true)
           setAvatarUrl('')
-          setInterval(() => {
+          setTimeout(() => {
             setOpen(false)
           }, 2000)
         }
@@ -191,7 +191,7 @@ const Register = (props) => {
           setMessage('头像上传成功')
           setType('success')
           setOpen(true)
-          setInterval(() => {
+          setTimeout(() => {
             setOpen(false)
           }, 2000)
         }
@@ -200,7 +200,7 @@ const Register = (props) => {
         setType('error')
         setOpen(true)
         setAvatarUrl('')
-        setInterval(() => {
+        setTimeout(() => {
           setOpen(false)
         }, 2000)
       }
@@ -349,7 +349,7 @@ const Register = (props) => {
                   setMessage('注册成功，即将跳转到登录页')
                   setType('success')
                   setOpen(true)
-                  setInterval(() => {
+                  setTimeout(() => {
                     history.replace('/login')
                   }, 2000)
                 } else {

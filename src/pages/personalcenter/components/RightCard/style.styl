@@ -1,0 +1,141 @@
+@import "../../style.styl"
+$title = #0b0b0b
+$text = #c2c2c2
+$formInputColor=#0182ff
+$borderRadius = 10px//记录边框的圆角
+$boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
+
+.right-card-container
+    width: 100%
+    box-shadow: $boxShadow
+    .back-top-button
+        position relative
+        top -100px
+        width: 60px
+        height: 60px
+        background-color: white
+        color $title
+        box-shadow: $boxShadow
+        text-align: center
+        line-height: 60px
+        display: flex
+        justify-content: center
+        align-items: center
+        &:hover
+            background-color $formInputColor
+            color white
+    .ant-collapse
+            width: 100%
+    .ant-collapse-item
+            width: 100%    
+    .ant-list-item
+        padding 6px 0px !important
+        border none !important
+    .ant-collapse-header
+             background-color: white
+    .ant-collapse-content
+            background-color: white !important
+    .collapse-order-detial
+        width: 100%
+        display: flex
+        flex-flow: row nowrap
+        justify-content: space-between
+        align-items: flex-start
+        .table
+            flex 1
+            table 
+               background-color: #ccc
+               .ant-table-row
+                  .ant-table-cell
+                      background-color: #eee
+               .ant-table-thead > tr > th
+                   background-color: #cdcdcd
+        .collapse-order-detail-right
+            background-color: white
+            border-width: 1px
+            margin-left: 10px
+            display: flex
+            flex-flow: column nowrap
+            align-items: flex-start
+            position relative
+            top -15px
+            .collpase-order-detail-right-text
+                color: #999
+                line-height: 30px
+                height: 30px
+        .collapse-order-detail-right-no-relative
+            background-color: white
+            border-width: 1px
+            margin-left: 10px
+            display: flex
+            flex-flow: column nowrap
+            align-items: flex-start
+            position relative
+            .collpase-order-detail-right-text
+                color: #999
+                line-height: 30px
+                height: 30px
+    .order
+      width: 100%
+      display: flex
+      justify-content: space-between
+      align-items: center
+      min-height: fit-content
+      .collapse
+          width: 100%
+    
+      //每一个珊格行的样式
+      .ant-row
+          width: 100%
+      .ant-col
+          display flex
+          justify-content: flex-start
+          align-items: center
+      //为每一个重要的文字片段添加蓝色字体
+      .blue-text
+          color: $formInputColor
+      //为每一个产品经理规定的文字片段添加灰色字体
+      .grey-text
+          color: #999
+      //每一行订单数据的图片组件的样式
+      .order-img
+          height: 40px
+          display: flex
+          align-items: flex-end
+          font-size: 20px
+          img 
+            float left
+      //描述每一行订单数据的number数量描述的样式
+      .order-number-desc
+          overflow hidden
+          white-space: nowrap
+          text-overflow: ellipsis
+      .cancel-order
+          color #CD0000
+    
+    //当前该用户当前所借阅的书籍的折叠列表
+    .is-borrowing-books
+         width: 100%
+         display: flex
+         flex-flow: row wrap
+         .bookname
+            overflow: hidden
+            text-overflow: ellipsis
+            white-space: nowrap
+         .bookauthor
+            overflow: hidden
+            text-overflow: ellipsis
+            white-space: nowrap
+            color:rgba(0,0,0,.5)
+         .bookpublisher
+            overflow: hidden
+            text-overflow: ellipsis
+            white-space: nowrap
+            color:rgba(0,0,0,.5)
+    //用于表示列表到底的到底啦的提示信息
+    .arrive-end-tag
+        width: 100%
+        text-align: center
+        color $text
+
+      
