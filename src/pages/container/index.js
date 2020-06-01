@@ -52,20 +52,11 @@ const Container = (props) => {
        <div className="my-body">
          {/** 未知的错误 */}
           <Switch>
-<<<<<<< HEAD
-            <Route path="/index/search" component={Search} />
-            <Route path="/index/borrow" component={Borrow} />
-            <Route path='/index/usercenter' component={PersonalCenter} />
-            <Route path="/index/renew" component={Renew} />
-            
-            <Redirect from="/index" to="/index/search" />
-=======
             <Route path="/index/search" component={Search}/>
             <Route path="/index/borrow" component={Borrow}/>
             <Route path='/index/usercenter' component={PersonalCenter}/>
             <Route path="/index/renew" component={Renew}/>
             <Redirect exact from="/index" to="/index/search"/>
->>>>>>> f762a5e77e0906260adc2ae9675cb4790f101a33
           </Switch>
         </div>
         <Footer/>
