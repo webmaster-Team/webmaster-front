@@ -16,8 +16,7 @@ const Header = props=>{
       <ul className="header-router">
         <li onClick={()=>history.push('/index/search')}>寻找</li>
         <li onClick={()=>history.push('/index/borrow')}>借阅</li>
-        <li onClick={()=>history.push('/index/renew')}>续借</li>
-        <li>归还</li>
+        <li onClick={()=>history.push('/index/renew')}>续借 / 归还</li>
       </ul>
       <div className="header-user-info">
          {

@@ -336,6 +336,7 @@ const Search = (props) => {
     date,
     author,
     publisher,
+    bookType,
     bookState,
     library,
     layer,
@@ -615,6 +616,9 @@ const Search = (props) => {
             style={{ width: 120 }}
             onChange={(value) => setBookType(value)}
           >
+           <Option value={""}>
+              全部
+           </Option>
             {screen.bookTypes.map((item, index) => (
               <Option value={item} key={index}>
                 {item}

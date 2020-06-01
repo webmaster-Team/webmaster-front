@@ -28,6 +28,7 @@ const Container = (props) => {
     <div>
       {/* 用于全局提供报错与提示的组件 */}
       <Snackbar
+        className="snackbar"
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'center'
