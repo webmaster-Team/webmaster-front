@@ -1,6 +1,6 @@
 /*
  * @Author: Daniel
- * @LastEditTime: 2020-05-30 16:39:08
+ * @LastEditTime: 2020-05-31 19:41:22
  * @FilePath: /webmaster-front/src/pages/container/index.js
  */
 import React, { useEffect, useCallback, useState } from 'react'
@@ -18,6 +18,7 @@ import PersonalCenter from '../personalcenter';
 import Renew from '../renew';
 
 const {Header} = Layout;
+
 
 
 const Container = (props) => {
@@ -51,11 +52,20 @@ const Container = (props) => {
        <div className="my-body">
          {/** 未知的错误 */}
           <Switch>
+<<<<<<< HEAD
+            <Route path="/index/search" component={Search} />
+            <Route path="/index/borrow" component={Borrow} />
+            <Route path='/index/usercenter' component={PersonalCenter} />
+            <Route path="/index/renew" component={Renew} />
+            
+            <Redirect from="/index" to="/index/search" />
+=======
             <Route path="/index/search" component={Search}/>
             <Route path="/index/borrow" component={Borrow}/>
             <Route path='/index/usercenter' component={PersonalCenter}/>
             <Route path="/index/renew" component={Renew}/>
             <Redirect exact from="/index" to="/index/search"/>
+>>>>>>> f762a5e77e0906260adc2ae9675cb4790f101a33
           </Switch>
         </div>
         <Footer/>
