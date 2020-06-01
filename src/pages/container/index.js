@@ -1,6 +1,6 @@
 /*
  * @Author: Daniel
- * @LastEditTime: 2020-05-30 16:39:08
+ * @LastEditTime: 2020-05-31 19:41:22
  * @FilePath: /webmaster-front/src/pages/container/index.js
  */ 
 import React, { useEffect, useCallback, useState } from 'react'
@@ -21,6 +21,7 @@ import './style.styl'
 import Search from '../search'
 import PersonalCenter from '../personalcenter'
 import Renew from '../renew'
+
 
 const Container = (props) => {
   // 获取store中的数据
@@ -55,6 +56,7 @@ const Container = (props) => {
             <Route path="/index/borrow" component={Borrow} />
             <Route path='/index/usercenter' component={PersonalCenter} />
             <Route path="/index/renew" component={Renew} />
+            
             <Redirect from="/index" to="/index/search" />
           </Switch>
         </div>
