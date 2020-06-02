@@ -1,6 +1,6 @@
 /*
  * @Author: Daniel
- * @LastEditTime: 2020-05-31 19:41:22
+ * @LastEditTime: 2020-06-02 10:12:35
  * @FilePath: /webmaster-front/src/pages/container/index.js
  */
 import React, { useEffect, useCallback, useState } from 'react'
@@ -51,20 +51,11 @@ const Container = (props) => {
        <SelfHeader/>
        <div className="my-body">
           <Switch>
-<<<<<<< HEAD
-            <Route path="/index/search" component={Search} />
-            <Route path="/index/borrow" component={Borrow} />
-            <Route path='/index/usercenter' component={PersonalCenter} />
-            <Route path="/index/renew" component={Renew} />
-            
-            <Redirect from="/index" to="/index/search" />
-=======
             <Route path="/index/search" component={Search}/>
             <Route path="/index/borrow" component={Borrow}/>
             <Route path='/index/usercenter' component={PersonalCenter}/>
             <Route path="/index/renew" component={Renew}/>
             <Redirect exact from="/index" to="/index/search"/>
->>>>>>> f762a5e77e0906260adc2ae9675cb4790f101a33
           </Switch>
         </div>
         <Footer/>
