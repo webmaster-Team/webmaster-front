@@ -35,7 +35,7 @@ const Header = props=>{
       </ul>
       <div className="header-user-info">
          {
-           !props.login ? 
+           !props.login && !Token.validate() ? 
            <ul className="header-user-login-register">
                <li onClick={()=>history.push('/login')}>登录</li>
                <li>/</li>
