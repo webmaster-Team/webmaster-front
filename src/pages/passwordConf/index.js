@@ -1,28 +1,33 @@
 /*
  * @Author: Daniel
- * @LastEditTime: 2020-06-01 17:50:17
+ * @LastEditTime: 2020-06-02 12:15:53
  * @FilePath: /webmaster-front/src/pages/passwordConf/index.js
  */ 
 import React from 'react'
 import Circle from '../../components/common/circle'
 import styled from 'styled-components'
 import './style.styl'
-import { Formik } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import { TextField } from 'formik-material-ui';
 const img = require('./conf/img.json')
 
-/**
- * @description 忘记密码
- * 
- */
 
+/**
+ * @description 忘记密码表单匹配
+ */
+/*
 const PasswordFormSchema = Yup.object().Shape({
     account: Yup.string()
     .required('请输入学号')
     .matches(/^[0-9]+$/, '学号只包含数字')
     .length(13, '学号位数应该是13位的')
 })
-
+*/
+/**
+ * @description 忘记密码
+ * 
+ */
 const PasswordConf = () => {
 
     /**
@@ -88,15 +93,18 @@ const PasswordConf = () => {
      * @description 表单
      */
     let PasswordForm = (
-        <Formik 
-        initialValues={{
-            account: ''
-        }} 
-        validationSchema={PasswordFormSchema}
-        onSubmit={() => {}}
-        >
-            
-        </Formik>
+        <form>
+        {/**
+            <Formik 
+            initialValues={{
+                account: ''
+            }} 
+            onSubmit={() => {}}
+            >
+            </Formik>
+         */}
+         
+        </form>
     )
     
     /**
@@ -108,7 +116,7 @@ const PasswordConf = () => {
                 {Roller}
             </div>
             <div className="form">
-                <div className="form-title">用户注册</div>
+                <div className="form-title">忘记密码</div>
                 {PasswordForm}
             </div>
         </div>
