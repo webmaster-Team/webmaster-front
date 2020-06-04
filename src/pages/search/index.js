@@ -234,6 +234,7 @@ const Search = (props) => {
         if (token_array[0] === 'token') {
           //本地设置token
           Token.set(token_array[1])
+          props.modifyLogin(true)
           //然后就可以获取数据了
           getInitUserData()
         }
