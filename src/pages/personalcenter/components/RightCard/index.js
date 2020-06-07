@@ -149,6 +149,10 @@ const RightCard = props => {
     .then(res=>{
        if(res.result === 1){
          getAllOrder()
+         getAllIsBorrowingBooks()
+         getAllRevertBooks()
+         //修改左侧的用户信息列表
+         props.onOrderChange()
        }else{
          props.modifyShowAlert(true,res.msg,'error')
        }
@@ -168,7 +172,8 @@ const RightCard = props => {
   },[willCancelledOrder])
 
   //获取用户的所有正在借阅的书籍
-  const getAllIsBorrowingBooks = ()=>{
+  const getAllIsBorrowingBooks = useCallback(()=>{
+    console.log('我被执行了')
     Axios.post('/api/user/getUserIsBorrowingBook',{})
     .then(res=>{
       if(res.result === 1){
@@ -177,10 +182,11 @@ const RightCard = props => {
         props.modifyShowAlert(true,res.msg,'error')
       }
     })
-  }
+  },[setBorrowingBooks])
 
   //获取用户的所有已经归还的书籍
-  const getAllRevertBooks = ()=>{
+  const getAllRevertBooks =  useCallback(()=>{
+    console.log('我也被执行了')
     Axios.post('/api/user/getUserHasReturnedBook',{})
     .then(res=>{
       if(res.result === 1)
@@ -188,7 +194,7 @@ const RightCard = props => {
       else
            props.modifyShowAlert(true,res.msg,'error')
     })
-  }
+  },[setRevertBooks])
 
   //将获得的表示该订单状态的数字转化成对应的文字和颜色表示
   const reflectStateNumberToArray = (number)=>{
@@ -330,15 +336,15 @@ const RightCard = props => {
                                     (
                                       <div className="collapse-order-detail-right">
                                       <div className="collapse-order-detail-right-qrcode">
-                                        <img src={value.qrcode} width={150}/>
+                                      <img src={value.qrcode} width={150}/>
                                       </div>
                                       <div><span className="collpase-order-detail-right-text">创建时间 | </span>{Mount(value.createTime).format('YYYY-MM-DD')}</div>
-                                      <div><span className="collpase-order-detail-right-text">完成时间 | </span>{value.completeTime === "0"? "订单未完成":Mount(value.completeTime).format('YYYY-MM-DD')}</div>    
+                                      <div><span className="collpase-order-detail-right-text">完成时间 | </span>{value.completeTime =="0"? "订单未完成":Mount(value.completeTime).format('YYYY-MM-DD')}</div>    
                                       </div>     
                                     ):(
                                       <div  className="collapse-order-detail-right-no-relative">
                                        <div><span className="collpase-order-detail-right-text">创建时间 | </span>{Mount(value.createTime).format('YYYY-MM-DD')}</div>
-                                       <div><span className="collpase-order-detail-right-text">完成时间 | </span>{value.completeTime === "0"? "订单未完成":Mount(value.completeTime).format('YYYY-MM-DD')}</div>         
+                                       <div><span className="collpase-order-detail-right-text">完成时间 | </span>{value.completeTime == "0"? "订单未完成":Mount(value.completeTime).format('YYYY-MM-DD')}</div>         
                                       </div>
                                     ))
                                     }

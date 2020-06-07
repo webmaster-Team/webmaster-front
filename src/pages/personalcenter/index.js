@@ -237,6 +237,7 @@ const  PersonalCenter = props=>{
          event.preventDefault()
     }
 
+    //关闭编辑用户信息的模态框
     const closeModifyUserInfoDialog = ()=>{
          setOpenDialog(false)
          setFileList([])  
@@ -471,7 +472,7 @@ const  PersonalCenter = props=>{
                 </Card.Grid>
               </Card>
              <div className="right-card-wrapper">
-               <RightCard/>
+               <RightCard onOrderChange={()=>getUserData()}/>
              </div>
         </div>
     )

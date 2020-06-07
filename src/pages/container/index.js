@@ -19,12 +19,9 @@ import Renew from '../renew';
 
 const {Header} = Layout;
 
-
-
 const Container = (props) => {
   // 获取store中的数据
   let {select, login, showAlert, message, messageType} = props;
-
 
   return (
     <div>
