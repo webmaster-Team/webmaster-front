@@ -1,10 +1,10 @@
 import HttpRequest from './axios'
 import Config from '../config'
-const baseUrl =
+let baseUrl =
   process.env.NODE_ENV === 'development' ?
-  Config.baseUrl.dev:
+  Config.baseUrl.pro:
   Config.baseUrl.pro
 
-const axios = new HttpRequest(baseUrl)
+const axios = new HttpRequest("")
 
 export default axios

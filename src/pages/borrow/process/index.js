@@ -58,7 +58,7 @@ const Process = props => {
                         <CheckCircleOutlineRoundedIcon className="icon success"/>
                         <div className="success-text">借书订单生成成功</div>
                         <div className="success-order">书单号为{serial}</div>
-                        <Button  className="go-back" onClick={()=>history.replace('/index')}>前往个人中心查看</Button>
+                        <Button  className="go-back" onClick={()=>history.replace('/index/usercenter')}>前往个人中心查看</Button>
                     </div>
                 ) :(
                     success === -1?(

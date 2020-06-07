@@ -58,7 +58,7 @@ const Header = props=>{
                            <li onClick={()=>history.push('/index/usercenter')}>
                              <SettingsIcon className="user-info-board-list-li-icon"/><span>用户中心</span>
                            </li>
-                           <li onClick={handleLogout}>
+                           <li onClick={()=>handleLogout()}>
                              <ExitToAppIcon  className="user-info-board-list-li-icon"/>
                              <span>退出</span>
                            </li>

@@ -129,10 +129,13 @@ const Search = (props) => {
 
   //如果login状态发生变化，就要重新查看是否有进入usercenter的权限
   useEffect(()=>{
+    console.log(login)
     if(login || Token.validate()){
-    }else
+      console.log('验证通过')
+    }else{
       setBorrowingBooks([])
       setFunctionButtonStyle(-3)
+    }
   },[login])
 
   //生成搜索功能要上传的数据
@@ -217,11 +220,13 @@ const Search = (props) => {
 
   //验证是否登录
   useEffect(() => {
+    console.log(props.login)
     //如果内存里登录成功或本地token依然有效，那么数据也肯定加载进来了
-    if (login || Token.validate()) {
-      props.modifyLogin(true)
+    if (props.login || Token.validate()) {
+      // props.modifyLogin(true)
       getInitUserData()
     }else{
+      console.log('第三方登录验证')
       //没有登陆成功，查看是否是通过第三方登陆进来的
       if (props.location.search !== '') {
         //说明是由第三方登录进来的，这个链接只有可能是通过第三方登录进来的
@@ -234,9 +239,8 @@ const Search = (props) => {
         if (token_array[0] === 'token') {
           //本地设置token
           Token.set(token_array[1])
-          props.modifyLogin(true)
           //然后就可以获取数据了
-          getInitUserData()
+          getInitUserData(token_array[1])
         }
       }else{
         
@@ -364,7 +368,6 @@ const Search = (props) => {
 
   //初始化按钮的功能
   const initFunctionButton = useCallback((pannelData,bookData,identity)=>{
-    console.log(pannelData)
     const identityBookLimit = (identity)=>{
       let limit = 0
       switch(identity){

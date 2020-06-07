@@ -58,7 +58,7 @@ class HttpRequest {
   request (options) {
     // debugger
     const instance = axios.create()
-    const newOptions = Object.assign(this.getInsideConfig, options)
+    const newOptions = Object.assign(this.getInsideConfig(), options)
     this.interceptors(instance) //添加拦截器
     return instance(newOptions)
   }
