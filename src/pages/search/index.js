@@ -70,7 +70,7 @@ const Search = (props) => {
   // const [AlphaSort, setAlphaSort] = useState(0) 
   const [sort,setSort] = useState([null,null])
   const [bookData, setBookData] = useState([[]])
-  const [perpage, setPerpage] = useState(18)
+  const [perpage, setPerpage] = useState(20)
   const [pageIndex, setPageIndex] = useState(1)
   const [perrow, setPerrow] = useState(5)
   const [bottomDistance, setBottomDistance] = useState(1000)
