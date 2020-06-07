@@ -182,8 +182,6 @@ const PasswordConf = (props) => {
   //非状态的标示符
   let myClock = 0
 
-
- 
   const fabClassName = clsx({
         [classes.buttonSuccess]: success,
         [classes.buttonProgress]: !success
