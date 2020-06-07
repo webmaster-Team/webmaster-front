@@ -614,7 +614,7 @@ const PasswordConf = (props) => {
   }
 
   return (
-    <div className="registerWrapper">
+    <div className="forgot-password-wrapper">
       <Snackbar
         anchorOrigin={{
           vertical: 'top',
