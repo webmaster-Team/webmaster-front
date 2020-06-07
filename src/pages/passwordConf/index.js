@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef,useCallback } from 'react'
 import './style.styl'
 import { UploadOutlined } from '@ant-design/icons'
 import { makeStyles } from '@material-ui/core/styles'
@@ -39,19 +39,20 @@ import * as Yup from 'yup'
 import Password from 'antd/lib/input/Password'
 import Snackbar from '@material-ui/core/Snackbar'
 import { useHistory } from 'react-router-dom'
-import { white } from '_ansi-colors@3.2.4@ansi-colors';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { resolve } from 'url';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import Zoom from '@material-ui/core/Zoom';
-import Fab from '@material-ui/core/Fab';
-import { Carousel } from 'antd';
-import SwipeableViews from 'react-swipeable-views';
-import { green } from '@material-ui/core/colors';
-import CheckIcon from '@material-ui/icons/Check';
-import { setUseProxies } from '_immer@1.10.0@immer';
-import clsx from 'clsx';
-
+// import { white } from '_ansi-colors@3.2.4@ansi-colors';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { resolve } from 'url'
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import Zoom from '@material-ui/core/Zoom'
+import Fab from '@material-ui/core/Fab'
+import { Carousel } from 'antd'
+import SwipeableViews from 'react-swipeable-views'
+import { green } from '@material-ui/core/colors'
+import CheckIcon from '@material-ui/icons/Check'
+// import { setUseProxies } from '_immer@1.10.0@immer';
+import clsx from 'clsx'
+//设置计时器
+let myInterval = null
 let formInputColor = '#0182ff'
 
 //引入swiper
@@ -111,7 +112,7 @@ const SignupSchema = Yup.object().shape({
         .required('请输入学号')
         .matches(/^[0-9]+$/, '学号只包含数字')
         .length(13, '学号位数应该是13位的'),
-    captcha: Yup.string().required('请输入验证码').length(4, '验证码有4位')
+    captcha: Yup.string().required('请输入验证码').length(6, '验证码有6位')
 })
 
 const RepeatPasswordSchema = Yup.object().shape({
@@ -128,12 +129,14 @@ const RepeatPasswordSchema = Yup.object().shape({
 
 const BackwardButton = (props) => {
     
-    const classes = useStyles();
-    const [hovered, setHovered] = useState(true);
+    const classes = useStyles()
+    const [hovered, setHovered] = useState(true)
+    //设置获取验证码的状态
+    const [captchaAvailability,setCaptchaAvailability] = useState(true)
   
     const handleChange = () => {
-        setHovered((prev) => !prev);
-    };
+        setHovered((prev) => !prev)
+    }
 
     return (
         <Fab
@@ -147,7 +150,7 @@ const BackwardButton = (props) => {
                 height: '15px'
             }} />
         </Fab>
-    );
+    )
 }
 
 const PasswordConf = (props) => {
@@ -165,20 +168,26 @@ const PasswordConf = (props) => {
   //设置页面滑动状态
   const [swiperIndex, setSwiperIndex] = useState(0)
   //设置密码修改是否成功
-  const [success, setSuccess] = React.useState(false);
-  //
+  const [success, setSuccess] = React.useState(false)
+  
   const [regAccount, setRegAccount] = useState('')
-  useEffect(() => {
-    
-  })
+
   //设置swiper的元素引用
   const captcha = useRef(null)
   const classes = useStyles()
+  //保存account的内容
+  const [account,setAccount] = useState("")
+  //设置倒计时
+  const [clock,setClock ] = useState(0)
+  //非状态的标示符
+  let myClock = 0
 
-    const fabClassName = clsx({
+
+ 
+  const fabClassName = clsx({
         [classes.buttonSuccess]: success,
         [classes.buttonProgress]: !success
-    })
+  })
   
   //左侧轮播图的数据源
   let data = [
@@ -205,6 +214,40 @@ const PasswordConf = (props) => {
       },
     })
   }, [])
+
+  //当clock小于等于0时，就清除定时器
+  useEffect(()=>{
+    if(clock <= 0 ){
+       clearInterval(myInterval)
+    }
+    console.log(clock)
+  },[clock])
+
+  const postCaptchaEmail  = useCallback((errors,setFieldError,account)=>{
+    if(typeof errors.account === 'undefined'){
+       //如果没有错误
+        Axios.post("/api/user/sendVerificationCode",{card:account})
+        .then(res=>{
+          if(res.result === 1){
+               //说明邮件发送成功，就启动定时器，修改myclock
+               myClock = 5
+               setClock(5)
+               myInterval =  setInterval(()=>{
+                 myClock -= 1
+                 setClock(myClock)
+              },1000)
+          }else{
+            setMessage(res.msg)
+            setFieldError('captcha', res.msg)
+            setType('error')
+            setOpen(true)
+          }
+       })
+    }else{
+       //如果有错误
+      //  setFieldError("account","您的账号有误")
+    }
+  },[account,clock,setClock])
 
   const handleClickShowPassword = () => {
     setPasswordVisibility(!passwordVisibility)
@@ -261,8 +304,8 @@ const PasswordConf = (props) => {
         onSubmit={async (values, { setFieldError }) => {
             console.log(values)
             //校验验证码
-            let res = await Axios.post('/api/user/checkImage', {
-            image: values.captcha,
+            let res = await Axios.post('/api/user/checkVerificationCode', {
+              veriCode: values.captcha,
             })
             //验证码验证成功
             if (res.result === 1) {
@@ -294,21 +337,21 @@ const PasswordConf = (props) => {
                         setFieldError('account', accountConfirmData.msg)
                         setType('error')
                         setOpen(true)
-                        changeCaptcha()
+                        // changeCaptcha()
                     }
                     
                     
                 })
             } else {
-            setMessage('验证码不正确，请检查')
-            setFieldError('captcha', res.msg)
-            setType('error')
-            setOpen(true)
-            changeCaptcha()
+                setMessage('验证码不正确，请检查')
+                setFieldError('captcha', res.msg)
+                setType('error')
+                setOpen(true)
+                // changeCaptcha()
             }
         }}
         >
-        {({ errors, touched, submitForm, handleSubmit, isSubmitting }) => {
+        {({ values,validateField,setFieldError,errors, touched, submitForm, handleSubmit, isSubmitting }) => {
             return (
             <form onSubmit={handleSubmit}>
                 <Field
@@ -317,7 +360,7 @@ const PasswordConf = (props) => {
                 }}
                 component={TextField}
                 name="account"
-                placeholder="输入您的学号"
+                placeholder="输入您的账号"
                 InputProps={{
                     startAdornment: (
                     <InputAdornment position="start">
@@ -356,12 +399,15 @@ const PasswordConf = (props) => {
                     ),
                     endAdornment: (
                     <InputAdornment position="end">
-                        <img
+                        {/* <img
                         alt="验证码"
                         ref={captcha}
                         onClick={changeCaptcha}
                         className="captcha"
-                        />
+                        /> */}
+                          <Button href="" className={clock <= 0 && typeof errors.account === 'undefined' && values["account"]!==""? "success":"fail"} disabled={typeof errors.account === 'undefined'? false :true} onClick={()=>postCaptchaEmail(errors,setFieldError,values["account"])}>
+                             {clock > 0 ? `获取验证码(${clock})`:`获取验证码` } 
+                          </Button>
                     </InputAdornment>
                     ),
                 }}
@@ -527,7 +573,7 @@ const PasswordConf = (props) => {
                 }}
                 onClickEvent={() => {
                     setSwiperIndex(0)
-                    changeCaptcha()
+                    // changeCaptcha()
                     handleReset()
                 }}
                 />
@@ -548,18 +594,18 @@ const PasswordConf = (props) => {
   )
 
   //页面挂载去获取验证码
-  useEffect(() => changeCaptcha(), [])
+  // useEffect(() => changeCaptcha(), [])
 
-  const changeCaptcha = () => {
-    Axios.get('/api/user/drawImage', {
-      responseType: 'text',
-    }).then((res) => {
-        if(captcha.current != null){
-            captcha.current.src = `data:image/jpg;base64,${res}`
-        }
+  // const changeCaptcha = () => {
+  //   Axios.get('/api/user/drawImage', {
+  //     responseType: 'text',
+  //   }).then((res) => {
+  //       if(captcha.current != null){
+  //           captcha.current.src = `data:image/jpg;base64,${res}`
+  //       }
       
-    })
-  }
+  //   })
+  // }
 
   const confirmStatusChange = (state) => {
       let confirmPanels = document.getElementsByClassName('confirm-await-panel')
