@@ -228,8 +228,8 @@ const PasswordConf = (props) => {
         .then(res=>{
           if(res.result === 1){
                //说明邮件发送成功，就启动定时器，修改myclock
-               myClock = 5
-               setClock(5)
+               myClock = 60
+               setClock(60)
                myInterval =  setInterval(()=>{
                  myClock -= 1
                  setClock(myClock)
