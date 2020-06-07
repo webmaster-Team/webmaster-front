@@ -341,7 +341,7 @@ const Login = () => {
                   />
                   {/* 忘记密码？ */}
                   <div className="forget-link-line">
-                    <span className="forget-link">忘记密码?</span>
+                    <span className="forget-link" onClick={()=>history.push('/forgotPassword')}>忘记密码?</span>
                   </div>
                   <div className="policy-line">
                     <Field
