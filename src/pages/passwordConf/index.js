@@ -190,8 +190,8 @@ const PasswordConf = (props) => {
   //左侧轮播图的数据源
   let data = [
     {
-      title: '欢迎注册',
-      text: ['杭州师范大学图书管理系统', '期待你的精彩'],
+      title: '重置密码',
+      text: ['重新布置您的密码', '使得您在系统中的更加安全地航行'],
       picture:
         'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1504462560,2042218994&fm=26&gp=0.jpg',
     },

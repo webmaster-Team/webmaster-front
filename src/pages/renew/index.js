@@ -176,7 +176,6 @@ const Renew = (props) => {
       dataIndex: 'distance',
       key: 'distance',
       render: (text,record)=>{
-        console.log(record)
           return (
            <div className="remainDateInfo">
              <Progress showInfo={false} percent={getBorrowDurationPersent(text,record)} status={getBorrowDurationPersent(text,record) >= 90? "exception":"active"} />
@@ -191,8 +190,9 @@ const Renew = (props) => {
         dataIndex: 'isReborrow',
         key: 'operation',
         render: (text,record,index)=>{
+          // debugger
           //已续借并未超期
-          if(record.isReborrow && record.distance > 0){
+          if(record.isReborrow && record.distance >= 0){
             return <Button className="successText" type="primary" onClick={()=>props.modifyShowAlert(true,"请前往图书馆归还","warning")}>归还</Button>
           }else{
              //说明有逾期的书
