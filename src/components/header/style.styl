@@ -1,95 +1,112 @@
 $borderRadius = 10px//记录边框的圆角
 $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
 $formInputColor=#0182ff
-//头部的最外层容器
 .header-wrapper
     z-index 10000
     width: 100%
     position fixed
     top 0px
     left 0px
-    background-color: white
-    box-shadow: $boxShadow
-    height: 72px
-    padding: 0px 100px
-    display: flex
-    flex-flow: row nowrap
-    line-height: 72px
-    align-items: center
+    background #fff
     .header-logo
-        display: flex
+        margin-left:12vw
+        display: inline-flex
         align-items: center
         cursor pointer
         .header-logo-text
             font-size: 20px
             font-weight: 600
-    .header-router
-       display flex
-       line-height: 100%
-       height: 100%
-       flex-flow: row nowrap
-       list-style none
-       margin-left: 40px
-       li
-         height: 100%
-         line-height: 72px
-         padding: 0px 20px
-         &:hover
-             color:$formInputColor
-             cursor pointer
-    .header-user-info
-        flex 1
-        display flex
-        flex-flow: row-reverse nowrap
-        .header-user-login-register
-            display flex
-            line-height: 100%
-            height: 100%
-            flex-flow: row nowrap
-            list-style none
-            margin-left: 40px
-            li
-                height: 100%
+    #header_toggle
+        float right
+    #header_collapse
+        margin-left: 2vw
+        .header_link
+            margin-right: 2vw
+        .header_link:hover
+            color: $formInputColor
+        .header-user-info
+            float:  right
+            margin-right: 13vw
+            .header-user-login-register li
+                list-style: none
+                float left
+                .nav-link
+                    padding 1em 0
+                .nav-link:hover
+                    color: $formInputColor
+            .header-avatar-wrapper
+                cursor pointer
+                height 72px
                 line-height: 72px
-                padding: 0px 5px
+                display: flex
+                align-items: center
+                justify-content: center
+                position relative
+                padding:  0px 3px
                 &:hover
-                    color:$formInputColor
-                    cursor pointer
-        .header-avatar-wrapper
-            cursor pointer
-            height 72px
-            line-height: 72px
-            display: flex
-            align-items: center
-            justify-content: center
-            position relative
-            padding:  0px 3px
-            &:hover
-                background-color #cdcdcd
-            .header-avatar-name
-                margin-left:  5px
-            .user-info-board
-                width: 150px
-                background-color white
-                position absolute
-                top 72px
-                left 0px        
-                overflow hidden
-                box-shadow: $boxShadow
-                border-radius: 0px 0px  $borderRadius $borderRadius
-                .user-info-board-list
-                    width: 100%
-                    list-style none
-                    li
-                        height: 45px
-                        line-height: 45px
-                        width 100%
-                        padding 0px 10px
-                        display: flex
-                        justify-content: flex-start
-                        align-items: center
-                        .user-info-board-list-li-icon
-                            margin-right 5px
+                    background-color #cdcdcd
+                .header-avatar-name
+                    margin-left:  5px
+                .user-info-board
+                    width: 150px
+                    background-color white
+                    position absolute
+                    top 72px
+                    left 0px        
+                    overflow hidden
+                    box-shadow: $boxShadow
+                    border-radius: 0px 0px  $borderRadius $borderRadius
+                    .user-info-board-list
+                        width: 100%
+                        list-style none
+                        li
+                            height: 45px
+                            line-height: 45px
+                            width 100%
+                            padding 0px 10px
+                            display: flex
+                            justify-content: flex-start
+                            align-items: center
+                            .user-info-board-list-li-icon
+                                margin-right 5px
+                            &:hover
+                                background-color: $formInputColor
+                                color: white
+@media screen and (max-width: 767px)
+    .header-wrapper
+        .header-logo
+            margin-left: 6vw !important 
+            .header-logo-text
+                display: none
+        #header_collapse
+            position absolute
+            top:76.938px
+            background-color: #fff
+            width: 100vw
+            margin-left: 0 !important
+            .header_link
+                padding-left: 10vw
+            .header-user-info
+                width 100% !important
+                border-top: 1px solid #ddd
+                .header-mini-wrapper
+                    margin:1em 0
+                    width 100%
+                    display inline-flex
+                    justify-content: space-between
+                    align-items: center
+                    padding-left 10vw
+                    .header-mini-name
+                        margin-left:  0.6em
+                    .user-info-mini-board-list li
+                        float left
+                        list-style none
+                        padding-right: 1em
                         &:hover
-                            background-color: $formInputColor
-                            color: white
+                            color:$formInputColor
+@media screen and (min-width: 767px) and (max-width :1024px)
+    .header-wrapper
+        .nav-link
+            padding-left: 0
+        .header-user-info
+            margin-right: 8vw !important

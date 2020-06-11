@@ -10,7 +10,8 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
     align-items: flex-start
     background-color: #ededed
     .back-top-button
-        position relative
+        z-index: 1001
+        position fixed
         top -100px
         width: 60px
         height: 60px
@@ -26,10 +27,10 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
             background-color $formInputColor
             color white
     .searchBody
-         z-index: 1002
          margin-top: 25px
-         padding-top 15px
-         width: 1100px
+         padding: 2vw
+         margin-left: 2em
+         width: 71vw
          bottom 0px
          box-shadow: $boxShadow
          background-color: white
@@ -40,19 +41,14 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
 
          .searchbar
              width: 100%
-             padding: 0 30px
-             height: 50px
-             line-height: 50px
+             padding: 0 2em
              display: flex
              align-items: center
              flex-flow: row nowrap
              justify-content: space-between
-            //  .setting
-            //      height: 50px
-            //      line-height: 50px
-            //      width: 20px
-            //      display: flex
-            //      align-items: center
+             .search_form
+                 width: 70vw
+                 margin:0 !important
              //排序按钮组
              .sortButtonGroup
                 .MuiButton-root
@@ -64,29 +60,38 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
          //搜索结果
          .searchResult
             width: 100%
-            padding 20px 40px
+            margin-top: 2vw
             display: flex
             flex-flow: row wrap
             justify-content: flex-start
+            .makeStyles-cardRoot-5
+                height auto
             .searchLine
                 width: 100%
                 display: flex
-                flex-flow: row nowrap
+                flex-flow: row wrap
+                justify-content: start
                 position relative
-                .bookname
-                    overflow: hidden
-                    text-overflow: ellipsis
-                    white-space: nowrap
-                .bookauthor
-                    overflow: hidden
-                    text-overflow: ellipsis
-                    white-space: nowrap
-                    color:rgba(0,0,0,.5)
-                .bookpublisher
-                    overflow: hidden
-                    text-overflow: ellipsis
-                    white-space: nowrap
-                    color:rgba(0,0,0,.5)
+                .is_Borrowing_Book_Item
+                    width: 13vw
+                    margin:0.2vw
+                    .is_Borrowing_Book_Item_Image
+                        width:10vw
+                        height:10vw
+                    .bookname
+                        overflow: hidden
+                        text-overflow: ellipsis
+                        white-space: nowrap
+                    .bookauthor
+                        overflow: hidden
+                        text-overflow: ellipsis
+                        white-space: nowrap
+                        color:rgba(0,0,0,.5)
+                    .bookpublisher
+                        overflow: hidden
+                        text-overflow: ellipsis
+                        white-space: nowrap
+                        color:rgba(0,0,0,.5)
                 .searchSummary
                     width: 100%
                     background-color: white
@@ -99,13 +104,13 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
                     flex-flow: row nowrap
                     justify-content: space-around
                     align-items: center
-                    padding 20px
+                    padding 1.2em
                     .closeButton
-                         position: absolute
-                         color: red
-                         right 10px
-                         top 10px
-                         cursor pointer
+                        position: absolute
+                        color: red
+                        right 10px
+                        top 10px
+                        cursor pointer
                     .searchMainData
                         display: flex
                         flex-flow: column nowrap
@@ -114,16 +119,17 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
                         height: 100%
                         box-sizing: border-box
                         .searchBookName
-                            font-size: 20px
+                            font-size: 1.3em
                             color:$title
-                            margin-bottom: 20px
+                            margin-bottom: 1em
                         .searchBookItem
-                            font-size: 14px
+                            font-size: 0.8em
                             .searchBookBefore
                                 color $text
                     .searchBookSummary
                         flex 1
                         height: 100%
+                        width:60%
                         box-sizing: border-box
                         display: flex
                         justify-content: center
@@ -131,21 +137,30 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
                         line-height: 30px
                         color: rgba(0,0,0,.33)
                         margin-left: 10px
+                        span 
+                            height: 110%
+                            width:110%
+                            display: flex
+                            align-items: center
+                            text-overflow: ellipsis
+                            overflow: hidden;
+                            font-size: 0.8em
+
                     .searchBookMore
                         display: flex
-                        width: 200px
+                        width: 12vw
                         height: 100%
                         flex-flow: column nowrap
                         justify-content: space-around
                         align-items: center
                         color $formInputColor
                         .searchBookImg
-                           width: 150px
-                           height: 150px
+                            width: 10vw
+                            height: 10vw
                         .positiveButton
-                           color $formInputColor
-                           &:hover
-                               border-color: $formInputColor
+                        color $formInputColor
+                        &:hover
+                            border-color: $formInputColor
             .loadMoreButtonLine
                 width: 100%
                 display: flex
@@ -160,7 +175,7 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
            
 
     .searchClassify
-        width: 320px
+        width: 20vw
         box-sizing: border-box
         margin: 25px
         background-color: white
@@ -171,6 +186,11 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
         justify-content: flex-start
         align-items: center
         padding 30px
+        .closeButton
+            color:red
+            position:absolute
+            right 2em
+            top 1em
         .title
             width: 100%
             text-align: center 
@@ -195,3 +215,110 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
                 color: red
                 position relative
                 top -12px
+    .searchClassify_normal
+        display: flex
+@media screen and (max-width: 767px)
+    .searchPage
+        .back-top-button
+            bottom:  20vw
+            width: 10vw 
+            height: 10vw 
+        .searchBody
+            width:98vw
+            margin:0 
+            .user_info_toggle
+                background-color: $formInputColor
+                padding: 0
+                margin: 0
+                border: 0
+                position fixed
+                right 0
+                top 18vh
+                color:white
+                font-size: 24px
+                font-weight: 300
+                display flex
+                justify-content: center
+                align-items: center
+                width: 10vw
+                height: 10vw
+                span 
+                    padding-bottom: 0.2em
+            .searchbar
+                display flex 
+                flex-direction: column 
+                font-size: 15px
+                .search_form
+                    width: 90vw
+                    margin:0 
+            .searchResult
+                padding: 0
+                .searchLine
+                    justify-content: start
+                    padding-left: 10vw
+                .is_Borrowing_Book_Item
+                    width: 34.5vw !important
+                    height auto
+                    .MuiCardContent-root
+                        padding: 0.8em 
+                    .is_Borrowing_Book_Item_Image
+                        max-width 150px
+                        max-height 150px
+                        width: 34vw !important
+                        height: 34vw !important
+                    .bookname
+                        font-size: 1em 
+                    .is_Borrowing_Book_Item_Font
+                        font-size: 0.8em 
+                .searchSummary
+                    padding: 2em !important
+                    .searchBookName
+                        font-size: 1em !important
+                    .searchBookBefore
+                        font-size: 0.6em !important
+                    .searchBookImg
+                        width: 30vw !important; 
+                        height: 30vw !important
+        .searchClassify_hide
+            display: none
+        .searchClassify_float
+            position: fixed
+            top: 10vh
+            left:5vw
+            width 80vw
+            height auto
+        // width: 70vw
+        // box-sizing: border-box
+        // margin: 2em
+        // background-color: white
+        // min-height: 70vh
+        // box-shadow: 0px 0px 30px 10px rgba(0,0,0,.1)
+        // display: flex
+        // flex-flow: column nowrap
+        // justify-content: flex-start
+        // align-items: center
+        // padding 30px
+        // .title
+        //     width: 100%
+        //     text-align: center 
+        //     color: $formInputColor
+        //     margin-bottom: 20px
+        // .select
+        //     width: 100%
+        //     display: flex
+        //     flex-flow: row wrap
+        //     align-items: center
+        //     height: fit-content
+        //     line-height: 40px
+        //     justify-content: space-between
+        //     .select-title
+        //         flex 1
+        //         text-align: left 
+        //         // margin-top: 10px
+        //     &.date
+        //         margin-bottom: 10px
+        //     .error
+        //         font-size: 10px
+        //         color: red
+        //         position relative
+        //         top -12px

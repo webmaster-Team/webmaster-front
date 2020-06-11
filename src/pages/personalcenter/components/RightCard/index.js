@@ -368,15 +368,15 @@ const RightCard = props => {
       {
          borrowingBooks.map((item,index)=>{
            return (
-            <Card className={classes.cardRoot} key={item.id}>
+            <Card className={classes.cardRoot+" is_Borrowing_Book_Item"} key={item.id}>
             <CardActionArea
             >
               <CardMedia
-                className={classes.media}
+                className={classes.media +" is_Borrowing_Book_Item_Image"}
                 image={item.cover}
                 title="cover"
               />
-              <CardContent>
+              <CardContent className=" Content">
                 <Typography
                   gutterBottom
                   variant="body1"
@@ -389,7 +389,7 @@ const RightCard = props => {
                   gutterBottom
                   variant="body2"
                   component="h6"
-                  className="bookauthor"
+                  className="bookauthor is_Borrowing_Book_Item_Font"
                 >
                   {item.author} | 所作
                 </Typography>
@@ -397,7 +397,7 @@ const RightCard = props => {
                   gutterBottom
                   variant="body2"
                   component="h6"
-                  className="bookpublisher"
+                  className="bookpublisher is_Borrowing_Book_Item_Font"
                 >
                   {item.publisher} | 出版
                 </Typography>
@@ -405,7 +405,7 @@ const RightCard = props => {
                   gutterBottom
                   variant="body2"
                   component="h6"
-                  className="bookpublisher"
+                  className="bookpublisher is_Borrowing_Book_Item_Font"
                 >
                   { Mount(item.borrowTime).format('YYYY-MM-DD')} | 借阅时间
                 </Typography>
@@ -423,11 +423,11 @@ const RightCard = props => {
       {
          revertBooks.map((item,index)=>{
            return (
-            <Card className={classes.cardRoot} key={item.id}>
+            <Card className={classes.cardRoot+" is_Borrowing_Book_Item"} key={item.id}>
             <CardActionArea
             >
               <CardMedia
-                className={classes.media}
+                className={classes.media+" is_Borrowing_Book_Item_Image"}
                 image={item.cover}
                 title="cover"
               />
@@ -444,7 +444,7 @@ const RightCard = props => {
                   gutterBottom
                   variant="body2"
                   component="h6"
-                  className="bookauthor"
+                  className="bookauthor is_Borrowing_Book_Item_Font"
                 >
                   {item.author} | 所作
                 </Typography>
@@ -452,7 +452,7 @@ const RightCard = props => {
                   gutterBottom
                   variant="body2"
                   component="h6"
-                  className="bookpublisher"
+                  className="bookpublisher is_Borrowing_Book_Item_Font"
                 >
                   {item.publisher} | 出版
                 </Typography>
@@ -460,7 +460,7 @@ const RightCard = props => {
                   gutterBottom
                   variant="body2"
                   component="h6"
-                  className="bookpublisher"
+                  className="bookpublisher is_Borrowing_Book_Item_Font"
                 >
                   { Mount(item.borrowTime).format('YYYY-MM-DD')} | 借阅时间
                 </Typography>
@@ -468,7 +468,7 @@ const RightCard = props => {
                   gutterBottom
                   variant="body2"
                   component="h6"
-                  className="bookpublisher"
+                  className="bookpublisher is_Borrowing_Book_Item_Font"
                 >
                   {Mount(item.returnTime).format('YYYY-MM-DD')} | 归还时间
                 </Typography>

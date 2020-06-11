@@ -43,7 +43,11 @@ import * as Yup from 'yup'
 import { makeStyles } from '@material-ui/core/styles'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { TextField, CheckboxWithLabel, RadioGroup } from 'formik-material-ui'
+import Modal from 'react-bootstrap/Modal'
+import { render } from 'react-dom';
+import  BsButton  from 'react-bootstrap/Button'
 let formInputColor = '#0182ff'
+
 
 const SignupSchema = Yup.object().shape({
     nickname: Yup.string()
@@ -102,6 +106,9 @@ const SignupSchema = Yup.object().shape({
 const  PersonalCenter = props=>{
     const classes = useStyles()
     let history = useHistory()
+    const [open,setOpen] = useState(false)
+    const handleClose = () => setOpen(false);
+    const handleShow = () => setOpen(true);
     //设置文件上传的state
     const [fileList, setFileList] = useState([])
     //设置是否打开修改用户信息的对话框
@@ -245,13 +252,14 @@ const  PersonalCenter = props=>{
 
     return(
         <div className="personalCenterWrapper">
-          <Dialog
+        <Button id="user_info_toggle" onClick={()=>setOpen(true)}><span>></span></Button>
+        <Dialog
                 open={openDialog}
                 // onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
            >
-            <DialogContent>
+            <DialogContent className="my">
                 <DialogTitle id="alert-dialog-description">
                     编辑我的信息
                 </DialogTitle>
@@ -442,35 +450,84 @@ const  PersonalCenter = props=>{
                  </DialogContentText>
                 </DialogContent>
               </Dialog>
-              <Card
-                    className="infoBoard"
-                    title={
-                    <div className="avatarRow">
-                        <Avatar className="avatar" size={64}  src={props.cover} />
-                        <span className="name">{props.name}</span>
-                        {
-                            sex === 1?
-                                <ManOutlined className="sexIcon" style={{color:"#0182ff"}}/> :
-                                <WomanOutlined className="sexIcon" style={{color:"#FF69B4"}}/>
+              {(
+                document.body.clientWidth >= 768 ? (
+                  <Card
+                        className="infoBoard"
+                        title={
+                        <div className="avatarRow">
+                            <Avatar className="avatar" size={64}  src={props.cover} />
+                            <span className="name">{props.name}</span>
+                            {
+                                sex === 1?
+                                    <ManOutlined className="sexIcon" style={{color:"#0182ff"}}/> :
+                                    <WomanOutlined className="sexIcon" style={{color:"#FF69B4"}}/>
+                            }
+                        </div>
                         }
-                    </div>
-                    }
-               >
-                <Card.Grid style={gridStyle}>卡号 | {card}</Card.Grid>
-                <Card.Grid style={gridStyle}>身份 | {identity}</Card.Grid>
-                <Card.Grid style={gridStyle}>邮箱 | {typeof email == 'undefined' || email === ''? "未指定" : email}</Card.Grid>
-                <Card.Grid style={gridStyle}>电话 | {typeof phone == 'undefined' || phone === ''? "未指定" : phone}</Card.Grid>
-                <Card.Grid style={gridStyle}>第一次相遇 | {typeof signTime == 'undefined' || signTime === ''? "未指定" : signTime}</Card.Grid>
-                <Card.Grid style={gridStyle}>
-                  已借阅 | {hasBorrowed} 本
-                </Card.Grid>
-                <Card.Grid style={gridStyle}>
-                  正在借阅 | {isBorrowing} 本
-                </Card.Grid>
-                <Card.Grid style={gridStyle} className="modifyButtonLine">
-                    <Button className="modifyButton" type="link" onClick={()=>setOpenDialog(true)}>编辑我的信息</Button>
-                </Card.Grid>
-              </Card>
+                  >
+                    <Card.Grid style={gridStyle}>卡号 | {card}</Card.Grid>
+                    <Card.Grid style={gridStyle}>身份 | {identity}</Card.Grid>
+                    <Card.Grid style={gridStyle}>邮箱 | {typeof email == 'undefined' || email === ''? "未指定" : email}</Card.Grid>
+                    <Card.Grid style={gridStyle}>电话 | {typeof phone == 'undefined' || phone === ''? "未指定" : phone}</Card.Grid>
+                    <Card.Grid style={gridStyle}>第一次相遇 | {typeof signTime == 'undefined' || signTime === ''? "未指定" : signTime}</Card.Grid>
+                    <Card.Grid style={gridStyle}>
+                      已借阅 | {hasBorrowed} 本
+                    </Card.Grid>
+                    <Card.Grid style={gridStyle}>
+                      正在借阅 | {isBorrowing} 本
+                    </Card.Grid>
+                    <Card.Grid style={gridStyle} className="modifyButtonLine">
+                        <Button className="modifyButton" type="link" onClick={()=>setOpenDialog(true)}>编辑我的信息</Button>
+                    </Card.Grid>
+                  </Card>
+                ):(
+                  <div>
+                    <Modal show={open} onHide={handleClose}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>用户信息查看</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                          <Card
+                            className="mini_infoBoard"
+                            title={
+                            <div className="avatarRow">
+                                <Avatar className="avatar" size={48}  src={props.cover} />
+                                <span className="name">{props.name}</span>
+                                {
+                                    sex === 1?
+                                        <ManOutlined className="sexIcon" style={{color:"#0182ff"}}/> :
+                                        <WomanOutlined className="sexIcon" style={{color:"#FF69B4"}}/>
+                                }
+                            </div>
+                            }
+                        >
+                          <Card.Grid style={gridStyle}>卡号 | {card}</Card.Grid>
+                          <Card.Grid style={gridStyle}>身份 | {identity}</Card.Grid>
+                          <Card.Grid style={gridStyle}>邮箱 | {typeof email == 'undefined' || email === ''? "未指定" : email}</Card.Grid>
+                          <Card.Grid style={gridStyle}>电话 | {typeof phone == 'undefined' || phone === ''? "未指定" : phone}</Card.Grid>
+                          <Card.Grid style={gridStyle}>第一次相遇 | {typeof signTime == 'undefined' || signTime === ''? "未指定" : signTime}</Card.Grid>
+                          <Card.Grid style={gridStyle}>
+                            已借阅 | {hasBorrowed} 本
+                          </Card.Grid>
+                          <Card.Grid style={gridStyle}>
+                            正在借阅 | {isBorrowing} 本
+                          </Card.Grid>
+                          <Card.Grid style={gridStyle} className="modifyButtonLine">
+                              <Button className="modifyButton" type="link" onClick={()=>setOpenDialog(true)}>编辑我的信息</Button>
+                          </Card.Grid>
+                        </Card>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <BsButton variant="primary" onClick={handleClose}>
+                          关闭
+                        </BsButton>
+                      </Modal.Footer>
+                    </Modal>
+                  </div>
+                )
+              )
+              }
              <div className="right-card-wrapper">
                <RightCard onOrderChange={()=>getUserData()}/>
              </div>
