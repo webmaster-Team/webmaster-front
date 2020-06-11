@@ -21,7 +21,7 @@ import loadable from '../../utils/loadable'
 const Search = loadable(()=>import('../search'))
 const Borrow = loadable(()=>import('../borrow'))
 const PersonalCenter = loadable(()=>import('../personalcenter'))
-const Renew = loadable(()=>import('../Renew'))
+const Renew = loadable(()=>import('../renew'))
 
 const {Header} = Layout;
 
