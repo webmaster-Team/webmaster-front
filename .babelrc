@@ -1,15 +1,15 @@
 {
     "presets": [
-      "@babel/react","@babel/env","@babel/preset-env",
-      [
-        "env",
-        {
-          "targets": {
-            "browsers": ["last 2 versions"]
-          },
-          "debug": true,
-          "modules": "commonjs"
-        }
-      ]
+      "@babel/react","@babel/preset-env",
+    //   [
+    //     "@babel/env",
+    //     {
+    //       "targets": {
+    //         "browsers": ["last 2 versions"]
+    //       },
+    //       "debug": true,
+    //       "modules": "commonjs"
+    //     }
+    //   ]
     ]
 }
