@@ -5,7 +5,7 @@
     flex-flow: row wrap
     justify-content: space-between
     align-items: center
-    padding 0px 300px
+    padding 0px 14vw
     color #999
     font-size: 13px
     .footer-team
@@ -24,3 +24,15 @@
            margin-bottom: 5px
          span
            font-size: 10px
+
+@media screen and (max-width: 767px)
+    .footer-wrapper
+      justify-content: center
+      padding: 0
+      .footer-team
+        justify-content: center
+      #develope_team
+        padding-left: 1em
+@media screen and (min-width: 767px) and (max-width :1024px)
+    .footer-wrapper
+      padding: 3vw

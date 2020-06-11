@@ -5,13 +5,15 @@ $formInputColor=#0182ff
 $borderRadius = 10px//记录边框的圆角
 $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
 
+#user_info_toggle
+    display: none
 .personalCenterWrapper
-    padding-top: 20px
+    padding: 20px
     width: 100%
     display: flex
-    flex-flow: row wrap
+    flex-flow: row nowrap
     justify-content: center
-  
+
     .infoBoard
         width: 100%
         max-width: 300px
@@ -47,6 +49,7 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
             top: 100px
             display flex
             flex-flow: column nowrap
+            padding: 0 !important
 
             .form-title
                 font-weight: 100
@@ -146,3 +149,55 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
                 
 .MuiRadio-colorSecondary.Mui-checked
    color: $formInputColor  !important
+
+@media screen and (max-width:767px)
+    #user_info_toggle
+        background-color: $formInputColor
+        position fixed
+        left 0
+        top 18vh
+        color:white
+        font-size: 24px
+        font-weight: 300
+        display flex
+        justify-content: center
+        align-items: center
+        width: 10vw
+        height: 10vw
+        z-index: 1000
+        span 
+            padding-bottom: 0.2em
+    .dialogBookText
+        width: 70vw
+        right: 0
+        top: 100px
+        display flex
+        flex-flow: column nowrap
+        padding: 0 !important
+    .modal-dialog
+        top 10vh
+        .modal-header .modal-title
+            font-size: 20px
+        .modal-footer
+            padding: 0.5em 0
+        .modifyButtonLine
+            padding 10px
+            .modifyButton
+                width: 100%
+        .ant-card-head
+            width: 100%
+            .ant-card-head-title
+                padding:0.5em 0
+        .ant-card-grid
+            padding:0.6em
+        //头像行
+        .avatarRow
+            width: 100%
+            .avatar
+                margin-right: 20px
+            .name
+                margin-right 5px
+    .right-card-wrapper
+        width: 100%
+        max-width 1000px
+        

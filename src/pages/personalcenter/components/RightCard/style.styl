@@ -118,6 +118,8 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
          width: 100%
          display: flex
          flex-flow: row wrap
+         .is_Borrowing_Book_Item
+            max-width 160px
          .bookname
             overflow: hidden
             text-overflow: ellipsis
@@ -137,5 +139,19 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
         width: 100%
         text-align: center
         color $text
-
-      
+@media screen and (max-width :768px)
+    .is-borrowing-books
+        .is_Borrowing_Book_Item
+            width: 34.5vw !important
+            .Content
+                padding: 0.8em
+            .is_Borrowing_Book_Item_Image
+                max-width 150px
+                max-height 150px
+                width: 34vw
+                height: 34vw
+            .bookname
+                font-size: 1em !important
+            .is_Borrowing_Book_Item_Font
+                font-size: 0.8em !important
+    

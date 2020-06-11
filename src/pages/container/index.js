@@ -24,7 +24,7 @@ const Container = (props) => {
   let {select, login, showAlert, message, messageType} = props;
 
   return (
-    <div>
+    <div className="container-wrapper">
       {/* 用于全局提供报错与提示的组件 */}
       <Snackbar
         className="snackbar"

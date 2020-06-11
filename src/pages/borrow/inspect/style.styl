@@ -1,14 +1,40 @@
 $borderRadius = 10px//记录边框的圆角
 $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
 $formInputColor=#0182ff
+@media screen and (max-width 768px)
+  .checkbookWrapper
+     padding 0.1rem 0px !important
+     .table
+        .ant-table-thead
+            tr
+                th:nth-child(1)
+                        display: none
+                th:nth-child(5)
+                        display: none
+                th:nth-child(4)
+                        display: table-cell
+                th:nth-child(6)
+                        display: none
+        .ant-table-tbody
+            tr
+                td:nth-child(1)
+                        display: none
+                td:nth-child(4)
+                        display: table-cell
+                td:nth-child(5)
+                        display: none
+                td:nth-child(6)
+                        display: none
 .checkbookWrapper
-    width: 1000px
+    max-width: 1000px
+    width: 100%
     box-shadow: $boxShadow
     border-radius: $borderRadius
     background-color: white
     .tipsCard
         border-radius: $borderRadius $borderRadius 0px 0px
-        width: 1000px
+        max-width: 1000px
+        width: 100%
     .table
         width 100%
         border-radius: 0px 0px $borderRadius $borderRadius

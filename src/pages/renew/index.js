@@ -37,6 +37,7 @@ const Renew = (props) => {
     identity,
   } = props
 
+
   //如果login状态发生变化，就要重新查看是否有进入usercenter的权限
   useEffect(()=>{
     if(login || Token.validate()){

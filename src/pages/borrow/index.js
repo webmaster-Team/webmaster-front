@@ -135,7 +135,7 @@ const Borrow = (props) => {
                   正在借阅 | {isBorrowing} 本
                 </Card.Grid>
               </Card>
-          <div>
+          <div className="infoRight">
             <Switch>
               <Route path="/index/borrow/check" component={Check} />
               <Route path="/index/borrow/inspect" component={Inspect} />

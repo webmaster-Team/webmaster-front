@@ -70,6 +70,8 @@ const Search = (props) => {
   // const [AlphaSort, setAlphaSort] = useState(0) 
   const [sort,setSort] = useState([null,null])
   const [bookData, setBookData] = useState([[]])
+  const [open,setOpen] = useState(false)
+  const [classifyState,setClassifyState] = useState("searchClassify_normal")
   const [perpage, setPerpage] = useState(20)
   const [pageIndex, setPageIndex] = useState(1)
   const [perrow, setPerrow] = useState(5)
@@ -180,7 +182,7 @@ const Search = (props) => {
     if (layer !== '') data.layer = layer
     if (origin !== '') data.origin = origin
     return data
-  },[pageIndex,publisher,key,sort,date,author,ISBN,bookState,bookType,library,layer,origin])
+  },[perpage,pageIndex,publisher,key,sort,date,author,ISBN,bookState,bookType,library,layer,origin])
 
   
   //第一次加载时获取所有的品类数据，不带上任何搜索，获取所有的类别数据
@@ -350,6 +352,8 @@ const Search = (props) => {
   useEffect(() => {
     search()
   }, [
+    perpage,
+    // perrow,
     date,
     author,
     publisher,
@@ -435,15 +439,44 @@ const Search = (props) => {
      setFunctionButtonStyle(1)
   }
 
+  useEffect(()=>{
+    let current_clientWidth=document.body.clientWidth;
+    if(current_clientWidth >= 768){
+      let perRow=Math.floor((current_clientWidth*0.68)/(current_clientWidth*0.13));
+      console.log(perRow);
+      setPerrow(perRow);
+      setPerpage(perRow*4)
+    }
+    else{
+      let perRow=Math.floor((current_clientWidth*0.98-32)/(current_clientWidth*0.35));
+      console.log(perRow);
+      setPerrow(perRow);
+      setPerpage(perRow*4)
+    }
+  
+  },[])
+  
+  useEffect(()=>{
+    if(document.body.clientWidth >= 768)
+      setClassifyState("searchClassify_normal");
+    else
+      setClassifyState("searchClassify_hide");
+  },[])
 
   return (
     <div className="searchPage">
       <div className="searchBody">
-        <div className="searchbar">
+      {
+         document.body.clientWidth < 768 ?(
+          <a class="user_info_toggle" onClick={()=>setClassifyState("searchClassify_float")}><span>&lt;</span></a>
+        ):null
+      } 
+      <div className="searchbar">
+        
           {/* <span className="setting">
             <SettingsIcon />
           </span> */}
-          <Paper component="form" className={classes.root}>
+          <Paper component="form" className={classes.root+" search_form"}>
             <InputBase
               className={classes.input}
               placeholder="搜索书籍的名字、出版社、作者"
@@ -471,17 +504,18 @@ const Search = (props) => {
           </div>
         </div>
         <div className="searchResult">
-          {bookData.map((item, index) => {
+          {
+            bookData.map((item, index) => {
             return (
               <div className="searchLine" key={index}>
                 {item.map((item2, index2) => {
                   return (
-                    <Card className={classes.cardRoot} key={item2.id}>
+                    <Card className={classes.cardRoot+" is_Borrowing_Book_Item"} key={item2.id}>
                       <CardActionArea
                         onClick={() => showSummary(index, item2.id)}
                       >
                         <CardMedia
-                          className={classes.media}
+                          className={classes.media+" is_Borrowing_Book_Item_Image"}
                           image={item2.cover}
                           title="cover"
                         />
@@ -498,7 +532,7 @@ const Search = (props) => {
                             gutterBottom
                             variant="body2"
                             component="h6"
-                            className="bookauthor"
+                            className="bookauthor  is_Borrowing_Book_Item_Font"
                           >
                              {item2.author} | 所作
                           </Typography>
@@ -506,7 +540,7 @@ const Search = (props) => {
                             gutterBottom
                             variant="body2"
                             component="h6"
-                            className="bookpublisher"
+                            className="bookpublisher  is_Borrowing_Book_Item_Font"
                           >
                             {item2.publisher} | 出版
                           </Typography>
@@ -543,9 +577,15 @@ const Search = (props) => {
                         {pannelData.state}
                       </div>
                     </div>
-                    <div className="searchBookSummary">
-                      {pannelData.summary}
-                    </div>
+                    {
+                      document.body.clientWidth>=768?(
+                        <div className="searchBookSummary">
+                          <span>
+                            {pannelData.summary}
+                          </span>
+                        </div>
+                      ):null
+                    }
                     <div className="searchBookMore">
                       <img src={pannelData.cover} className="searchBookImg" />
                       { 
@@ -623,8 +663,15 @@ const Search = (props) => {
         </div>
       </div>
       <Affix offsetTop={72}>
-      <div className="searchClassify">
+      <div className={classifyState+" searchClassify"}>
         <div className="title">筛选</div>
+        {
+          classifyState=="searchClassify_float"?(
+            <div className="closeButton" onClick={()=>setClassifyState("searchClassify_hide")}>
+              <CloseIcon />
+            </div>
+          ):null
+        }
         <div className="select">
           <div className="select-title">类别</div>
           <Select
