@@ -99,7 +99,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development node scripts/start.js",
     "build": "cross-env NODE_ENV=production node ./scripts/build.js",
-    "product": "cross-env NODE_ENV=production  node ./scripts/start.js",
+    "product": "cross-env NODE_ENV=production  node scripts/start.js",
     "test": "node scripts/test.js",
     "debug": "node --inspect-brk ./node_modules/webpack/bin/webpack.js --inline --progress"
   },
