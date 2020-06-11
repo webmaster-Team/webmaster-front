@@ -1,9 +1,35 @@
 $borderRadius = 10px//记录边框的圆角
 $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
 $formInputColor=#0182ff
+
+@media screen and (max-width:768px)
+   .renewWrapper 
+       padding: 1.1rem 0rem !important
+      .infoLine
+         .infoCard
+            display: none !important
+      .ant-table-thead
+         tr
+           :nth-child(1)
+                display: none
+           :nth-child(4)
+                display:none
+           :nth-child(5)
+                display: none
+      .ant-table-tbody
+          tr
+           td:nth-child(1)
+                display: none
+           td:nth-child(4)
+                display:none
+           td:nth-child(5)
+                display: none
+      .remainDateInfo
+          .ant-progress-outer
+                display none
 .renewWrapper
    width: 100%
-   padding: 20px
+   padding: 1.1rem
    display: flex
    flex-flow: row nowrap
    justify-content: center
@@ -13,20 +39,24 @@ $formInputColor=#0182ff
          .infoCard
             box-shadow: $boxShadow
             border-radius: $borderRadius
-            width: 200px
+            max-width: 200px
+            width: 100%
             margin-right: 10px
 
-    .renewbookWrapper
-        width: 1100px
+   .renewbookWrapper
+        max-width: 1100px
+        width: 100%
         box-shadow: $boxShadow
         border-radius: $borderRadius
         background-color: white
         .tipsCard
             border-radius: $borderRadius $borderRadius 0px 0px
-            width: 1000px
+            max-width: 1000px
+            width: 100%
             .important
                 color red
         .table
+            max-width: 1000px
             width 100%
             border-radius: 0px 0px $borderRadius $borderRadius
         .oprationbuttons
@@ -39,7 +69,9 @@ $formInputColor=#0182ff
             display: flex
             justify-content: space-between
             .remainDateInfoText
-               width: 100px  
+              max-width: 100px
+              min-width: 60px
+              width: 100%  
         .successText
             color: white
             border-color: #FFB90F

@@ -5,6 +5,7 @@ const path = require('path')
 const webpack = require('webpack')
 const resolve = require('resolve')
 const PnpWebpackPlugin = require('pnp-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin')
@@ -200,6 +201,7 @@ module.exports = function (webpackEnv) {
         // This is only used in production mode
         new TerserPlugin({
           terserOptions: {
+            warnings: false,
             parse: {
               // We want terser to parse ecma 8 code. However, we don't want it
               // to apply any minification steps that turns valid ecma 5 code
@@ -209,6 +211,10 @@ module.exports = function (webpackEnv) {
               ecma: 8,
             },
             compress: {
+              //上线后去除所有的console函数
+              drop_console: true,
+              dead_code: true, // 去除访问不到的代码
+              drop_debugger: true, //去除debugger语句
               ecma: 5,
               warnings: false,
               // Disabled because of an issue with Uglify breaking seemingly valid code:
@@ -222,13 +228,12 @@ module.exports = function (webpackEnv) {
               // https://github.com/terser-js/terser/issues/120
               inline: 2,
             },
-            mangle: {
-              safari10: true,
-            },
+            mangle: true,
             // Added for profiling in devtools
             keep_classnames: isEnvProductionProfile,
             keep_fnames: isEnvProductionProfile,
             output: {
+              beautify: false, //输出是否美化，即语句全部是在单行上的
               ecma: 5,
               comments: false,
               // Turned on because emoji and regex is not minified properly using default
@@ -264,6 +269,30 @@ module.exports = function (webpackEnv) {
       splitChunks: {
         chunks: 'all',
         name: false,
+        cacheGroups: {
+          commons: {
+            chunks: "initial",
+            minChunks: 2,
+            name: "commons",
+            maxInitialRequests: 5,
+            minSize: 0, // 默认是30kb，minSize设置为0之后
+                              // 多次引用的utility1.js和utility2.js会被压缩到commons中
+          },
+          'async-commons': { 
+            chunks: 'async',
+            minChunks: 2,
+            name: 'async-commons',
+            priority: 90,
+          },
+          reactBase: {
+            test: (module) => {
+              return /react|redux|antd|material|bootstrap|prop-types/.test(module.context);
+            }, // 直接使用 test 来做路径匹配，抽离react相关代码
+            chunks: "initial",
+            name: "reactBase",
+            priority: 10,
+          }
+        }  
       },
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
@@ -518,6 +547,7 @@ module.exports = function (webpackEnv) {
       ],
     },
     plugins: [
+      new BundleAnalyzerPlugin(),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

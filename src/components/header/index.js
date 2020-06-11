@@ -38,7 +38,7 @@ const Header = props=>{
           <Nav className="mr-auto header_router">
             <Nav.Link className="header_link"  onClick={()=>history.push('/index/search')}>寻找</Nav.Link>
             <Nav.Link className="header_link" onClick={()=>history.push('/index/borrow')}>借阅</Nav.Link>
-            <Nav.Link className="header_link" onClick={()=>history.push('/renew/borrow')}>续借 / 归还</Nav.Link>
+            <Nav.Link className="header_link" onClick={()=>history.push('/index/renew')}>续借 / 归还</Nav.Link>
           </Nav>
           <Nav>
           <div className="header-user-info">

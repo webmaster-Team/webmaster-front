@@ -1,6 +1,14 @@
 $borderRadius = 10px//记录边框的圆角
 $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
+@media screen and (max-width 768px)
+  .borrowWrapper
+     padding 0.1rem 0px !important
+     .infoLine 
+       .infoCard
+          display: none !important
+
 .borrowWrapper
+   min-width 300px
    width: 100%
    padding: 20px
    display: flex
@@ -15,10 +23,15 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
       margin: 10px
       box-shadow:$boxShadow
    .infoLine
+         width: 100%
+         max-width: 1200px
          display: flex
          justify-items: center
          .infoCard
             box-shadow: $boxShadow
             border-radius: $borderRadius
-            width: 200px
+            max-width: 200px
+            width: 100%
             margin-right: 10px
+         .infoRight
+            flex 1
