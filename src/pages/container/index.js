@@ -49,10 +49,10 @@ const Container = (props) => {
        <div className="my-body">
          {/** 未知的错误 */}
           <Switch>
-            <Route path="/index/search" component={Search}/>
-            <Route path="/index/borrow" component={Borrow}/>
-            <Route path='/index/usercenter' component={PersonalCenter}/>
-            <Route path="/index/renew" component={Renew}/>
+            <Route path="/index/search"  component={()=>import(/* webpackChunkName:"Search" */'../search')}/>
+            <Route path="/index/borrow"   component={()=>import(/* webpackChunkName:"Borrow" */'../borrow')}/>
+            <Route path='/index/usercenter'  component={()=>import(/* webpackChunkName:"Usercenter" */'../personalcenter')}/>
+            <Route path="/index/renew"  component={()=>import(/* webpackChunkName:"renew" */'../renew')}/>
             <Redirect exact from="/index" to="/index/search"/>
           </Switch>
         </div>
