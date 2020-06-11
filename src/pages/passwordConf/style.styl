@@ -20,13 +20,13 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
         font-weight: lighter
         position absolute
         font-size: 30px
-        left 300px
-        top 50px
+        left 20vw
+        top 8vh
+        z-index: 1003
     //左上角的标签样式
     .buttom-box
-        width: 800px
-        position absolute 
-        top 100px
+        width: 60vw
+        margin-top:14vh
         height: fit-content
         background-color: white
         box-shadow: 0px 0px 30px 10px rgba(0,0,0,.1)
@@ -35,18 +35,19 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
         position relative
         .card
             margin-left: 10px
-            width: 400px
+            width: 30vw
             flex 1
             display: flex
             justify-content: left 
             align-items: center 
+            border: 0 
             .swiper-container
-                width: 400px
-                height: 400px
+                width: 30vw
+                height: 30vw
                 .swiper-wrapper
                     .swiper-slide
-                        width: 400px
-                        height: 400px
+                        width: 30vw
+                        height: 30vw
                         display flex
                         flex-flow: column nowrap
                         justify-content: flex-start
@@ -69,14 +70,14 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
                             width: 350px
                             text-align center
                         .swiper-picture
-                            width: 200px
-                            height: 200px
+                            width: 20vw
+                            height: 20vw
                             margin-top: 25px
         .form
                 z-index: 1001
-                width: 350px
-                right: 30px
-                top: 100px
+                width: 23vw
+                right: 3vw
+                top: 4vh
                 background-color: white
                 box-shadow: 0px 0px 30px 10px rgba(0,0,0,.1)
                 display flex
@@ -107,10 +108,7 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
                         justify-content: center
                         align-items: center
                         border-right-width: 0.5px
-                        // border-right-color:$formInputColor
                         border-right-style: solid
-                    .captcha
-                        cursor pointer
                 //忘记密码链接的样式
                 .forget-link-line
                     width: 100%
@@ -283,4 +281,62 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
         padding 0
 .MuiDialogActions-root
    .MuiButton-label
-        color: $formInputColor    
+        color: $formInputColor
+@media screen and (max-width :767px)
+    .forgot-password-wrapper
+        .title
+            left 10vw
+            top 2vh
+        .buttom-box
+            width: 80vw !important
+            margin-top: 5vh
+            .card
+                display none !important
+            .bigCircle
+                transform: scale(1.5) !important
+            .form
+                width:80vw !important
+                position absolute
+                top:4vh !important
+                left:1vw
+                input::placeholder
+                    font-size: 0.8em !important
+            
+@media screen and (min-width :768px) and (max-width: 1080px)
+    .forgot-password-wrapper
+        .title
+            left 11vw
+            top 3vh
+        .buttom-box
+            width: 80vw !important
+            margin-top: 10vh
+            .card
+                width: 40vw !important
+                .swiper-container
+                    width: 40vw
+                    height: 40vw
+                    .swiper-wrapper
+                        .swiper-slide
+                            width:40vw !important
+                            height: 40vw
+                            .swiper-text
+                                font-size: 0.4em
+                            .swiper-title
+                                font-size: 0.8em
+            .form
+                width: 40vw !important
+                top: 2vh
+                right 3vw
+                padding: 1em
+                .makeStyles-root-3
+                    margin: 0
+                    margin-top: 0.5em
+                .captcha
+                    width: 6em
+                    height: 3em !important
+                .login-button
+                    width: 100%
+                    height 3vh
+                .policy-line
+                    span
+                        font-size:0.5em !important    

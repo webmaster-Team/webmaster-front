@@ -13,13 +13,14 @@ $formInputColor=#0182ff
         font-weight: lighter
         position absolute
         font-size: 30px
-        left 300px
-        top 50px
+        left 21vw
+        top 8vh
+        z-index 1003
     //中间的box的样式
     .wrapper
         position relative
-        width 900px
-        height 600px
+        width 60vw
+        height 76vh
         background-color: white
         margin-top: 120px
         box-shadow: 0px 0px 30px 10px rgba(0,0,0,.1)
@@ -50,28 +51,30 @@ $formInputColor=#0182ff
             position absolute
             right -100px
             top 0
+            z-index 1003
         //小圆
         .smallCircle
             transform: scale(1.5)
             position absolute
             left -120px
             bottom -120px
-            z-index: 100
+            z-index: 1003
         .card
-            margin-left: 10px
-            width: 400px
+            z-index: 1002
+            margin-left: 1em
+            width: 30vw
             flex 1
             display: flex
             justify-content: left 
             align-items: flex-start
             border:0 
             .swiper-container
-                width: 400px
-                height: 400px
+                width: 30vw
+                height: 30vw
                 .swiper-wrapper
                     .swiper-slide
-                       width: 400px
-                       height: 400px
+                       width:30vw 
+                       height: 30vw
                        display flex
                        flex-flow: column nowrap
                        justify-content: flex-start
@@ -80,8 +83,8 @@ $formInputColor=#0182ff
                            font-weight: bold
                            font-size: 16px
                            display: flex
-                           margin-top: 40px
-                           margin-bottom: 30px
+                           margin-top: 1.5em
+                           margin-bottom: 1.5em
                            letter-spacing: 2px
                            color: $title
                         .swiper-text
@@ -96,14 +99,14 @@ $formInputColor=#0182ff
                         .swiper-picture
                             width: 200px
                             height: 200px
-                            margin-top: 25px
+                            margin-top: 2em
         .form
-            z-index: 1001
-            width: 350px
+            z-index: 1004
+            width: 23vw
             // height: 400px
             position absolute
-            top 20px
-            right 100px 
+            top 4vh
+            right 3vw
             background-color: white
             box-shadow: 0px 0px 30px 10px rgba(0,0,0,.1)
             display flex
@@ -138,6 +141,8 @@ $formInputColor=#0182ff
                     border-right-style: solid
                 .captcha
                    cursor pointer
+                   widows 3.2em
+                   height 1.6em
             //忘记密码链接的样式
             .forget-link-line
                 width: 100%
@@ -240,3 +245,64 @@ $formInputColor=#0182ff
         &.error
             box-shadow: 0px 0px 1px 1px #f44336
             color #f44336
+@media screen and (max-width :767px)
+    .loginPage
+        .wrapper
+            margin: 0
+            height 100vh
+            width 100vw
+            .swiper-container
+                display none !important
+            .card
+                display none
+        .bigCircle
+            transform: scale(1.5) !important
+        .form
+            width:80vw !important
+            left 10vw
+            top:20vh !important
+            input::placeholder
+                font-size: 0.8em !important
+            hr
+                    margin: 0.6em 0
+@media screen and (min-width :768px) and (max-width: 1080px)
+    .loginPage
+        .title
+            left 11vw
+            top 4vh
+        .wrapper
+            width 80vw
+            height 40vh
+            .card
+                width: 40vw
+                .swiper-container
+                    width: 40vw
+                    height: 40vw
+                    .swiper-wrapper
+                        .swiper-slide
+                            width:40vw !important
+                            height: 40vw
+                            .swiper-text
+                                font-size: 0.4em
+                            .swiper-title
+                                font-size: 0.8em
+            .form
+                width: 30vw
+                top: 2vh
+                right 3vw
+                padding: 1em
+                .makeStyles-root-3
+                    margin: 0
+                    margin-top: 0.5em
+                .captcha
+                    width: 4em
+                    height: 2em !important
+                .login-button
+                    width: 100%
+                    height 3vh
+                .policy-line
+                    span
+                        font-size:0.5em !important
+                hr
+                    margin: 0.6em 0
+            

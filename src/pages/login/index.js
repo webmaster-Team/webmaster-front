@@ -252,7 +252,7 @@ const Login = () => {
                   <Field
                     classes={{
                       root: classes.fieldRoot,
-                    }}
+                    }+" my_form_input"}
                     component={TextField}
                     name="account"
                     placeholder="输入您的学号"
@@ -276,6 +276,7 @@ const Login = () => {
                     component={TextField}
                     name="password"
                     placeholder="请输入密码"
+                    className="my_form_input"
                     InputProps={{
                       type: passwordVisibility ? 'text' : 'password',
                       className: 'form-input',
@@ -311,6 +312,7 @@ const Login = () => {
                   <Field
                     component={TextField}
                     name="captcha"
+                    className="my_form_input"
                     InputProps={{
                       className: 'form-input',
                       inputProps: { 'aria-label': 'account' },
