@@ -12,7 +12,12 @@ import { Provider } from 'react-redux'
 // import Container from './pages/container'
 // import PasswordConf from './pages/passwordConf'
 import Axios from 'axios'
-import LoadComponentAsync from './components/LoadComponentAsync'
+import loadable from './utils/loadable'
+
+const Login = loadable(()=>import('./pages/login'))
+const Register = loadable(()=>import('./pages/register'))
+const Container = loadable(()=>import('./pages/container'))
+const PasswordConf =  loadable(()=>import('./pages/passwordConf'))
 
 const App = () => {
   return (
@@ -20,18 +25,13 @@ const App = () => {
       <Provider store={store}>
          <Switch>
         {/* 登陆页面 */}
-        <Route path="/login"  render={() => {
-          return <LoadComponentAsync componentName={"./pages/login"}/>
-        }}/>
+        <Route path="/login"  component={Login}/>
         {/* 注册界面 */}
-        <Route path="/register"  render={() => {
-          return <LoadComponentAsync componentName={"./pages/register"}/>}}/>
+        <Route path="/register"   component={Register}/>
         {/* 首页路由 */}
-        <Route path="/index"  render={() => {
-          return <LoadComponentAsync componentName={"./pages/container"} />}}/>
+        <Route path="/index"   component={Container}/>
         {/* 忘记密码路由 */}
-        <Route path="/forgotPassword"  render={() => {
-          return <LoadComponentAsync componentName={"./pages/passwordConf"}/>}}/>
+        <Route path="/forgotPassword"  component={PasswordConf}/>
         {/* 默认路由 */}
         <Redirect exact from="/" to="/index/search"/>
        </Switch>

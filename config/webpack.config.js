@@ -276,7 +276,6 @@ module.exports = function (webpackEnv) {
             name: "commons",
             maxInitialRequests: 5,
             minSize: 0, // 默认是30kb，minSize设置为0之后
-                              // 多次引用的utility1.js和utility2.js会被压缩到commons中
           },
           'async-commons': { 
             chunks: 'async',
