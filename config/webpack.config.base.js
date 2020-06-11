@@ -45,6 +45,7 @@ const webpackconfig = {
         use:[
           {
             loader : 'url-loader',
+            // exclude: [path/this.resolve(__dirname,'../public')],
             options:{
               limit: 1024,
               name: 'img/[name]-image.[ext]'
@@ -60,6 +61,11 @@ const webpackconfig = {
     new CopyWebpackPlugin({
       patterns: [
         { from: path.join(__dirname,'../public/swiper'), to: path.join(__dirname,'../build/swiper')},
+        { from: path.join(__dirname,'../public/favicon.ico'), to: path.join(__dirname,'../build/favicon.ico')},
+        { from: path.join(__dirname,'../public/iconfont.js'), to: path.join(__dirname,'../build/iconfont.js')},
+        { from: path.join(__dirname,'../public/manifest.json'), to: path.join(__dirname,'../build/manifest.json')},
+        { from: path.join(__dirname,'../public/logo192.png'), to: path.join(__dirname,'../build/logo192.png')},
+        { from: path.join(__dirname,'../public/logo512.png'), to: path.join(__dirname,'../build/logo512.png')},
       ]
     }),
     new webpack.DefinePlugin({
