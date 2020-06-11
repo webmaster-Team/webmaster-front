@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-// const nodeExternals = require('webpack-node-externals')
+const nodeExternals = require('webpack-node-externals')
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清除output下的所有文件
 const utils = require('./utils')
@@ -27,19 +27,28 @@ const webpackconfig = {
   module: {
     rules: [
       {
+        test: /\.styl$/,
+        exclude: [path.resolve(__dirname, '../node_modules')],
+        loader:[
+          'style-loader',
+          'css-loader',
+          'stylus-loader'
+        ],
+      },
+      {
+        test: /\.css$/,
+        // exclude: [path.resolve(__dirname, '../node_modules')],
+        loader:[
+          'style-loader',
+          'css-loader',
+        ],
+      },
+      {
         test: /\.(js|jsx)$/,
         exclude: [path.resolve(__dirname, '../node_modules')],
         use: {
           loader: 'babel-loader',
         },
-      },
-      {
-        test: /\.styl$/,
-        exclude: [path.resolve(__dirname, '../node_modules')],
-        loader:ExtractTextPlugin.extract(
-          'style-loader',
-          'css-loader',
-          'stylus-loader')
       },
       {
         test: /\.(gif|jpg|jpeg|png|svg)$/,
@@ -58,7 +67,7 @@ const webpackconfig = {
   },
   externals: {
     'react': 'React'
-  },
+ },
   plugins: [
     new CleanWebpackPlugin(),
     new uglify(),
