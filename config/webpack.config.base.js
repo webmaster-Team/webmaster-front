@@ -7,6 +7,8 @@ const utils = require('./utils')
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const uglify = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const  OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 // debugger
 
 const webpackconfig = {
@@ -27,20 +29,18 @@ const webpackconfig = {
   module: {
     rules: [
       {
-        test: /\.styl$/,
-        exclude: [path.resolve(__dirname, '../node_modules')],
-        loader:[
-          'style-loader',
-          'css-loader',
-          'stylus-loader'
-        ],
+        test: /\.css$/,
+        use:[
+          MiniCssExtractPlugin.loader,
+          {loader: 'css-loader'},
+        ]
       },
       {
-        test: /\.css$/,
-        // exclude: [path.resolve(__dirname, '../node_modules')],
-        loader:[
-          'style-loader',
-          'css-loader',
+        test: /\.styl$/,
+        exclude: [path.resolve(__dirname, '../node_modules')],
+        use:[MiniCssExtractPlugin.loader,
+          {loader: 'css-loader'},
+          {loader: 'stylus-loader'}
         ],
       },
       {
@@ -66,17 +66,20 @@ const webpackconfig = {
     ],
   },
   plugins: [
+    require('autoprefixer'),
     new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: './css/[name].css'
+     }),
     new uglify(),
-    new ExtractTextPlugin("./css/[name][hash:8].css"),
     new CopyWebpackPlugin({
       patterns: [
-        { from: path.join(__dirname,'../public/swiper'), to: path.join(__dirname,'../build/swiper')},
-        { from: path.join(__dirname,'../public/favicon.ico'), to: path.join(__dirname,'../build/favicon.ico')},
-        { from: path.join(__dirname,'../public/iconfont.js'), to: path.join(__dirname,'../build/iconfont.js')},
-        { from: path.join(__dirname,'../public/manifest.json'), to: path.join(__dirname,'../build/manifest.json')},
-        { from: path.join(__dirname,'../public/logo192.png'), to: path.join(__dirname,'../build/logo192.png')},
-        { from: path.join(__dirname,'../public/logo512.png'), to: path.join(__dirname,'../build/logo512.png')},
+        { from: path.join(__dirname,'../public/assets/swiper'), to: path.join(__dirname,'../build/assets/swiper')},
+        { from: path.join(__dirname,'../public/assets/favicon.ico'), to: path.join(__dirname,'../build/assets/favicon.ico')},
+        { from: path.join(__dirname,'../public/assets/iconfont.js'), to: path.join(__dirname,'../build/assets/iconfont.js')},
+        { from: path.join(__dirname,'../public/assets/manifest.json'), to: path.join(__dirname,'../build/assets/manifest.json')},
+        { from: path.join(__dirname,'../public/assets/logo192.png'), to: path.join(__dirname,'../build/assets/logo192.png')},
+        { from: path.join(__dirname,'../public/assets/logo512.png'), to: path.join(__dirname,'../build/assets/logo512.png')},
       ]
     }),
     new webpack.DefinePlugin({
@@ -88,7 +91,18 @@ const webpackconfig = {
             : '"developement"',
       },
     }),
-    new HtmlWebpackPlugin({
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorPluginOptions: {
+          preset: [
+              'default',
+              { discardComments: { removeAll: true } }
+              ],
+      },
+      canPrint: true
+  }),
+  new HtmlWebpackPlugin({
       template: './public/index.html',
       filename:'./index.html',
       minify:{
