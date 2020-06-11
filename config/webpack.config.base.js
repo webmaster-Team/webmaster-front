@@ -65,9 +65,6 @@ const webpackconfig = {
       },
     ],
   },
-  externals: {
-    'react': 'React'
- },
   plugins: [
     new CleanWebpackPlugin(),
     new uglify(),
