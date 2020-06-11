@@ -235,7 +235,7 @@ module.exports = function (webpackEnv) {
             output: {
               beautify: false, //输出是否美化，即语句全部是在单行上的
               ecma: 5,
-              comments: false,
+              // comments: true,
               // Turned on because emoji and regex is not minified properly using default
               // https://github.com/facebook/create-react-app/issues/2488
               ascii_only: true,
