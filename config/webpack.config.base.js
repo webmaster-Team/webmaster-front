@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清除output下
 const utils = require('./utils')
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const uglify = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 // debugger
 
 const webpackconfig = {
@@ -35,11 +36,10 @@ const webpackconfig = {
       {
         test: /\.styl$/,
         exclude: [path.resolve(__dirname, '../node_modules')],
-        use: [
+        loader:ExtractTextPlugin.extract(
           'style-loader',
           'css-loader',
-          'stylus-loader'
-        ]
+          'stylus-loader')
       },
       {
         test: /\.(gif|jpg|jpeg|png|svg)$/,
@@ -56,10 +56,11 @@ const webpackconfig = {
       },
     ],
   },
-  externals: [nodeExternals()],
+  // externals: [nodeExternals()],
   plugins: [
-    new uglify(),
     new CleanWebpackPlugin(),
+    new uglify(),
+    new ExtractTextPlugin("./css/[name][hash:8].css"),
     new CopyWebpackPlugin({
       patterns: [
         { from: path.join(__dirname,'../public/swiper'), to: path.join(__dirname,'../build/swiper')},
