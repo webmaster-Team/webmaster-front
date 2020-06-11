@@ -5,11 +5,12 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清除output下的所有文件
 const utils = require('./utils')
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const uglify = require('uglifyjs-webpack-plugin');
 // debugger
 
 const webpackconfig = {
   //说明包的部署环境
-  target: 'node',
+  target: 'web',
   //定义入口
   entry: {
     //创建一个server入口
@@ -57,6 +58,7 @@ const webpackconfig = {
   },
   externals: [nodeExternals()],
   plugins: [
+    new uglify(),
     new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
