@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const nodeExternals = require('webpack-node-externals')
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清除output下的所有文件
 const utils = require('./utils')
@@ -58,7 +59,6 @@ const webpackconfig = {
   externals: [  nodeExternals({
     importType: 'umd'
  })],
-
   plugins: [
     new CleanWebpackPlugin(),
     new uglify(),
