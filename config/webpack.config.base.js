@@ -4,6 +4,7 @@ const nodeExternals = require('webpack-node-externals')
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清除output下的所有文件
 const utils = require('./utils')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 // debugger
 
 const webpackconfig = {
@@ -50,12 +51,17 @@ const webpackconfig = {
             }
           }
         ]
-      }
+      },
     ],
   },
   externals: [nodeExternals()],
   plugins: [
     new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: path.join(__dirname,'../public/swiper'), to: path.join(__dirname,'../build/swiper')},
+      ]
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV:
@@ -67,7 +73,11 @@ const webpackconfig = {
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      filename:'./index.html'
+      filename:'./index.html',
+      minify:{
+         removeComments:true,//清除注释                 
+         collapseWhitespace:true//清理空格
+      },
     })
   ],
   node: {
