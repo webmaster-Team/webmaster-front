@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const nodeExternals = require('webpack-node-externals')
+const HtmlWebpackPlugin = require("html-webpack-plugin")
 const { CleanWebpackPlugin } = require('clean-webpack-plugin') //清除output下的所有文件
 const utils = require('./utils')
 // debugger
@@ -45,7 +46,7 @@ const webpackconfig = {
             loader : 'url-loader',
             options:{
               limit: 1024,
-              name: '[name]-image.[ext]'
+              name: 'img/[name]-image.[ext]'
             }
           }
         ]
@@ -64,6 +65,10 @@ const webpackconfig = {
             : '"developement"',
       },
     }),
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename:'./index.html'
+    })
   ],
   node: {
     //设置Nodejs的一些api可以在脱离Nodejs环境下执行
