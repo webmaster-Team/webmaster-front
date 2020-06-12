@@ -29,8 +29,11 @@ $boxShadow = 0px 0px 30px 10px rgba(0,0,0,.1)
     .ant-collapse-item
             width: 100%    
     .ant-list-item
+        // height 100px !important
         padding 6px 0px !important
         border none !important
+        .collapse:not(.show)
+            display block !important
     .ant-collapse-header
              background-color: white
     .ant-collapse-content
