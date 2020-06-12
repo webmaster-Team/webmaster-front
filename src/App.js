@@ -4,7 +4,6 @@ import store from './store'
 import { Provider } from 'react-redux'
 import Axios from 'axios'
 import loadable from './utils/loadable'
-
   
 // const Login = loadable(() => import('./pages/login'))
 // const Register = loadable(()=>import('./pages/register'))
@@ -19,6 +18,7 @@ const App = () => {
   return (
     <HashRouter>
       <Provider store={store}>
+      <React.Suspense fallback={<div>Loading...</div>}>
          <Switch>
         {/* 登陆页面 */}
         <Route path="/login" component={Login}/>
@@ -31,6 +31,7 @@ const App = () => {
         {/* 默认路由 */}
         <Redirect exact from="/" to="/index/search"/>
        </Switch>
+       </React.Suspense>
       </Provider>
     </HashRouter>
   )

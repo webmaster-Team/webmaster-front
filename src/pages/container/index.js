@@ -59,6 +59,7 @@ const Container = (props) => {
        <SelfHeader/>
        <div className="my-body">
          {/** 未知的错误 */}
+         <React.Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <Route path="/index/search" component={Search}/>
             <Route path="/index/borrow" component={Borrow}/>
@@ -66,6 +67,7 @@ const Container = (props) => {
             <Route path="/index/renew" component={Renew}/>
             <Redirect exact from="/index" to="/index/search"/>
           </Switch>
+          </React.Suspense>
         </div>
         <Footer/>
     </div>
