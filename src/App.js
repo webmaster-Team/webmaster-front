@@ -1,16 +1,21 @@
-import React from 'react'
+import React,{lazy}from 'react'
 import { Route, HashRouter ,Switch,Redirect} from 'react-router-dom'
 import store from './store'
 import { Provider } from 'react-redux'
 import Axios from 'axios'
 import loadable from './utils/loadable'
+
+  
+// const Login = loadable(() => import('./pages/login'))
+// const Register = loadable(()=>import('./pages/register'))
+// const Container = loadable(()=>import('./pages/container'))
+// const PasswordConf =  loadable(()=>import('./pages/passwordConf'))
+const Login = lazy(() => import('./pages/login'))
+const Register = lazy(()=>import('./pages/register'))
+const Container = lazy(()=>import('./pages/container'))
+const PasswordConf =  lazy(()=>import('./pages/passwordConf'))
+
 const App = () => {
-
-  const Login = loadable(() => import('./pages/login'))
-  const Register = loadable(()=>import('./pages/register'))
-  const Container = loadable(()=>import('./pages/container'))
-  const PasswordConf =  loadable(()=>import('./pages/passwordConf'))
-
   return (
     <HashRouter>
       <Provider store={store}>

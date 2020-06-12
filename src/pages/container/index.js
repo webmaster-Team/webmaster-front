@@ -3,7 +3,7 @@
  * @LastEditTime: 2020-06-02 10:12:35
  * @FilePath: /webmaster-front/src/pages/container/index.js
  */
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useCallback, useState,lazy } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { actionCreators as ac } from './store'
@@ -18,10 +18,15 @@ import './style.styl';
 // import Renew from '../renew';
 import loadable from '../../utils/loadable'
 
-const Search = loadable(()=>import('../search'))
-const Borrow = loadable(()=>import('../borrow'))
-const PersonalCenter = loadable(()=>import('../personalcenter'))
-const Renew = loadable(()=>import('../renew'))
+// const Search = loadable(()=>import('../search'))
+// const Borrow = loadable(()=>import('../borrow'))
+// const PersonalCenter = loadable(()=>import('../personalcenter'))
+// const Renew = loadable(()=>import('../renew'))
+
+const Search = lazy(()=>import('../search'))
+const Borrow = lazy(()=>import('../borrow'))
+const PersonalCenter = lazy(()=>import('../personalcenter'))
+const Renew = lazy(()=>import('../renew'))
 
 const {Header} = Layout;
 
