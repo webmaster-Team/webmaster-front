@@ -16,13 +16,13 @@ const App = () => {
       <Provider store={store}>
          <Switch>
         {/* 登陆页面 */}
-        <Route path="/auth/login" component={Login}/>
+        <Route path="/login" component={Login}/>
         {/* 注册界面 */}
-        <Route path="/auth/register"  component={Register}/>
+        <Route path="/register"  component={Register}/>
         {/* 首页路由 */}
         <Route path="/index"   component={Container}/>
         {/* 忘记密码路由 */}
-        <Route path="/auth/forgotPassword"  component={PasswordConf}/>
+        <Route path="/forgotPassword"  component={PasswordConf}/>
         {/* 默认路由 */}
         <Redirect exact from="/" to="/index/search"/>
        </Switch>
