@@ -1,4 +1,4 @@
-import React,{lazy}from 'react'
+import React,{lazy,Suspense}from 'react'
 import { Route, HashRouter ,Switch,Redirect} from 'react-router-dom'
 import store from './store'
 import { Provider } from 'react-redux'
@@ -18,7 +18,7 @@ const App = () => {
   return (
     <HashRouter>
       <Provider store={store}>
-      <React.Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
          <Switch>
         {/* 登陆页面 */}
         <Route path="/login" component={Login}/>
@@ -31,7 +31,7 @@ const App = () => {
         {/* 默认路由 */}
         <Redirect exact from="/" to="/index/search"/>
        </Switch>
-       </React.Suspense>
+       </Suspense>
       </Provider>
     </HashRouter>
   )

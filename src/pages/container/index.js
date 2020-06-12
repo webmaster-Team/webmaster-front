@@ -3,7 +3,7 @@
  * @LastEditTime: 2020-06-02 10:12:35
  * @FilePath: /webmaster-front/src/pages/container/index.js
  */
-import React, { useEffect, useCallback, useState,lazy } from 'react'
+import React, { Suspense,useEffect, useCallback, useState,lazy } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import { actionCreators as ac } from './store'
@@ -59,7 +59,7 @@ const Container = (props) => {
        <SelfHeader/>
        <div className="my-body">
          {/** 未知的错误 */}
-         <React.Suspense fallback={<div>Loading...</div>}>
+         <Suspense fallback={<div>Loading...</div>}>
           <Switch>
             <Route path="/index/search" component={Search}/>
             <Route path="/index/borrow" component={Borrow}/>
@@ -67,7 +67,7 @@ const Container = (props) => {
             <Route path="/index/renew" component={Renew}/>
             <Redirect exact from="/index" to="/index/search"/>
           </Switch>
-          </React.Suspense>
+          </Suspense>
         </div>
         <Footer/>
     </div>

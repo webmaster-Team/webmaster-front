@@ -19,8 +19,6 @@ const Footer = props=>{
        <ul className="footer-team">
        <li>友情链接</li>
        <li>杭州师范大学图书馆</li>
-       <li>指导教师</li>
-       <li>吴英飞教授</li>
      </ul>
      <ul className="footer-team">
      <li>&copy;2020</li>
