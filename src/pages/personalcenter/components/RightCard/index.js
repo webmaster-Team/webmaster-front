@@ -270,7 +270,8 @@ const RightCard = props => {
         <List
         size="large"
         dataSource={order}
-        renderItem={item => <List.Item key={item.serial}>
+        renderItem={item => 
+          <List.Item key={item.serial}>
               <Collapse
                 className="collapse"
                 bordered={false}
@@ -354,7 +355,7 @@ const RightCard = props => {
                     }
                   })
                 }
-           </Panel>
+             </Panel>
             </Collapse>
           </List.Item>
         }
