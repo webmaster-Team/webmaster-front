@@ -353,7 +353,7 @@ const Search = (props) => {
     search()
   }, [
     perpage,
-    // perrow,
+    perrow,
     date,
     author,
     publisher,

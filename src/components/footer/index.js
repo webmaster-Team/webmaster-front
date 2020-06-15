@@ -6,15 +6,15 @@ const Footer = props=>{
     <div>
        <ul className="footer-team" id="develope_team">
          <li>开发团队</li>
-         {/* <li>顾方宇</li> */}
+         <li>顾方宇</li>
          <li>胡毅杰</li>
-         {/* <li>林相龙</li> */}
-         {/* <li>倪思涛</li> */}
+         <li>林相龙</li>
+         <li>倪思涛</li>
          <li>苏灵杰</li>
          <li>王一斐</li>
          <li>叶佳新</li>
          <li>严启铭</li>
-         {/* <li>叶行健</li> */}
+         <li>叶行健</li>
        </ul>
        <ul className="footer-team">
        <li>友情链接</li>
