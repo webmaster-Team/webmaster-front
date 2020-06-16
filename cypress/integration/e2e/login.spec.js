@@ -1,8 +1,15 @@
 /// <reference types="cypress" />
 
+const { node } = require("prop-types")
+
 context('Login',()=>{
     beforeEach(() => {
-        cy.visit('localhost:3000/#/login')
+        let base = ""
+        if(process.env.NODE_ENV === 'development')
+              base = 'localhost:3000'
+        else
+              base = 'http://47.240.64.77'
+        cy.visit(base+'/#/login')
     })
 
     // it("学号有效性校验",()=>{
