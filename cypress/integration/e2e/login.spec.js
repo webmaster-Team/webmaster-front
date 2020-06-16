@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-const { node } = require("prop-types")
-
 context('Login',()=>{
     beforeEach(() => {
         let base = ""
