@@ -10,6 +10,11 @@ COPY . .
 
 RUN npm install
 
+# 执行自动化测试
+RUN npm run test:e2e
+
+RUN ./node_modules/.bin/cypress  run --spec './cypress/integration/e2e/login.spec.js'
+
 RUN npm run build
 
 # production stage
