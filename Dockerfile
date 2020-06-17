@@ -14,17 +14,6 @@ RUN npm install
 # 开始构建
 RUN npm run build
 
-# production stage
-FROM nginx:stable-alpine as production-stage
-
-COPY --from=build-stage /app/build /usr/share/nginx/html
-  
-COPY --from=build-stage /app/default.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
-
 # 自动化测试
 FROM cypress/base:10 as test-stage
 
@@ -39,3 +28,16 @@ RUN npm install --save-dev cypress
 
 # 执行测试
 RUN npm run test:product
+
+# production stage
+FROM nginx:stable-alpine as production-stage
+
+COPY --from=build-stage /app/build /usr/share/nginx/html
+  
+COPY --from=build-stage /app/default.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+
