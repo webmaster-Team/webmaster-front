@@ -31,7 +31,9 @@ FROM cypress/base:10 as test-stage
 WORKDIR /test
 
 # 从build-stage中拷贝cypress配置文件
-COPY --from=build-stage /app . 
+COPY . .
+
+RUN npm install --save-dev cross-env
 
 RUN npm install --save-dev cypress
 

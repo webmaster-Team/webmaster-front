@@ -6,8 +6,8 @@ context('Login',()=>{
         // if(process.env.NODE_ENV === 'development')
             //   base = 'localhost:3000'
         // else if(process.env.NODE_ENV === 'production')
-        base = 'http://47.240.64.77'
-        cy.visit(base+'/#/login')
+        base = 'http://47.240.64.77/#/login'
+        cy.visit(base)
     })
 
     it("学号有效性校验",()=>{
