@@ -14,21 +14,6 @@ RUN npm install
 # 开始构建
 RUN npm run build
 
-# 自动化测试
-FROM cypress/base:10 as test-stage
-
-WORKDIR /test
-
-# 从build-stage中拷贝cypress配置文件
-COPY . .
-
-RUN npm install --save-dev cross-env
-
-RUN npm install --save-dev cypress
-
-# 执行测试
-RUN npm run test:product
-
 # production stage
 FROM nginx:stable-alpine as production-stage
 
@@ -40,4 +25,15 @@ EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
 
+# 自动化测试
+FROM cypress/base:10 as test-stage
 
+WORKDIR /test
+
+# 从build-stage中拷贝cypress配置文件
+COPY --from=build-stage /app . 
+
+RUN npm install --save-dev cypress
+
+# 执行测试
+RUN npm run test:product
