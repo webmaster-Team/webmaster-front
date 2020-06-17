@@ -25,17 +25,17 @@ EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
 
-# # 自动化测试
-# FROM cypress/base:10 as test-stage
+# 自动化测试
+FROM cypress/base:10 as test-stage
 
-# WORKDIR /test
+WORKDIR /test
 
-# # 从build-stage中拷贝cypress配置文件
-# COPY . .
+# 从build-stage中拷贝cypress配置文件
+COPY . .
 
-# RUN npm install --save-dev cross-env
+RUN npm install --save-dev cross-env
 
-# RUN npm install --save-dev cypress
+RUN npm install --save-dev cypress
 
-# # 执行测试
-# RUN npm run test:product
+# 执行测试
+RUN npm run test:product
